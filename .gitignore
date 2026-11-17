@@ -8,6 +8,9 @@ venv/
 .venv/
 env/
 
+# SSL certificates
+certs/
+
 # Environment variables and secrets
 .env
 .env.*

@@ -2,10 +2,11 @@
 openai>=1.50.0,<3.0.0
 python-dotenv>=1.0.0,<2.0.0
 pydantic>=2.8.0,<3.0.0
-
+pydantic-settings>=2.4.0,<3.0.0
 # Agent orchestration
 langgraph>=0.2.0,<2.0.0
 langchain-core>=0.3.0,<2.0.0
+langchain-openai>=0.2.0,<2.0.0
 
 # Embeddings, vector search and reranking
 sentence-transformers>=3.0.0,<6.0.0
@@ -35,4 +36,4 @@ httpx>=0.27.0
 # Observability
 langfuse>=2.0.0
 
-sentence-transformers>=3.0.0,<6.0.0
+httpx>=0.27.0
