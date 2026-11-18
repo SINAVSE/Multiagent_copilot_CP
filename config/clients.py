@@ -13,7 +13,7 @@ embedding_http_client = httpx.Client(
     timeout=60.0,
 )
 
-# LLM client
+# LLM client: Consistency
 llm = ChatOpenAI(
     model=settings.llm_model,
     api_key=settings.api_key,
@@ -22,6 +22,14 @@ llm = ChatOpenAI(
         verify=str(settings.llm_ssl_cert_path)
     ),
     temperature=0,
+)
+#With randomness
+llm_self_consistency = ChatOpenAI(
+    model=settings.llm_model,
+    api_key=settings.api_key,
+    base_url=settings.llm_base_url,
+    http_client=llm_http_client,
+    temperature=0.7,
 )
 # Embedding client
 embeddings = OpenAIEmbeddings(
