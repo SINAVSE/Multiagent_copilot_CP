@@ -1,4 +1,4 @@
-﻿# Strategy 3 â€“ Decomposition Prompting Failure Analysis
+# Strategy 3 – Decomposition Prompting Failure Analysis
 
 **Model:** Qwen3-8B
 **Strategy:** Decomposition Prompting
@@ -55,9 +55,6 @@ Successful schema validation does not establish semantic correctness.
 ## 5. Conclusion
 
 Strategy 3 demonstrated positive behaviour in missing-information handling and explicit refusal. It correctly handled several policy calculations and restrictions.
-
 However, decomposition did not eliminate arithmetic inconsistencies, incomplete calculations or incorrect policy interpretation.
-
 The prompt-injection test also demonstrated that resisting an embedded instruction is not sufficient: the model must correctly treat the instruction as untrusted data and independently evaluate the actual expense.
-
 All original prompts and raw responses should be preserved for comparison with the other prompting strategies.

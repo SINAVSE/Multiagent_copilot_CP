@@ -11,6 +11,9 @@ python -c "from config.settings import settings; print('LLM Model:', settings.ll
 ```powershell
 python -c "from config.clients import llm, embeddings; print('LLM client initialized:', llm is not None); print('Embedding client initialized:', embeddings is not None)"
 ```
+```powershell
+python -c "from config.clients import llm, llm_self_consistency; print('Both LLM clients initialized successfully')"
+```
 
 ## 3. Test LLM connectivity
 

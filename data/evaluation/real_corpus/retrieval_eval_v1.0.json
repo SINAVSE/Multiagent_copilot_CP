@@ -1,0 +1,170 @@
+
+{
+  "dataset_name": "GitLab Real Corpus Retrieval Evaluation",
+  "version": "1.0",
+  "description": "Manually reviewed retrieval evaluation questions based on five verified GitLab handbook documents. Expected chunk IDs are gold evidence labels.",
+  "source_corpus": "GitLab Handbook",
+  "total_queries": 20,
+  "queries": [
+    {
+      "query_id": "R01",
+      "category": "Travel",
+      "query": "Are hotel receipts required for sponsored business travel?",
+      "expected_document_ids": ["GITLAB-0003"],
+      "expected_chunk_ids": ["GITLAB-0003-S0002"],
+      "relevance_notes": "The sponsored travel policy explicitly requires lodging receipts."
+    },
+    {
+      "query_id": "R02",
+      "category": "Travel",
+      "query": "How is sponsored-travel lodging reimbursement calculated?",
+      "expected_document_ids": ["GITLAB-0003"],
+      "expected_chunk_ids": ["GITLAB-0003-S0002"],
+      "relevance_notes": "Explains reimbursement of actual lodging costs up to 100% of the destination city rate."
+    },
+    {
+      "query_id": "R03",
+      "category": "Travel",
+      "query": "What happens if lodging exceeds the permitted rate without prior approval?",
+      "expected_document_ids": ["GITLAB-0003"],
+      "expected_chunk_ids": ["GITLAB-0003-S0002"],
+      "relevance_notes": "Explains prior approval and the possible limitation to GSA per diem."
+    },
+    {
+      "query_id": "R04",
+      "category": "Travel",
+      "query": "Are receipts required for meals reimbursed using the sponsored-travel per-diem method?",
+      "expected_document_ids": ["GITLAB-0003"],
+      "expected_chunk_ids": ["GITLAB-0003-S0003"],
+      "relevance_notes": "Specifies that receipts are not required for travel meals reimbursed using per-diem rates."
+    },
+    {
+      "query_id": "R05",
+      "category": "Travel",
+      "query": "Are meals on the first and last days of sponsored travel reimbursable?",
+      "expected_document_ids": ["GITLAB-0003"],
+      "expected_chunk_ids": ["GITLAB-0003-S0003"],
+      "relevance_notes": "Specifies reimbursement of meals and incidentals on the first and last travel days."
+    },
+    {
+      "query_id": "R06",
+      "category": "Gifts and Entertainment",
+      "query": "What conditions must a business gift or entertainment expense satisfy?",
+      "expected_document_ids": ["GITLAB-0006"],
+      "expected_chunk_ids": ["GITLAB-0006-S0003"],
+      "relevance_notes": "Covers reasonableness, frequency, transparency, documentation and improper influence."
+    },
+    {
+      "query_id": "R07",
+      "category": "Gifts and Entertainment",
+      "query": "Can an employee give cash or cash-equivalent gifts to a business contact?",
+      "expected_document_ids": ["GITLAB-0006"],
+      "expected_chunk_ids": ["GITLAB-0006-S0004"],
+      "relevance_notes": "Describes prohibited gifts and the limited promotional exception."
+    },
+    {
+      "query_id": "R08",
+      "category": "Gifts and Entertainment",
+      "query": "How does the policy define a government official?",
+      "expected_document_ids": ["GITLAB-0006"],
+      "expected_chunk_ids": ["GITLAB-0006-S0002"],
+      "relevance_notes": "Defines government officials and gives examples of government-owned or controlled organizations."
+    },
+    {
+      "query_id": "R09",
+      "category": "Gifts and Entertainment",
+      "query": "What are the gift and entertainment limits for US government officials?",
+      "expected_document_ids": ["GITLAB-0006"],
+      "expected_chunk_ids": ["GITLAB-0006-S0005"],
+      "relevance_notes": "Specifies the US government official per-event and annual limits."
+    },
+    {
+      "query_id": "R10",
+      "category": "Gifts and Entertainment",
+      "query": "Are gift cards ever permitted under the targeted marketing exception?",
+      "expected_document_ids": ["GITLAB-0006"],
+      "expected_chunk_ids": ["GITLAB-0006-S0004", "GITLAB-0006-S0006"],
+      "relevance_notes": "Requires both the general prohibition and the targeted marketing exception conditions."
+    },
+    {
+      "query_id": "R11",
+      "category": "Anti-Corruption",
+      "query": "Does the anti-corruption policy prohibit indirect bribery through third parties?",
+      "expected_document_ids": ["GITLAB-0004"],
+      "expected_chunk_ids": ["GITLAB-0004-S0003", "GITLAB-0004-S0008"],
+      "relevance_notes": "Covers indirect bribery and due diligence for third-party relationships."
+    },
+    {
+      "query_id": "R12",
+      "category": "Anti-Corruption",
+      "query": "What should an employee do if a payment to a government official might be improper?",
+      "expected_document_ids": ["GITLAB-0004"],
+      "expected_chunk_ids": ["GITLAB-0004-S0003", "GITLAB-0004-S0004"],
+      "relevance_notes": "Covers prohibited improper payments and consultation with the Chief Legal Officer when uncertain."
+    },
+    {
+      "query_id": "R13",
+      "category": "Anti-Corruption",
+      "query": "Do facilitating payments require prior approval?",
+      "expected_document_ids": ["GITLAB-0004"],
+      "expected_chunk_ids": ["GITLAB-0004-S0007"],
+      "relevance_notes": "Specifies the prior written Chief Legal Officer approval requirement."
+    },
+    {
+      "query_id": "R14",
+      "category": "Anti-Corruption",
+      "query": "What are examples of red flags when dealing with third parties?",
+      "expected_document_ids": ["GITLAB-0004"],
+      "expected_chunk_ids": ["GITLAB-0004-S0009"],
+      "relevance_notes": "Lists warning signs involving payments, intermediaries, government ties and unusual business arrangements."
+    },
+    {
+      "query_id": "R15",
+      "category": "Anti-Fraud",
+      "query": "Does the anti-fraud policy specify a minimum monetary threshold for fraud?",
+      "expected_document_ids": ["GITLAB-0005"],
+      "expected_chunk_ids": ["GITLAB-0005-S0004"],
+      "relevance_notes": "Defines fraud and explicitly states that there is no monetary threshold."
+    },
+    {
+      "query_id": "R16",
+      "category": "Anti-Fraud",
+      "query": "Is falsifying or altering accounting records considered fraud?",
+      "expected_document_ids": ["GITLAB-0005"],
+      "expected_chunk_ids": ["GITLAB-0005-S0004"],
+      "relevance_notes": "Lists falsification or alteration of accounting records and documents as examples of fraud."
+    },
+    {
+      "query_id": "R17",
+      "category": "Anti-Fraud",
+      "query": "How should an employee report suspected fraud if their manager may be involved?",
+      "expected_document_ids": ["GITLAB-0005"],
+      "expected_chunk_ids": ["GITLAB-0005-S0005"],
+      "relevance_notes": "Explains reporting to the Chief Legal Officer when the supervisor may be involved."
+    },
+    {
+      "query_id": "R18",
+      "category": "Anti-Fraud",
+      "query": "Does GitLab protect employees who report suspected fraud in good faith from retaliation?",
+      "expected_document_ids": ["GITLAB-0005"],
+      "expected_chunk_ids": ["GITLAB-0005-S0006"],
+      "relevance_notes": "Covers non-retaliation for good-faith reports and cooperation with investigations."
+    },
+    {
+      "query_id": "R19",
+      "category": "Expense Management",
+      "query": "What happens when an expense claim is submitted more than 90 days after purchase?",
+      "expected_document_ids": ["GITLAB-0002"],
+      "expected_chunk_ids": ["GITLAB-0002-S0002"],
+      "relevance_notes": "Explains the 90-day submission rule and the manager-approved exception."
+    },
+    {
+      "query_id": "R20",
+      "category": "Expense Management",
+      "query": "Which policy should an employee consult to determine whether an expense is reimbursable?",
+      "expected_document_ids": ["GITLAB-0002"],
+      "expected_chunk_ids": ["GITLAB-0002-S0003", "GITLAB-0002-S0004"],
+      "relevance_notes": "Identifies the Global Travel and Expense Policy and the relevant spending methods."
+    }
+  ]
+}

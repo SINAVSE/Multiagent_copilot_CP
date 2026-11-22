@@ -18,9 +18,7 @@ llm = ChatOpenAI(
     model=settings.llm_model,
     api_key=settings.api_key,
     base_url=settings.llm_base_url,
-    http_client=httpx.Client(
-        verify=str(settings.llm_ssl_cert_path)
-    ),
+    http_client=llm_http_client,
     temperature=0,
 )
 #With randomness
@@ -36,7 +34,7 @@ embeddings = OpenAIEmbeddings(
     model=settings.embedding_model,
     api_key=settings.embeddings_key,
     base_url=settings.embedding_base_url,
-    http_client=httpx.Client(
-        verify=str(settings.embedding_ssl_cert_path)
-    ),
+    http_client=embedding_http_client,
+    tiktoken_enabled=False,
+    embedding_ctx_length=512,
 )
