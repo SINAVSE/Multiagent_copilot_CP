@@ -37,6 +37,7 @@ class EmployeeOpsWorkflow:
             has_file=state.get("has_file", False),
             file_path=state.get("file_path"),
             critic_feedback=state.get("critic_feedback"),
+            expense_details=state.get("expense_details"),
         )
 
         # Collect retrieved policy evidence
@@ -147,11 +148,13 @@ class EmployeeOpsWorkflow:
 
         return workflow.compile()
 
+    
     def run(
         self,
         query: str,
         has_file: bool = False,
-        file_path: str | None = None
+        file_path: str | None = None,
+        expense_details: dict | None = None,
     ) -> dict:
 
         app = self.build()
@@ -160,6 +163,7 @@ class EmployeeOpsWorkflow:
             "query": query,
             "has_file": has_file,
             "file_path": file_path,
+            "expense_details": expense_details or {},
             "retry_count": 0,
             "execution_log": [],
             "status": "started"

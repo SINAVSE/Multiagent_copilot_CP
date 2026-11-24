@@ -21,6 +21,7 @@ class FakeExecutor:
         has_file=False,
         file_path=None,
         critic_feedback=None,
+        expense_details=None,
     ):
         self.feedback_received.append(critic_feedback)
 

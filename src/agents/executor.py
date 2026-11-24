@@ -1,5 +1,6 @@
 from typing import Any
 from src.rag.generation.answer_generator import AnswerGenerator
+from src.tools.expense_calculator import unable_to_determine
 
 
 class Executor:
@@ -17,6 +18,7 @@ class Executor:
         has_file: bool = False,
         file_path: str | None = None,
         critic_feedback: str | None = None,
+        expense_details: dict | None = None,
     ) -> dict:
         results = {}
 
@@ -41,14 +43,25 @@ class Executor:
                     "retrieved_evidence": result.retrieved_evidence,
                 }
 
+            
             elif tool_name == "calculate_expense_eligibility":
-                results[tool_name] = {
-                    "status": "not_implemented",
-                    "message": (
-                        "Expense calculation tool is not "
-                        "implemented yet."
+                details = expense_details or {}
+
+                result = unable_to_determine(
+                    reason=(
+                        "The applicable policy limit and supporting "
+                        "policy evidence must be retrieved and verified "
+                        "before this expense can be assessed."
                     ),
-                }
+                    currency=details.get("currency", "INR"),
+                    claimed_amount=details.get("claimed_amount"),
+                    missing_information=[
+                        "Verified applicable policy limit",
+                        "Supporting policy evidence",
+                    ],
+                )
+
+                results[tool_name] = result.model_dump()
 
             elif tool_name == "extract_bill_details":
                 if not has_file or not file_path:

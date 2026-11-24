@@ -29,3 +29,6 @@ class AgentState(TypedDict, total=False):
 
     # Execution trace
     execution_log: list[dict[str, Any]]
+
+    # Structured expense details supplied by the user or UI
+    expense_details: dict[str, Any]

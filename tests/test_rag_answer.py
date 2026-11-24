@@ -1,6 +1,3 @@
-
-from unittest import result
-
 from src.rag.generation.answer_generator import AnswerGenerator
 
 
