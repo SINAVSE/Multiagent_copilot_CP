@@ -1,0 +1,245 @@
+[
+  {
+    "test_id": "REG-001",
+    "category": "policy_retrieval",
+    "query": "What is the daily meal allowance during business travel?",
+    "recorded_manual_status": "PASS",
+    "status": "PASS",
+    "checks": {
+      "correct_amount": true,
+      "correct_limit_unit": true,
+      "citation_present": true,
+      "answer_approved": true
+    },
+    "actual_response": "The daily meal allowance during business travel is up to $120 USD (or local equivalent currency) per day, as stated in the Global Travel and Expense Policy.",
+    "workflow_status": "approved",
+    "critic_approved": true,
+    "retry_count": 0,
+    "selected_tools": [
+      "search_hr_policy"
+    ],
+    "claimed_amount": null,
+    "retrieved_chunk_ids": [
+      "GITLAB-0001-S0027",
+      "GITLAB-0003-S0003",
+      "GITLAB-0001-S0034",
+      "GITLAB-0001-S0024",
+      "GITLAB-0001-S0041"
+    ],
+    "latency_seconds": 15.832
+  },
+  {
+    "test_id": "REG-002",
+    "category": "conversation_context",
+    "query": "What is the company's leave policy?",
+    "recorded_manual_status": "FAIL",
+    "status": "FAIL",
+    "checks": {
+      "relevant_leave_answer": false,
+      "leave_evidence_present": true,
+      "answer_approved": true
+    },
+    "actual_response": "The provided source evidence does not specify the company's leave policy. The available information focuses on travel and expense policies, not on leave types or procedures.",
+    "workflow_status": "approved",
+    "critic_approved": true,
+    "retry_count": 0,
+    "selected_tools": [
+      "search_hr_policy"
+    ],
+    "claimed_amount": null,
+    "retrieved_chunk_ids": [
+      "GITLAB-0001-S0027",
+      "GITLAB-0003-S0003",
+      "GITLAB-0001-S0034",
+      "GITLAB-0001-S0028",
+      "GITLAB-0009-S0017"
+    ],
+    "latency_seconds": 17.146
+  },
+  {
+    "test_id": "REG-003",
+    "category": "conversation_context",
+    "query": "What about traveling team meals?",
+    "recorded_manual_status": "PARTIAL",
+    "status": "FAIL",
+    "checks": {
+      "correct_amount": true,
+      "correct_limit_unit": true,
+      "no_misleading_daily_limit": false,
+      "citation_present": true
+    },
+    "actual_response": "The policy does not specify a daily meal allowance for traveling team meals. However, it mentions a $80 limit per person per meal for team events and meals. Additionally, for company-provided meals while traveling on business, the limit is up to $120 USD per day.",
+    "workflow_status": "approved",
+    "critic_approved": true,
+    "retry_count": 0,
+    "selected_tools": [
+      "search_hr_policy"
+    ],
+    "claimed_amount": null,
+    "retrieved_chunk_ids": [
+      "GITLAB-0001-S0027",
+      "GITLAB-0001-S0028",
+      "GITLAB-0003-S0003",
+      "GITLAB-0001-S0059",
+      "GITLAB-0001-S0035"
+    ],
+    "latency_seconds": 14.408
+  },
+  {
+    "test_id": "REG-004",
+    "category": "responsible_ai",
+    "query": "What is today's weather?",
+    "recorded_manual_status": "FAIL",
+    "status": "FAIL",
+    "checks": {
+      "explicit_refusal": false,
+      "no_policy_retrieval": true,
+      "no_expense_calculation": true
+    },
+    "actual_response": "I could not produce an answer that passed the evidence review after the permitted attempts. Please review the cited policy evidence or refer the question to the appropriate HR team.",
+    "workflow_status": "critic_rejected",
+    "critic_approved": false,
+    "retry_count": 3,
+    "selected_tools": [],
+    "claimed_amount": null,
+    "retrieved_chunk_ids": [],
+    "latency_seconds": 1.284
+  },
+  {
+    "test_id": "REG-005",
+    "category": "expense_compliance",
+    "query": "Can I claim $100 for a business dinner?",
+    "recorded_manual_status": "FAIL",
+    "status": "FAIL",
+    "checks": {
+      "clarification_present": false,
+      "no_definitive_violation": true
+    },
+    "actual_response": "Based on the provided evidence, the $100 claim for a business dinner may be eligible for reimbursement, but it depends on the specific context. The policy states a $80 limit per person per meal for meals with clients and partners. However, if the dinner is considered part of a business trip, the limit could be $120 USD per day for meals while traveling on company business. Since the exact context of the dinner (e.g., whether it is with clients, part of a trip, or a general business meal) is not specified, it is not possible to definitively determine if the $100 claim is within the allowed limit.",
+    "workflow_status": "approved",
+    "critic_approved": true,
+    "retry_count": 0,
+    "selected_tools": [
+      "search_hr_policy"
+    ],
+    "claimed_amount": null,
+    "retrieved_chunk_ids": [
+      "GITLAB-0001-S0059",
+      "GITLAB-0001-S0062",
+      "GITLAB-0001-S0005",
+      "GITLAB-0001-S0024",
+      "GITLAB-0001-S0027"
+    ],
+    "latency_seconds": 16.3
+  },
+  {
+    "test_id": "REG-006",
+    "category": "expense_input_integrity",
+    "query": "Can I claim $100 for a business dinner?",
+    "recorded_manual_status": "FAIL",
+    "status": "FAIL",
+    "checks": {
+      "claimed_amount_preserved": false
+    },
+    "actual_response": "The expense of $100 for a business dinner is within the policy limit of $120 USD per day for meals while traveling on Company business. However, the policy does not specify whether a $100 claim is explicitly approved or guaranteed to be reimbursed, as other conditions may still need to be checked.\n\nThe claimed amount is within the stated monetary policy limit. Other applicable conditions and approval requirements must still be checked.",
+    "workflow_status": "approved",
+    "critic_approved": true,
+    "retry_count": 0,
+    "selected_tools": [
+      "search_hr_policy",
+      "calculate_expense_eligibility"
+    ],
+    "claimed_amount": 120.0,
+    "retrieved_chunk_ids": [
+      "GITLAB-0001-S0027",
+      "GITLAB-0003-S0003",
+      "GITLAB-0001-S0059",
+      "GITLAB-0001-S0028",
+      "GITLAB-0001-S0034"
+    ],
+    "latency_seconds": 17.608
+  },
+  {
+    "test_id": "REG-007",
+    "category": "critic_validation",
+    "query": "Can I claim $100 for a business dinner?",
+    "recorded_manual_status": "FAIL",
+    "status": "FAIL",
+    "checks": {
+      "no_approved_inconsistent_amount": false,
+      "no_approved_unsupported_violation": true
+    },
+    "actual_response": "Based on the provided evidence, the $100 claim for a business dinner may be eligible for reimbursement, but it depends on the specific context. The policy states a $80 limit per person per meal for meals with clients and partners. However, there is no explicit mention of a $100 limit for business dinners. If the dinner is considered a meal with clients or partners, the $80 limit would apply, and the $100 claim would exceed this limit. If the dinner is not classified as a meal with clients or partners, the $100 claim may be eligible for reimbursement, but this is not explicitly stated in the provided evidence.",
+    "workflow_status": "approved",
+    "critic_approved": true,
+    "retry_count": 0,
+    "selected_tools": [
+      "search_hr_policy"
+    ],
+    "claimed_amount": null,
+    "retrieved_chunk_ids": [
+      "GITLAB-0001-S0059",
+      "GITLAB-0001-S0062",
+      "GITLAB-0001-S0005",
+      "GITLAB-0001-S0024",
+      "GITLAB-0001-S0027"
+    ],
+    "latency_seconds": 15.974
+  },
+  {
+    "test_id": "REG-008",
+    "category": "retrieval_quality",
+    "query": "Can I claim $100 for a business dinner?",
+    "recorded_manual_status": "FAIL",
+    "status": "FAIL",
+    "checks": {
+      "relevant_chunk_in_top_k": false,
+      "irrelevant_equipment_excluded": true
+    },
+    "actual_response": "Based on the provided evidence, the $100 claim for a business dinner may be eligible for reimbursement, but it depends on the specific context. The policy states a $80 limit per person per meal for meals with clients and partners. However, there is no explicit mention of a $100 limit for business dinners. If the dinner is considered a meal with clients or partners, the $80 limit would apply, and the $100 claim would exceed this limit. If the dinner is not classified as a meal with clients or partners, the $100 claim may be eligible for reimbursement, but this is not explicitly stated in the provided evidence.",
+    "workflow_status": "approved",
+    "critic_approved": true,
+    "retry_count": 0,
+    "selected_tools": [
+      "search_hr_policy"
+    ],
+    "claimed_amount": null,
+    "retrieved_chunk_ids": [
+      "GITLAB-0001-S0059",
+      "GITLAB-0001-S0062",
+      "GITLAB-0001-S0005",
+      "GITLAB-0001-S0024",
+      "GITLAB-0001-S0027"
+    ],
+    "latency_seconds": 15.898
+  },
+  {
+    "test_id": "REG-009",
+    "category": "policy_retrieval",
+    "query": "What is the daily meal allowance during business travel?",
+    "recorded_manual_status": "FAIL",
+    "status": "FAIL",
+    "checks": {
+      "correct_amount": false,
+      "correct_limit_unit": true,
+      "citation_present": false,
+      "answer_approved": true
+    },
+    "actual_response": "The provided source evidence does not specify the daily meal allowance during business travel for GitLab.",
+    "workflow_status": "approved",
+    "critic_approved": true,
+    "retry_count": 0,
+    "selected_tools": [
+      "search_hr_policy"
+    ],
+    "claimed_amount": null,
+    "retrieved_chunk_ids": [
+      "GITLAB-0008-S0015",
+      "GITLAB-0009-S0017",
+      "GITLAB-0007-S0004",
+      "GITLAB-0007-S0010",
+      "GITLAB-0007-S0003"
+    ],
+    "latency_seconds": 11.69
+  }
+]

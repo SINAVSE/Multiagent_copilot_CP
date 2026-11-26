@@ -1,0 +1,251 @@
+
+{
+  "metadata": {
+    "project": "Employee Operations and Expense Compliance Copilot",
+    "enhancement_id": "CAP-04",
+    "version": "1.0",
+    "baseline_date": "2026-11-27",
+    "model": "Qwen/Qwen3-8B",
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "evaluation_type": "Exploratory regression baseline",
+    "execution_mode": "Manual Streamlit testing",
+    "description": "Captures observed functional behavior before agent, retrieval and expense compliance enhancements.",
+    "frozen": true,
+    "policy_corpus": "GitLab public policy documents"
+  },
+  "test_cases": [
+    {
+      "test_id": "REG-001",
+      "category": "policy_retrieval",
+      "description": "Retrieve individual business travel meal allowance",
+      "conversation_history": [],
+      "query": "What is the daily meal allowance during business travel?",
+      "expected": {
+        "policy_amount": 120,
+        "currency": "USD",
+        "limit_unit": "per_day",
+        "citation_required": true
+      },
+      "baseline": {
+        "actual_response": "The daily meal allowance during business travel is up to $120 USD (or local equivalent currency) per day, as stated in the Global Travel and Expense Policy.",
+        "status": "PASS",
+        "defect_ids": []
+      }
+    },
+    {
+      "test_id": "REG-002",
+      "category": "conversation_context",
+      "description": "Switch from travel policy to leave policy",
+      "conversation_history": [
+        {
+          "role": "user",
+          "content": "What is the daily meal allowance during business travel?"
+        },
+        {
+          "role": "assistant",
+          "content": "The daily meal allowance is up to $120 USD per day."
+        }
+      ],
+      "query": "What is the company's leave policy?",
+      "expected": {
+        "topic": "leave_policy",
+        "relevant_policy_evidence_required": true,
+        "ignore_unrelated_history": true
+      },
+      "baseline": {
+        "actual_response": "The provided source evidence does not specify the company's leave policy. The available information pertains to travel and expense policies, not leave policies.",
+        "status": "FAIL",
+        "defect_ids": [
+          "DEF-01"
+        ]
+      }
+    },
+    {
+      "test_id": "REG-003",
+      "category": "conversation_context",
+      "description": "Resolve a relevant follow-up question",
+      "conversation_history": [
+        {
+          "role": "user",
+          "content": "What is the daily meal allowance during business travel?"
+        },
+        {
+          "role": "assistant",
+          "content": "The daily meal allowance is up to $120 USD per day."
+        }
+      ],
+      "query": "What about traveling team meals?",
+      "expected": {
+        "policy_amount": 80,
+        "currency": "USD",
+        "limit_unit": "per_person_per_meal",
+        "citation_required": true
+      },
+      "baseline": {
+        "actual_response": "The daily meal allowance for traveling team meals is up to $80 USD per person per meal, as stated in the Global Travel and Expense Policy.",
+        "status": "PARTIAL",
+        "defect_ids": [
+          "DEF-03"
+        ]
+      }
+    },
+    {
+      "test_id": "REG-004",
+      "category": "responsible_ai",
+      "description": "Reject an out-of-scope question",
+      "conversation_history": [],
+      "query": "What is today's weather?",
+      "expected": {
+        "intent": "out_of_scope",
+        "explicit_refusal": true,
+        "policy_retrieval_required": false,
+        "expense_calculation_required": false
+      },
+      "baseline": {
+        "actual_response": "I could not produce an answer that passed the evidence review after the permitted attempts. Please review the cited policy evidence or refer the question to the appropriate HR team.",
+        "status": "FAIL",
+        "defect_ids": [
+          "DEF-02"
+        ]
+      }
+    },
+    {
+      "test_id": "REG-005",
+      "category": "expense_compliance",
+      "description": "Handle an ambiguous business dinner expense",
+      "conversation_history": [],
+      "query": "Can I claim $100 for a business dinner?",
+      "expected": {
+        "claimed_amount": 100,
+        "currency": "USD",
+        "clarification_required": true,
+        "required_clarifications": [
+          "expense_category",
+          "individual_claim_or_total_bill",
+          "headcount_if_team_meal",
+          "cumulative_daily_meal_expenses_if_individual_travel"
+        ],
+        "definitive_violation_allowed": false
+      },
+      "baseline": {
+        "actual_response": "The policy states a $80 limit per person per meal for team events and meals. However, the claimed amount of $100 exceeds this limit. The headcount is missing.",
+        "status": "FAIL",
+        "defect_ids": [
+          "DEF-04",
+          "DEF-09"
+        ]
+      }
+    },
+    {
+      "test_id": "REG-006",
+      "category": "expense_input_integrity",
+      "description": "Preserve the amount explicitly entered by the user",
+      "conversation_history": [
+        {
+          "role": "user",
+          "content": "What is the daily meal allowance during business travel?"
+        },
+        {
+          "role": "assistant",
+          "content": "The daily meal allowance is up to $120 USD per day."
+        }
+      ],
+      "query": "Can I claim $100 for a business dinner?",
+      "expected": {
+        "claimed_amount": 100,
+        "currency": "USD",
+        "previous_policy_amount_must_not_override_claim": true
+      },
+      "baseline": {
+        "actual_claimed_amount": 120,
+        "compliance_status": "unable_to_determine",
+        "status": "FAIL",
+        "defect_ids": [
+          "DEF-05"
+        ]
+      }
+    },
+    {
+      "test_id": "REG-007",
+      "category": "critic_validation",
+      "description": "Detect inconsistent expense assessment",
+      "conversation_history": [],
+      "query": "Can I claim $100 for a business dinner?",
+      "expected": {
+        "claimed_amount_consistency_required": true,
+        "expense_category_validation_required": true,
+        "headcount_validation_required": true,
+        "approve_inconsistent_assessment": false
+      },
+      "baseline": {
+        "actual_claimed_amount": 120,
+        "critic_approved": true,
+        "workflow_status": "approved",
+        "retry_count": 0,
+        "status": "FAIL",
+        "defect_ids": [
+          "DEF-06",
+          "DEF-09"
+        ]
+      }
+    },
+    {
+      "test_id": "REG-008",
+      "category": "retrieval_quality",
+      "description": "Rank relevant meal policy evidence above unrelated policies",
+      "conversation_history": [],
+      "query": "Can I claim $100 for a business dinner?",
+      "expected": {
+        "relevant_chunk_id": "GITLAB-0001-S0028",
+        "target_max_rank": 3,
+        "irrelevant_equipment_policy_allowed": false
+      },
+      "baseline": {
+        "retrieved_chunk_count": 5,
+        "retrieved_chunk_ids": [
+          "GITLAB-0003-S0003",
+          "GITLAB-0001-S0045",
+          "GITLAB-0001-S0005",
+          "GITLAB-0001-S0028",
+          "GITLAB-0001-S0003"
+        ],
+        "relevant_chunk_rank": 4,
+        "irrelevant_chunk_id": "GITLAB-0001-S0045",
+        "status": "FAIL",
+        "defect_ids": [
+          "DEF-07",
+          "DEF-08"
+        ]
+      }
+    },
+    {
+      "test_id": "REG-009",
+      "category": "policy_retrieval",
+      "description": "Retrieve travel policy after a leave policy discussion",
+      "conversation_history": [
+        {
+          "role": "user",
+          "content": "What is the company's leave policy?"
+        },
+        {
+          "role": "assistant",
+          "content": "The company's leave policy includes Emergency Leave, Military Leave, Parental Leave and Sick Time."
+        }
+      ],
+      "query": "What is the daily meal allowance during business travel?",
+      "expected": {
+        "policy_amount": 120,
+        "currency": "USD",
+        "limit_unit": "per_day",
+        "ignore_unrelated_history": true
+      },
+      "baseline": {
+        "actual_response": "The provided source evidence does not specify the daily meal allowance during business travel.",
+        "status": "FAIL",
+        "defect_ids": [
+          "DEF-01"
+        ]
+      }
+    }
+  ]
+}
