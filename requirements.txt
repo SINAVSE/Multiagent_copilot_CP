@@ -1,38 +1,47 @@
-# LLM API and configuration
-openai>=1.50.0,<3.0.0
-python-dotenv>=1.0.0,<2.0.0
-pydantic>=2.8.0,<3.0.0
-pydantic-settings>=2.4.0,<3.0.0
-# Agent orchestration
-langgraph>=0.2.0,<2.0.0
-langchain-core>=0.3.0,<2.0.0
-langchain-openai>=0.2.0,<2.0.0
 
-# Embeddings, vector search and reranking
-sentence-transformers>=3.0.0,<6.0.0
-faiss-cpu>=1.8.0
-rank-bm25>=0.2.2
-numpy>=1.26.0,<3.0.0
-scikit-learn>=1.5.0
+# ==================================================
+# Employee Operations & Expense Compliance Copilot
+# Python version: 3.11.9
+# CAP-02: Reproducible Dependency Management
+# ==================================================
 
-# Document processing
-pymupdf>=1.24.0
-python-docx>=1.1.0
-pypdf>=5.0.0
-pandas>=2.2.0
+# LLM API and Configuration
+openai==2.54.0
+python-dotenv==1.2.4
+pydantic==2.14.4
+pydantic-settings==2.16.3
 
-# OCR and image processing
-pytesseract>=0.3.13
-Pillow>=10.0.0
+# Agent Orchestration and Persistent State
+langgraph==1.2.24
+langchain-core==1.8.5
+langchain-openai==1.8.5
+langgraph-checkpoint-sqlite==3.1.3
+
+# Embeddings, Vector Search and Reranking
+chromadb==1.5.9
+sentence-transformers==5.7.0
+faiss-cpu==1.16.0
+rank-bm25==0.2.2
+numpy==2.4.6
+scikit-learn==1.9.1
+
+# Document Processing
+pymupdf==2.2
+python-docx==1.2.0
+pypdf==7.2.0
+pandas==3.1.1
+
+# OCR and Image Processing
+pytesseract==0.3.13
+Pillow==13.0.0
 
 # Application
-streamlit>=1.38.0
+streamlit==1.67.0
 
-# Reliability and evaluation
-tenacity>=9.0.0
-pytest>=8.0.0
-httpx>=0.27.0
+# Reliability and Evaluation
+tenacity==9.2.1
+pytest==9.2.0
+httpx==0.29.0
 
 # Observability
-langfuse>=2.0.0
-langgraph-checkpoint-sqlite
+langfuse==5.2.0
