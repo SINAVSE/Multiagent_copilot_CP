@@ -49,3 +49,18 @@ data/vector_store/
 # Temporary files
 tmp/
 temp/
+
+# Runtime execution logs
+data/logs/
+
+# Conversation checkpoint data
+data/checkpoints/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Uploaded employee documents
+data/uploads/
+
+# Dependency validation environment
+.venv-test/
