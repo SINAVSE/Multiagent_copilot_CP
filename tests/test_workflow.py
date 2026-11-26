@@ -1,8 +1,8 @@
 ﻿from src.agents.workflow import EmployeeOpsWorkflow
-
+from src.observability.event_logger import EventLogger
 
 class FakePlanner:
-    def plan(self, query, has_file=False):
+    def plan(self, query, has_file=False,expense_details=None,):
         return {
             "plan": ["Search the relevant HR policy"],
             "selected_tools": ["search_hr_policy"],
@@ -41,7 +41,7 @@ class FakeCritic:
     def __init__(self, decisions):
         self.decisions = iter(decisions)
 
-    def review(self, query, tool_results):
+    def review(self, query, tool_results, final_answer=""):
         approved = next(self.decisions)
 
         return {
@@ -54,9 +54,17 @@ class FakeCritic:
 def create_test_workflow(critic_decisions):
     workflow = EmployeeOpsWorkflow.__new__(EmployeeOpsWorkflow)
 
+    workflow._app = None
+
     workflow.planner = FakePlanner()
     workflow.executor = FakeExecutor()
     workflow.critic = FakeCritic(critic_decisions)
+
+    # Use a real event logger for workflow execution.
+    workflow.event_logger = EventLogger()
+
+    # Tests do not need persistent SQLite checkpoints.
+    workflow.checkpointer = None
 
     return workflow
 

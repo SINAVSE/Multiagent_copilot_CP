@@ -108,57 +108,26 @@ CONTENT:
 
         return data
 
-    def generate(self,query: str,critic_feedback: str | None = None,) -> RAGAnswer:
+
+    def retrieve(self, query: str) -> RetrievalResult:
+        """Retrieve and rerank policy evidence for a query."""
+
         if not query or not query.strip():
             raise ValueError("Question cannot be empty.")
 
         query = query.strip()
 
-        # Step 1: Retrieve relevant evidence.
-        # Retrieve candidates using Hybrid RRF.
         retrieval_result = self.retriever.retrieve(
             query=query,
             top_k=self.candidate_k,
             candidate_k=self.candidate_k,
         )
 
-        # Rerank candidates using the Cross-Encoder.
         retrieval_result = self.reranker.rerank(
             query=query,
             retrieval_result=retrieval_result,
             top_k=self.top_k,
         )
-
-        # Step 2: Handle an empty retrieval result.
-        if not retrieval_result.retrieved_chunks:
-            return RAGAnswer(
-                query=query,
-                answer=(
-                    "I could not find relevant supporting policy "
-                    "information. Please provide more details or "
-                    "refer this question to the appropriate HR team."
-                ),
-                insufficient_evidence=True,
-                missing_information=[
-                    "Relevant policy evidence was not retrieved."
-                ],
-                retrieved_evidence=[
-                    {
-                        "chunk_id": item.chunk.chunk_id,
-                        "title": item.chunk.title,
-                        "section": (
-                            item.chunk.section_path
-                            or item.chunk.section_heading
-                            or "Not specified"
-                        ),
-                        "text": item.chunk.text,
-                    }
-                    for item in retrieval_result.retrieved_chunks
-                ],
-            )
-
-        # Step 2A: Select evidence for a clearly identified policy context.
-        # This is a targeted MVP rule, not a universal document filter.
 
         is_comparison_query = bool(
             re.search(
@@ -171,7 +140,6 @@ CONTENT:
 
         selected_document_id = None
 
-        # Sponsored Travel policy context.
         if (
             not is_comparison_query
             and re.search(
@@ -182,8 +150,6 @@ CONTENT:
         ):
             selected_document_id = "GITLAB-0003"
 
-        # Apply the filter only if matching evidence was retrieved.
-        # Otherwise, preserve the original retrieval result.
         if selected_document_id is not None:
             matching_chunks = [
                 item
@@ -203,10 +169,39 @@ CONTENT:
                     }
                 )
 
+        return retrieval_result
+
+    def generate(self,query: str,critic_feedback: str | None = None,expense_result: dict | None = None,retrieval_result: RetrievalResult | None = None,) -> RAGAnswer:
+        if not query or not query.strip():
+            raise ValueError("Question cannot be empty.")
+
+        query = query.strip()
+
+        # Step 1: Use supplied evidence or retrieve it.
+        if retrieval_result is None:
+            retrieval_result = self.retrieve(query)
+
+        if not retrieval_result.retrieved_chunks:
+            return RAGAnswer(
+                query=query,
+                answer=(
+                    "I could not find sufficient policy evidence "
+                    "to answer this question."
+                ),
+                insufficient_evidence=True,
+                missing_information=["Applicable policy evidence"],
+                citations=[],
+                retrieval_method=retrieval_result.retrieval_method,
+                retrieved_evidence=[],
+            )
 
         # Step 3: Prepare source context.
         context = self._build_context(retrieval_result)
-
+        expense_context = (
+            json.dumps(expense_result, indent=2, ensure_ascii=False)
+            if expense_result
+            else "No expense calculation was performed."
+        )
         prompt = f"""
 You are an Employee Operations and Expense Compliance Copilot.
 
@@ -238,6 +233,18 @@ IMPORTANT RULES:
 15. Do not use evidence from a different policy document to fill
     gaps in the directly applicable policy. If the applicable
     document does not specify a value, say it is not specified.
+16. If an expense calculation is provided, use its numerical
+    results accurately.
+17. Distinguish a prohibited expense category from an expense
+    that exceeds a monetary limit.
+18. Do not classify an entire expense as prohibited merely
+    because its claimed amount exceeds the policy limit.
+19. Explain the amount within the stated limit and the excess
+    amount when a calculation is available.
+20. Do not describe the amount within the limit as approved
+    or guaranteed to be reimbursed.
+21. If approval requirements or other eligibility conditions
+    are unknown, explicitly acknowledge that limitation.
 
 Return ONLY a valid JSON object with this structure:
 
@@ -260,7 +267,8 @@ evidence-grounding rules above.
 
 USER QUESTION:
 {query}
-
+EXPENSE CALCULATION RESULTS:
+{expense_context}
 SOURCE EVIDENCE:
 {context}
 """

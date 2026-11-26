@@ -1,5 +1,6 @@
 from typing import Literal
 from pydantic import BaseModel, Field
+import math
 
 
 class ExpenseCalculationResult(BaseModel):
@@ -12,7 +13,7 @@ class ExpenseCalculationResult(BaseModel):
         "unable_to_determine",
     ]
 
-    approval_required: bool
+    approval_required: bool | None = None
 
     claimed_amount: float | None = None
     policy_limit: float | None = None
@@ -32,27 +33,33 @@ class ExpenseCalculationResult(BaseModel):
     per_person_claimed_amount: float | None = None
     per_person_policy_limit: float | None = None
 
+def _validate_amount(value: float, field_name: str) -> None:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ValueError(f"{field_name} must be a valid number.")
+
+    if not math.isfinite(value):
+        raise ValueError(f"{field_name} must be finite.")
+
+    if value < 0:
+        raise ValueError(f"{field_name} cannot be negative.")
 
 def calculate_expense(
     claimed_amount: float,
     policy_limit: float,
     currency: str = "INR",
-    approval_required: bool = False,
+    approval_required: bool | None = None,
 ) -> ExpenseCalculationResult:
     """Compare a claimed expense against an explicitly supplied policy limit."""
 
-    if claimed_amount < 0:
-        raise ValueError("Claimed amount cannot be negative.")
-
-    if policy_limit < 0:
-        raise ValueError("Policy limit cannot be negative.")
+    _validate_amount(claimed_amount, "Claimed amount")
+    _validate_amount(policy_limit, "Policy limit")
 
     eligible_amount = min(claimed_amount, policy_limit)
     excess_amount = max(claimed_amount - policy_limit, 0)
 
     if claimed_amount > policy_limit:
         status = "exceeds_policy"
-    elif approval_required:
+    elif approval_required is True:
         status = "requires_approval"
     else:
         status = "within_policy"
@@ -93,7 +100,7 @@ def unable_to_determine(
 
     return ExpenseCalculationResult(
         compliance_status="unable_to_determine",
-        approval_required=False,
+        approval_required=None,
         claimed_amount=claimed_amount,
         policy_limit=None,
         eligible_amount=None,
@@ -111,18 +118,18 @@ def calculate_per_person_expense(
     headcount: int,
     per_person_policy_limit: float,
     currency: str = "INR",
-    approval_required: bool = False,
+    approval_required: bool | None = None,
 ) -> ExpenseCalculationResult:
     """Assess an expense against an explicitly supplied per-person limit."""
 
-    if total_claimed_amount < 0:
-        raise ValueError("Claimed amount cannot be negative.")
+    _validate_amount(total_claimed_amount, "Claimed amount")
+    _validate_amount(per_person_policy_limit, "Per-person policy limit")
+
+    if isinstance(headcount, bool) or not isinstance(headcount, int):
+        raise ValueError("Headcount must be a whole number.")
 
     if headcount <= 0:
         raise ValueError("Headcount must be greater than zero.")
-
-    if per_person_policy_limit < 0:
-        raise ValueError("Per-person policy limit cannot be negative.")
 
     per_person_amount = total_claimed_amount / headcount
     total_policy_limit = headcount * per_person_policy_limit
@@ -132,7 +139,7 @@ def calculate_per_person_expense(
 
     if per_person_amount > per_person_policy_limit:
         status = "exceeds_policy"
-    elif approval_required:
+    elif approval_required is True:
         status = "requires_approval"
     else:
         status = "within_policy"
@@ -155,7 +162,7 @@ def calculate_per_person_expense(
 
     return ExpenseCalculationResult(
         compliance_status=status,
-        approval_required=approval_required,
+        approval_required=approval_required is True,
         claimed_amount=total_claimed_amount,
         policy_limit=total_policy_limit,
         eligible_amount=eligible_amount,

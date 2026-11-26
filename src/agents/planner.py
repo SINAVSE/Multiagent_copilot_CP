@@ -1,6 +1,6 @@
 import json
 from typing import Any
-
+import re
 from config.clients import llm
 
 
@@ -19,13 +19,90 @@ AVAILABLE_TOOLS = {
 }
 
 
+def extract_expense_details(query: str) -> dict:
+    """Extract explicitly stated expense amount and currency."""
+
+    patterns = [
+        # USD 250, INR 1,500, EUR 80, GBP 100
+        (
+            r"\b(USD|INR|EUR|GBP)\s*"
+            r"([0-9][0-9,]*(?:\.\d{1,2})?)\b",
+            "prefix_code",
+        ),
+
+        # $250, ₹1,500, €80, £100
+        (
+            r"([$₹€£])\s*"
+            r"([0-9][0-9,]*(?:\.\d{1,2})?)\b",
+            "symbol",
+        ),
+
+        # 250 USD, 1500 INR
+        (
+            r"\b([0-9][0-9,]*(?:\.\d{1,2})?)\s*"
+            r"(USD|INR|EUR|GBP)\b",
+            "suffix_code",
+        ),
+
+        # Rs. 1500, Rs 1,500
+        (
+            r"\bRs\.?\s*"
+            r"([0-9][0-9,]*(?:\.\d{1,2})?)\b",
+            "rupees",
+        ),
+    ]
+
+    currency_symbols = {
+        "$": "USD",
+        "₹": "INR",
+        "€": "EUR",
+        "£": "GBP",
+    }
+
+    for pattern, pattern_type in patterns:
+        match = re.search(pattern, query, re.IGNORECASE)
+
+        if not match:
+            continue
+
+        if pattern_type == "prefix_code":
+            currency = match.group(1).upper()
+            amount = match.group(2)
+
+        elif pattern_type == "symbol":
+            currency = currency_symbols[match.group(1)]
+            amount = match.group(2)
+
+        elif pattern_type == "suffix_code":
+            amount = match.group(1)
+            currency = match.group(2).upper()
+
+        elif pattern_type == "rupees":
+            amount = match.group(1)
+            currency = "INR"
+
+        else:
+            continue
+
+        try:
+            amount = float(amount.replace(",", ""))
+        except ValueError:
+            continue
+
+        return {
+            "claimed_amount": amount,
+            "currency": currency,
+        }
+
+    return {}
+
 class Planner:
     """Plans the tools and steps needed to handle an employee request."""
 
     def __init__(self, model: Any = None):
         self.model = model or llm
 
-    def plan(self, query: str, has_file: bool = False) -> dict:
+    def plan(self, query: str, has_file: bool = False,expense_details: dict | None = None,) -> dict:
         if not query or not query.strip():
             raise ValueError("Query cannot be empty.")
 
@@ -99,5 +176,19 @@ UPLOADED FILE AVAILABLE:
             raise ValueError(
                 f"Planner selected invalid tools: {invalid_tools}"
             )
+
+        # Extract details explicitly stated in the employee's request.
+        extracted_details = extract_expense_details(query)
+
+        # Preserve any structured details already supplied by the UI.
+        provided_details = expense_details or {}
+
+        # Explicitly supplied values take precedence over extracted values.
+        final_expense_details = {
+            **extracted_details,
+            **provided_details,
+        }
+
+        result["expense_details"] = final_expense_details
 
         return result
