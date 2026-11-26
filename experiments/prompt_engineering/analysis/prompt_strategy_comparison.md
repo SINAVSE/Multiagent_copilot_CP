@@ -146,3 +146,32 @@ No strategy can yet be declared the overall winner. A formal comparison using a 
 4. Add actual invoice and receipt fixtures for OCR-dependent tests.
 5. Review failures and document improvements in a versioned experiment update.
 6. Preserve the v1.0 evaluation set and experiment outputs for reproducibility.
+
+## 10. Extended Benchmark and Resource Constraints
+
+A unified benchmark framework was implemented to compare
+four prompting configurations:
+
+- S0: Minimal single-prompt baseline
+- S1: Structured output with few-shot examples
+- S2: Self-consistency with consensus selection
+- S3: Decomposition prompting
+
+The framework supports the frozen 60-case evaluation dataset,
+schema validation, semantic scoring, latency measurement,
+token usage tracking and resumable execution.
+
+Initial validation covered two evaluation cases across
+all four strategies, resulting in 12 model generations
+and 30,789 recorded tokens.
+
+The complete 60-case prompt comparison was deferred because
+the remaining hosted inference API token quota could not
+be confirmed.
+
+Available inference resources are being prioritized for
+mandatory RAG, agentic workflow and end-to-end evaluation.
+
+The original 15-query comparative experiments and the
+extended benchmark smoke-test results have been preserved.
+No full-dataset accuracy claims are made.

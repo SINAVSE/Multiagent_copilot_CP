@@ -1,0 +1,224 @@
+{
+  "benchmark_version": "1.0",
+  "run_name": "smoke",
+  "total_strategy_cases": 8,
+  "strategies": {
+    "S0": {
+      "automated_metrics": {
+        "total_cases": 2,
+        "total_generations": 2,
+        "selected_responses": 2,
+        "response_selection_rate_pct": 100.0,
+        "correct_statuses": 2,
+        "status_accuracy_pct": 100.0,
+        "strict_json_validity_pct": 100.0,
+        "schema_validation_rate_pct": 100.0,
+        "technical_failures": 0,
+        "average_generation_latency_seconds": 4.601,
+        "average_task_latency_seconds": 4.603,
+        "selection_counts": {
+          "single_response": 2
+        },
+        "token_usage": {
+          "input_tokens": {
+            "recorded_total": 3762,
+            "average_per_recorded_generation": 1881,
+            "recorded_generations": 2,
+            "coverage_pct": 100.0
+          },
+          "output_tokens": {
+            "recorded_total": 400,
+            "average_per_recorded_generation": 200,
+            "recorded_generations": 2,
+            "coverage_pct": 100.0
+          },
+          "total_tokens": {
+            "recorded_total": 4162,
+            "average_per_recorded_generation": 2081,
+            "recorded_generations": 2,
+            "coverage_pct": 100.0
+          }
+        }
+      },
+      "semantic_review": {
+        "total_cases": 2,
+        "reviewed_cases": 2,
+        "pending_reviews": 0,
+        "review_coverage_pct": 100.0,
+        "correctness_counts": {
+          "partial": 1,
+          "correct": 1
+        },
+        "strict_accuracy_reviewed_pct": 50.0,
+        "weighted_accuracy_reviewed_pct": 75.0,
+        "review_complete": true,
+        "failure_taxonomy": {
+          "policy_interpretation_error": 1
+        }
+      }
+    },
+    "S1": {
+      "automated_metrics": {
+        "total_cases": 2,
+        "total_generations": 2,
+        "selected_responses": 2,
+        "response_selection_rate_pct": 100.0,
+        "correct_statuses": 2,
+        "status_accuracy_pct": 100.0,
+        "strict_json_validity_pct": 100.0,
+        "schema_validation_rate_pct": 100.0,
+        "technical_failures": 0,
+        "average_generation_latency_seconds": 4.938,
+        "average_task_latency_seconds": 4.94,
+        "selection_counts": {
+          "single_response": 2
+        },
+        "token_usage": {
+          "input_tokens": {
+            "recorded_total": 4862,
+            "average_per_recorded_generation": 2431,
+            "recorded_generations": 2,
+            "coverage_pct": 100.0
+          },
+          "output_tokens": {
+            "recorded_total": 431,
+            "average_per_recorded_generation": 215.5,
+            "recorded_generations": 2,
+            "coverage_pct": 100.0
+          },
+          "total_tokens": {
+            "recorded_total": 5293,
+            "average_per_recorded_generation": 2646.5,
+            "recorded_generations": 2,
+            "coverage_pct": 100.0
+          }
+        }
+      },
+      "semantic_review": {
+        "total_cases": 2,
+        "reviewed_cases": 2,
+        "pending_reviews": 0,
+        "review_coverage_pct": 100.0,
+        "correctness_counts": {
+          "partial": 2
+        },
+        "strict_accuracy_reviewed_pct": 0.0,
+        "weighted_accuracy_reviewed_pct": 50.0,
+        "review_complete": true,
+        "failure_taxonomy": {
+          "clarification_error": 2
+        }
+      }
+    },
+    "S2": {
+      "automated_metrics": {
+        "total_cases": 2,
+        "total_generations": 6,
+        "selected_responses": 2,
+        "response_selection_rate_pct": 100.0,
+        "correct_statuses": 1,
+        "status_accuracy_pct": 50.0,
+        "strict_json_validity_pct": 100.0,
+        "schema_validation_rate_pct": 100.0,
+        "technical_failures": 0,
+        "average_generation_latency_seconds": 4.694,
+        "average_task_latency_seconds": 14.083,
+        "selection_counts": {
+          "majority_consensus": 1,
+          "unanimous": 1
+        },
+        "token_usage": {
+          "input_tokens": {
+            "recorded_total": 14952,
+            "average_per_recorded_generation": 2492,
+            "recorded_generations": 6,
+            "coverage_pct": 100.0
+          },
+          "output_tokens": {
+            "recorded_total": 1239,
+            "average_per_recorded_generation": 206.5,
+            "recorded_generations": 6,
+            "coverage_pct": 100.0
+          },
+          "total_tokens": {
+            "recorded_total": 16191,
+            "average_per_recorded_generation": 2698.5,
+            "recorded_generations": 6,
+            "coverage_pct": 100.0
+          }
+        }
+      },
+      "semantic_review": {
+        "total_cases": 2,
+        "reviewed_cases": 2,
+        "pending_reviews": 0,
+        "review_coverage_pct": 100.0,
+        "correctness_counts": {
+          "incorrect": 1,
+          "partial": 1
+        },
+        "strict_accuracy_reviewed_pct": 0.0,
+        "weighted_accuracy_reviewed_pct": 25.0,
+        "review_complete": true,
+        "failure_taxonomy": {
+          "reasoning_error": 1,
+          "clarification_error": 1
+        }
+      }
+    },
+    "S3": {
+      "automated_metrics": {
+        "total_cases": 2,
+        "total_generations": 2,
+        "selected_responses": 2,
+        "response_selection_rate_pct": 100.0,
+        "correct_statuses": 1,
+        "status_accuracy_pct": 50.0,
+        "strict_json_validity_pct": 100.0,
+        "schema_validation_rate_pct": 100.0,
+        "technical_failures": 0,
+        "average_generation_latency_seconds": 4.761,
+        "average_task_latency_seconds": 4.764,
+        "selection_counts": {
+          "single_response": 2
+        },
+        "token_usage": {
+          "input_tokens": {
+            "recorded_total": 4728,
+            "average_per_recorded_generation": 2364,
+            "recorded_generations": 2,
+            "coverage_pct": 100.0
+          },
+          "output_tokens": {
+            "recorded_total": 415,
+            "average_per_recorded_generation": 207.5,
+            "recorded_generations": 2,
+            "coverage_pct": 100.0
+          },
+          "total_tokens": {
+            "recorded_total": 5143,
+            "average_per_recorded_generation": 2571.5,
+            "recorded_generations": 2,
+            "coverage_pct": 100.0
+          }
+        }
+      },
+      "semantic_review": {
+        "total_cases": 2,
+        "reviewed_cases": 2,
+        "pending_reviews": 0,
+        "review_coverage_pct": 100.0,
+        "correctness_counts": {
+          "partial": 1,
+          "incorrect": 1
+        },
+        "strict_accuracy_reviewed_pct": 0.0,
+        "weighted_accuracy_reviewed_pct": 25.0,
+        "review_complete": true,
+        "failure_taxonomy": {
+          "clarification_error": 2
+        }
+      }
+    }
+  }
+}
