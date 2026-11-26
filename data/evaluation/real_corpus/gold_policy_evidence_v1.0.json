@@ -1,0 +1,482 @@
+{
+  "dataset_version": "1.0",
+  "source_corpus": "GitLab Handbook",
+  "source_chunk_file": "gitlab_structure_aware_v4_500_overlap_100.jsonl",
+  "total_queries": 20,
+  "complete_evidence_queries": 20,
+  "missing_chunks": [],
+  "evaluation_cases": [
+    {
+      "test_id": "R01",
+      "category": "Travel",
+      "query": "Are hotel receipts required for sponsored business travel?",
+      "expected_document_ids": [
+        "GITLAB-0003"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0003-S0002"
+      ],
+      "relevance_notes": "The sponsored travel policy explicitly requires lodging receipts.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0003-S0002",
+          "document_id": "GITLAB-0003",
+          "title": "Sponsored Travel",
+          "section_path": "Booking Sponsored Travel > Lodging",
+          "text": "### Lodging\n\nTravelers are expected to choose lodging that meets the traveler's schedule and business needs. Receipts are required for all lodging.\n\n**Domestic or International Lodging**\nDepartments will reimburse travelers for actual expenses up to 100% of the lodging rate for the destination city, as referenced on the [US Government General Services Administration (GSA) website](https://www.gsa.gov/travel/plan-book/per-diem-rates?gsaredirect=portalcategory) for domestic lodging and the [U.S. Department of State website](https://allowances.state.gov/web920/per_diem.asp?) for international lodging.\n\nGitLab recognizes there could be some situations where a lodging rate falls outside of GitLab's guidelines. The traveler must obtain pre-approval from the appropriate authorized approver through a [NexTravel](https://www.travelperk.com/) account.  Out of policy lodging must be booked and approved through NexTravel. If the traveler does not obtain prior approval, the department may limit the reimbursement to the GSA per diem rate."
+        }
+      ]
+    },
+    {
+      "test_id": "R02",
+      "category": "Travel",
+      "query": "How is sponsored-travel lodging reimbursement calculated?",
+      "expected_document_ids": [
+        "GITLAB-0003"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0003-S0002"
+      ],
+      "relevance_notes": "Explains reimbursement of actual lodging costs up to 100% of the destination city rate.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0003-S0002",
+          "document_id": "GITLAB-0003",
+          "title": "Sponsored Travel",
+          "section_path": "Booking Sponsored Travel > Lodging",
+          "text": "### Lodging\n\nTravelers are expected to choose lodging that meets the traveler's schedule and business needs. Receipts are required for all lodging.\n\n**Domestic or International Lodging**\nDepartments will reimburse travelers for actual expenses up to 100% of the lodging rate for the destination city, as referenced on the [US Government General Services Administration (GSA) website](https://www.gsa.gov/travel/plan-book/per-diem-rates?gsaredirect=portalcategory) for domestic lodging and the [U.S. Department of State website](https://allowances.state.gov/web920/per_diem.asp?) for international lodging.\n\nGitLab recognizes there could be some situations where a lodging rate falls outside of GitLab's guidelines. The traveler must obtain pre-approval from the appropriate authorized approver through a [NexTravel](https://www.travelperk.com/) account.  Out of policy lodging must be booked and approved through NexTravel. If the traveler does not obtain prior approval, the department may limit the reimbursement to the GSA per diem rate."
+        }
+      ]
+    },
+    {
+      "test_id": "R03",
+      "category": "Travel",
+      "query": "What happens if lodging exceeds the permitted rate without prior approval?",
+      "expected_document_ids": [
+        "GITLAB-0003"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0003-S0002"
+      ],
+      "relevance_notes": "Explains prior approval and the possible limitation to GSA per diem.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0003-S0002",
+          "document_id": "GITLAB-0003",
+          "title": "Sponsored Travel",
+          "section_path": "Booking Sponsored Travel > Lodging",
+          "text": "### Lodging\n\nTravelers are expected to choose lodging that meets the traveler's schedule and business needs. Receipts are required for all lodging.\n\n**Domestic or International Lodging**\nDepartments will reimburse travelers for actual expenses up to 100% of the lodging rate for the destination city, as referenced on the [US Government General Services Administration (GSA) website](https://www.gsa.gov/travel/plan-book/per-diem-rates?gsaredirect=portalcategory) for domestic lodging and the [U.S. Department of State website](https://allowances.state.gov/web920/per_diem.asp?) for international lodging.\n\nGitLab recognizes there could be some situations where a lodging rate falls outside of GitLab's guidelines. The traveler must obtain pre-approval from the appropriate authorized approver through a [NexTravel](https://www.travelperk.com/) account.  Out of policy lodging must be booked and approved through NexTravel. If the traveler does not obtain prior approval, the department may limit the reimbursement to the GSA per diem rate."
+        }
+      ]
+    },
+    {
+      "test_id": "R04",
+      "category": "Travel",
+      "query": "Are receipts required for meals reimbursed using the sponsored-travel per-diem method?",
+      "expected_document_ids": [
+        "GITLAB-0003"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0003-S0003"
+      ],
+      "relevance_notes": "Specifies that receipts are not required for travel meals reimbursed using per-diem rates.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0003-S0003",
+          "document_id": "GITLAB-0003",
+          "title": "Sponsored Travel",
+          "section_path": "Booking Sponsored Travel > Meals and Incidental Expenses (M&IE)",
+          "text": "### Meals and Incidental Expenses (M&IE)\n\nUnless specifically requested by the customer in the SoW, travelers on billable travel are reimbursed the per diem rate for travel-related meal expenses for their travel destination. Receipts are not required (under any circumstances) for reimbursement of travel meals using per diem rates.\n\nThe M&IE rates include:\n\n- Meals, drinks, tax & tip\n- Incidentals – e.g., baggage carriers, bellhops and hotel staff\n\nTravelers may put in a separate expense request for meals that are not billable such as a GitLab-sponsored customer lunch or dinner.\n\n**First & Last Day of Travel**\n\nFirst and last day of travel will be reimbursed.\nDeparture day – the day you leave your home or office.\nReturn day – the day you return to your home or office.\n\n**Incidentals**\n\nTravelers may include the daily incidental amount when determining the maximum M&IE rates. Gratuities for baggage carriers, porters, hotel staff (bellhops and house cleaners), and staff on ships, as well as ATM fees, bank fees, and check cashing fees are included in the daily incidental amount. Laundry expenses are included in the daily incidental amount for international travelers. Travelers should not request reimbursement for any of these items.\n\nTravelers may request reimbursement for laundry for domestic travel lasting seven (7) or more consecutive days.\n\n**Meal breakdown for International M&IE rates**\n\nRates can be found on the [U.S. Department of State M&IE Rates web page](https://allowances.state.gov/content.asp?content_id=114&menu_id&menu_id=81&menu_id=81)."
+        }
+      ]
+    },
+    {
+      "test_id": "R05",
+      "category": "Travel",
+      "query": "Are meals on the first and last days of sponsored travel reimbursable?",
+      "expected_document_ids": [
+        "GITLAB-0003"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0003-S0003"
+      ],
+      "relevance_notes": "Specifies reimbursement of meals and incidentals on the first and last travel days.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0003-S0003",
+          "document_id": "GITLAB-0003",
+          "title": "Sponsored Travel",
+          "section_path": "Booking Sponsored Travel > Meals and Incidental Expenses (M&IE)",
+          "text": "### Meals and Incidental Expenses (M&IE)\n\nUnless specifically requested by the customer in the SoW, travelers on billable travel are reimbursed the per diem rate for travel-related meal expenses for their travel destination. Receipts are not required (under any circumstances) for reimbursement of travel meals using per diem rates.\n\nThe M&IE rates include:\n\n- Meals, drinks, tax & tip\n- Incidentals – e.g., baggage carriers, bellhops and hotel staff\n\nTravelers may put in a separate expense request for meals that are not billable such as a GitLab-sponsored customer lunch or dinner.\n\n**First & Last Day of Travel**\n\nFirst and last day of travel will be reimbursed.\nDeparture day – the day you leave your home or office.\nReturn day – the day you return to your home or office.\n\n**Incidentals**\n\nTravelers may include the daily incidental amount when determining the maximum M&IE rates. Gratuities for baggage carriers, porters, hotel staff (bellhops and house cleaners), and staff on ships, as well as ATM fees, bank fees, and check cashing fees are included in the daily incidental amount. Laundry expenses are included in the daily incidental amount for international travelers. Travelers should not request reimbursement for any of these items.\n\nTravelers may request reimbursement for laundry for domestic travel lasting seven (7) or more consecutive days.\n\n**Meal breakdown for International M&IE rates**\n\nRates can be found on the [U.S. Department of State M&IE Rates web page](https://allowances.state.gov/content.asp?content_id=114&menu_id&menu_id=81&menu_id=81)."
+        }
+      ]
+    },
+    {
+      "test_id": "R06",
+      "category": "Gifts and Entertainment",
+      "query": "What conditions must a business gift or entertainment expense satisfy?",
+      "expected_document_ids": [
+        "GITLAB-0006"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0006-S0003"
+      ],
+      "relevance_notes": "Covers reasonableness, frequency, transparency, documentation and improper influence.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0006-S0003",
+          "document_id": "GITLAB-0006",
+          "title": "Policies related to Gifts and Contributions",
+          "section_path": "Gifts and Entertainment Policy > General Requirements",
+          "text": "### General Requirements\n\nWhen giving or receiving gifts and entertainment, Team Members should exercise good judgment and consider whether the exchange would create the appearance of improper influence. All gifts and entertainment must be:\n\n- Reasonable and appropriate for the occasion;\n- Infrequent and not part of a pattern;\n- Given or accepted openly and transparently;\n- Properly documented;\n- Never intended to improperly influence business decisions;\n- Not cash or cash equivalents like gift cards or gift certificates, except as specifically permitted under the Exception for Promotional Activities below; and,\n- Consistent with local laws and customs."
+        }
+      ]
+    },
+    {
+      "test_id": "R07",
+      "category": "Gifts and Entertainment",
+      "query": "Can an employee give cash or cash-equivalent gifts to a business contact?",
+      "expected_document_ids": [
+        "GITLAB-0006"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0006-S0004"
+      ],
+      "relevance_notes": "Describes prohibited gifts and the limited promotional exception.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0006-S0004",
+          "document_id": "GITLAB-0006",
+          "title": "Policies related to Gifts and Contributions",
+          "section_path": "Gifts and Entertainment Policy > Prohibited Activities",
+          "text": "### Prohibited Activities\n\nThe following are never permitted:\n\n- Cash or cash equivalents (except under the Exception for Promotional Activities);\n- Excessive, lavish, or inappropriate gifts/entertainment;\n- **Gifts or entertainment given with a corrupt or improper purpose;**\n- Gifts or entertainment that would induce someone to act in breach of their duties;\n- Gifts or entertainment during active procurement or negotiations (except under the Exception for Promotional Activities); or,\n- Gifts or entertainment that would violate laws, regulations, or ethical standards, or embarrass GitLab."
+        }
+      ]
+    },
+    {
+      "test_id": "R08",
+      "category": "Gifts and Entertainment",
+      "query": "How does the policy define a government official?",
+      "expected_document_ids": [
+        "GITLAB-0006"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0006-S0002"
+      ],
+      "relevance_notes": "Defines government officials and gives examples of government-owned or controlled organizations.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0006-S0002",
+          "document_id": "GITLAB-0006",
+          "title": "Policies related to Gifts and Contributions",
+          "section_path": "Gifts and Entertainment Policy > Definitions",
+          "text": "### Definitions\n\nA \"*gift*\" is anything of monetary value, including swag, promotional items, gift baskets, event tickets (when the gift-giver is not present), or cash equivalents.\n\n\"*Entertainment*\" refers to activities where both the giver and recipient participate together, such as business meals or attending sporting or cultural events. Customary refreshments other than those offered as part of a meal, such as water, coffee, and other non-alcoholic beverages, are not considered entertainment and are excluded from this Policy.\n\n\"*Marketing Promotional Activity*\" includes product demonstrations, educational sessions, conferences, webinars, surveys, trade shows, digital marketing campaigns, content engagement incentives, lead generation activities, and similar business development initiatives designed to educate prospects about GitLab's products and services.\n\nA \"*government official*\" includes any employee or official of a government entity, government-owned or controlled business or entity, and political party or candidate, including their immediate family members. This definition is intentionally broad to ensure compliance with global anti-corruption laws and regulations. Examples include employees of public universities, state-owned hospitals, national telecom companies, government utilities, public transportation authorities, and government research institutes. When uncertain, seek guidance from the Ethics and Compliance team in the #ethics-and-compliance Slack channel."
+        }
+      ]
+    },
+    {
+      "test_id": "R09",
+      "category": "Gifts and Entertainment",
+      "query": "What are the gift and entertainment limits for US government officials?",
+      "expected_document_ids": [
+        "GITLAB-0006"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0006-S0005"
+      ],
+      "relevance_notes": "Specifies the US government official per-event and annual limits.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0006-S0005",
+          "document_id": "GITLAB-0006",
+          "title": "Policies related to Gifts and Contributions",
+          "section_path": "Gifts and Entertainment Policy > Government Officials - Special Considerations",
+          "text": "### Government Officials - Special Considerations\n\nProviding gifts or entertainment to government officials presents significantly heightened legal and reputational risks for GitLab. Most countries have strict laws, such as the U.S. Foreign Corrupt Practices Act (“FCPA”) and UK Bribery Act, governing interactions with government officials, which are enforced with severe penalties for violations. Additionally, government employees at the Federal, State, and local levels in the United States are subject to rules that restrict their ability to accept gifts and entertainment.\n\nFor these reasons, GitLab restricts the provision of gifts and entertainment to government officials as follows:\n\n- The total value of gifts or entertainment provided to a U.S. government official cannot exceed $20 USD (or the equivalent in local currency) per person per event. The combined total value of all gifts and entertainment provided to the same government official cannot exceed $50 USD per calendar year;\n- The total value of gifts or entertainment provided to a foreign government official cannot exceed $80 USD (or the equivalent in local currency) per person per event, without pre-approval from GitLab’s Ethics and Compliance team using this form or the #ethics-and-compliance Slack channel;\n- When submitting an expense report in Navan, Team Members must identify all government officials, including their (valid) email addresses, in the “Participants” field;\n- Gifts and entertainment must never be intended to influence official actions;\n- No gifts or entertainment should be provided during pending licensing, investigations, or regulatory matters; and,\n- Team Members considering gifts or entertainment for state or tribal government officials may consult with the Ethics and Compliance team in the #ethics-and-compliance Slack channel to understand applicable local value thresholds and obtain approval for exceptions to the general limits where legally permissible.\n\nIn addition to the restrictions in this Policy, any gifts or entertainment provided to government officials must also comply with GitLab’s [Public Sector Rules of Engagement](https://internal.gitlab.com/handbook/sales/public-sector/) and [GitLab Federal Code of Ethics](https://drive.google.com/file/d/1whEuxvIwy3M33N3vbUUkGrOKvkow5LAw/view) as applicable."
+        }
+      ]
+    },
+    {
+      "test_id": "R10",
+      "category": "Gifts and Entertainment",
+      "query": "Are gift cards ever permitted under the targeted marketing exception?",
+      "expected_document_ids": [
+        "GITLAB-0006"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0006-S0004",
+        "GITLAB-0006-S0006"
+      ],
+      "relevance_notes": "Requires both the general prohibition and the targeted marketing exception conditions.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0006-S0004",
+          "document_id": "GITLAB-0006",
+          "title": "Policies related to Gifts and Contributions",
+          "section_path": "Gifts and Entertainment Policy > Prohibited Activities",
+          "text": "### Prohibited Activities\n\nThe following are never permitted:\n\n- Cash or cash equivalents (except under the Exception for Promotional Activities);\n- Excessive, lavish, or inappropriate gifts/entertainment;\n- **Gifts or entertainment given with a corrupt or improper purpose;**\n- Gifts or entertainment that would induce someone to act in breach of their duties;\n- Gifts or entertainment during active procurement or negotiations (except under the Exception for Promotional Activities); or,\n- Gifts or entertainment that would violate laws, regulations, or ethical standards, or embarrass GitLab."
+        },
+        {
+          "chunk_id": "GITLAB-0006-S0006",
+          "document_id": "GITLAB-0006",
+          "title": "Policies related to Gifts and Contributions",
+          "section_path": "Gifts and Entertainment Policy > Marketing Promotional Activities Exception",
+          "text": "### Marketing Promotional Activities Exception\n\nGitLab Team Members may provide promotional incentives in connection with legitimate targeted marketing activities designed to build relationships with specific prospects, including product demonstrations, educational webinars, conference participation, survey incentives, content engagement rewards, lead generation campaigns, and digital marketing initiatives, and account-based marketing programs, subject to the following requirements and limitations:\n\n**Value Limits and Frequency**\n\n*Tier 1 - Standard Prospects*\n\n- Maximum $25 USD per incentive\n- Maximum 3 incentives per person per calendar year\n- Maximum $75 USD total per person per calendar year\n\n*Tier 2 - Enterprise Prospects (deals >$100K ARR)*\n\n- Maximum $50 USD per incentive (or $25 USD if providing gift cards)\n- Maximum 4 incentives per person per calendar year\n- Maximum $150 USD total per person per calendar year\n\n*Campaign-Based Exception:* Within a single defined marketing campaign (maximum 90 days), multiple touchpoints to the same prospect are permitted, provided each individual person's total value doesn't exceed their applicable tier limits and all individual annual limits are still respected.total value doesn't exceed tier limits\n\n**Gift Card Restrictions:**\n\nWhile cash equivalents are generally prohibited, gift cards may be provided for targeted promotional activities, provided the gift card is:\n\n- Never for government officials\n- Maximum $25 USD (or equivalent local currency) per recipient\n- Maximum one gift card per person per calendar year\n- Only for legitimate targeted promotional activities as defined above.\n\n*Documentation Requirements*: All targeted promotional activities must be recorded in a centralized system maintained by Marketing in coordination with Ethics and Compliance, including:\n\n- Recipient name and company;\n- Valid email address;\n- Campaign/activity description;\n- Date and incentive value; and,\n- Campaign duration and objectives.\n\nThis register is subject to regular audit."
+        }
+      ]
+    },
+    {
+      "test_id": "R11",
+      "category": "Anti-Corruption",
+      "query": "Does the anti-corruption policy prohibit indirect bribery through third parties?",
+      "expected_document_ids": [
+        "GITLAB-0004"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0004-S0003",
+        "GITLAB-0004-S0008"
+      ],
+      "relevance_notes": "Covers indirect bribery and due diligence for third-party relationships.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0004-S0003",
+          "document_id": "GITLAB-0004",
+          "title": "Anti-Corruption Policy",
+          "section_path": "PROHIBITED CONDUCT",
+          "text": "### PROHIBITED CONDUCT\n\nGitLab and Team Members and Partners are prohibited from authorizing, making, offering, promising, requesting, receiving or accepting bribes or accepting kickbacks in any form.  This prohibition applies to all forms of bribery, including commercial bribery as well as bribery of government employees or officials.\n\nThe Anti-Corruption Laws prohibiting bribery are very broad, so that many kinds of gifts or entertainment provided to government employees or officials might be considered improper.  For that reason, Team Members and Partners may not give anything of value to any government employee or official in order to wrongfully influence the government employee or official, obtain or retain business or receive any improper advantage.  This prohibition applies regardless of whether the payment or offer of payment is made directly to the government employee or official or indirectly through a third party.  As discussed in more detail below, ***it is critical to understand that, for purposes of the Anti-Corruption Laws, the terms \"government official\" generally includes any employee of a company that is owned or controlled by a government or governmental agency***.  By way of example, this means that someone working for a telecom, energy company, internet company or hospital in another country that is owned or controlled by that country's government is a \"government official.\"  In other words, for purposes of the Anti-Corruption Laws, this term is much broader than how we think about \"government officials\" in the United States.\n\n**Examples of prohibited conduct include:**\n\n1. payments made directly to a government employee or official for an improper purpose;\n1. payments or gifts to third parties where Team Members and Partners know or have reason to know that at least a portion of the payments or gifts is likely to be offered by the third party to a government employee or official for an improper purpose;\n1. acts \"in furtherance of\" an improper payment, such as arranging for funds to be available for the improper payment; and\n1. payments to retain assets, such as an \"under the table\" payment to a tax official to settle a tax claim.\n\nIt is important to avoid even the appearance of impropriety.  If you have any questions about whether a payment may be improper or violate this Policy, consult the Company's Chief Legal Officer before any payment or offer is made."
+        },
+        {
+          "chunk_id": "GITLAB-0004-S0008",
+          "document_id": "GITLAB-0004",
+          "title": "Anti-Corruption Policy",
+          "section_path": "REPRESENTATIVES, PARTNERS, CONSULTANTS, DISTRIBUTORS, AGENTS AND OTHER THIRD PARTIES",
+          "text": "### REPRESENTATIVES, PARTNERS, CONSULTANTS, DISTRIBUTORS, AGENTS AND OTHER THIRD PARTIES\n\nBefore initiating a relationship with a representative, partner, consultant, distributor, agent, or other third party, Team Members and Partners must conduct appropriate due diligence to assure that the representative will not engage in any improper conduct.  ***This is for several important reasons, including that the Company can be held responsible for a third party's conduct in certain circumstances under the Anti-Corruption Laws***. Due diligence typically will include considering such factors as:\n\n- the third party's qualifications for the position or task at issue;\n- whether the third party has personal or professional ties to the government or any government official;\n- the number and reputation of the third party's clientele and the representative's reputation with the United States Embassy or Consulate, local bankers, clients, and other business associates; and\n- the reasonableness of the compensation.\n\nConsult the Chief Legal Officer regarding the appropriate due diligence procedure for your situation.\n\nThe Company must terminate contracts with any third party who is unwilling or unable to represent the Company in a manner consistent with this Anti-Corruption Policy."
+        }
+      ]
+    },
+    {
+      "test_id": "R12",
+      "category": "Anti-Corruption",
+      "query": "What should an employee do if a payment to a government official might be improper?",
+      "expected_document_ids": [
+        "GITLAB-0004"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0004-S0003",
+        "GITLAB-0004-S0004"
+      ],
+      "relevance_notes": "Covers prohibited improper payments and consultation with the Chief Legal Officer when uncertain.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0004-S0003",
+          "document_id": "GITLAB-0004",
+          "title": "Anti-Corruption Policy",
+          "section_path": "PROHIBITED CONDUCT",
+          "text": "### PROHIBITED CONDUCT\n\nGitLab and Team Members and Partners are prohibited from authorizing, making, offering, promising, requesting, receiving or accepting bribes or accepting kickbacks in any form.  This prohibition applies to all forms of bribery, including commercial bribery as well as bribery of government employees or officials.\n\nThe Anti-Corruption Laws prohibiting bribery are very broad, so that many kinds of gifts or entertainment provided to government employees or officials might be considered improper.  For that reason, Team Members and Partners may not give anything of value to any government employee or official in order to wrongfully influence the government employee or official, obtain or retain business or receive any improper advantage.  This prohibition applies regardless of whether the payment or offer of payment is made directly to the government employee or official or indirectly through a third party.  As discussed in more detail below, ***it is critical to understand that, for purposes of the Anti-Corruption Laws, the terms \"government official\" generally includes any employee of a company that is owned or controlled by a government or governmental agency***.  By way of example, this means that someone working for a telecom, energy company, internet company or hospital in another country that is owned or controlled by that country's government is a \"government official.\"  In other words, for purposes of the Anti-Corruption Laws, this term is much broader than how we think about \"government officials\" in the United States.\n\n**Examples of prohibited conduct include:**\n\n1. payments made directly to a government employee or official for an improper purpose;\n1. payments or gifts to third parties where Team Members and Partners know or have reason to know that at least a portion of the payments or gifts is likely to be offered by the third party to a government employee or official for an improper purpose;\n1. acts \"in furtherance of\" an improper payment, such as arranging for funds to be available for the improper payment; and\n1. payments to retain assets, such as an \"under the table\" payment to a tax official to settle a tax claim.\n\nIt is important to avoid even the appearance of impropriety.  If you have any questions about whether a payment may be improper or violate this Policy, consult the Company's Chief Legal Officer before any payment or offer is made."
+        },
+        {
+          "chunk_id": "GITLAB-0004-S0004",
+          "document_id": "GITLAB-0004",
+          "title": "Anti-Corruption Policy",
+          "section_path": "IMPORTANT CONCEPTS",
+          "text": "### IMPORTANT CONCEPTS\n\n**Who is a \"government official\"?**\n\"Government official\" includes:\n\n1. any official or employee of a government, including any political party, administrative agency, or government-owned business;\n1. any person acting in an official capacity on behalf of a government entity;\n1. employees or agents of a business which is owned or controlled by a government;\n1. any person or firm employed by or acting for or on behalf of any government;\n1. any political party official, employee or agent of a political party, or candidate for political office (or political party position); and\n1. any family member or other representative of any of the above.\n\nAny doubts about whether a particular person is a government official should be resolved by assuming that the individual involved is a government official for purposes of the FCPA or the Anti-Corruption Laws.\n\n**What does \"anything of value\" mean?**\n\"Anything of value\" includes money and monetary equivalents (such as gambling chips and gift cards), entertainment, accommodations, and any other benefit.  There is no \"minimum\" required under the FCPA – any amount can be sufficient to trigger a violation.\n\n**What is an \"improper advantage\"?**\nAn \"improper advantage\" includes payments intended to wrongfully:\n\n1. influence a decision by a government official, including a failure to perform their official functions;\n1. induce a government official to use their influence to affect a decision by someone else in their government; and\n1. induce a government official to use their influence to affect or influence any act or decision.\n\nIn addition to obtaining or retaining business, \"improper advantage\" includes reducing taxes, or duties, \"looking the other way\" at minor code or rule violations, and any form of preferential treatment."
+        }
+      ]
+    },
+    {
+      "test_id": "R13",
+      "category": "Anti-Corruption",
+      "query": "Do facilitating payments require prior approval?",
+      "expected_document_ids": [
+        "GITLAB-0004"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0004-S0007"
+      ],
+      "relevance_notes": "Specifies the prior written Chief Legal Officer approval requirement.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0004-S0007",
+          "document_id": "GITLAB-0004",
+          "title": "Anti-Corruption Policy",
+          "section_path": "FACILITATING PAYMENTS",
+          "text": "### FACILITATING PAYMENTS\n\nThe FCPA and other anti-bribery laws may provide limited exceptions for certain minor payments for the purpose of facilitating or expediting routine, lawful services or non-discretionary administrative actions, such as telephone installation.  However, other anti-corruption laws prohibit such payments.  Any and all facilitating payments require prior written approval from the Chief Legal Officer."
+        }
+      ]
+    },
+    {
+      "test_id": "R14",
+      "category": "Anti-Corruption",
+      "query": "What are examples of red flags when dealing with third parties?",
+      "expected_document_ids": [
+        "GITLAB-0004"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0004-S0009"
+      ],
+      "relevance_notes": "Lists warning signs involving payments, intermediaries, government ties and unusual business arrangements.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0004-S0009",
+          "document_id": "GITLAB-0004",
+          "title": "Anti-Corruption Policy",
+          "section_path": "RED FLAGS RELATED TO THIRD PARTIES",
+          "text": "### RED FLAGS RELATED TO THIRD PARTIES\n\nWhile conducting due diligence and throughout any subsequent relationship with third parties, Team Members and Partners must monitor for any \"red flags.\"  A \"red flag\" is a fact or circumstance that requires additional consideration and extra caution.  Red flags must be considered in context rather than in isolation.  Red flags may appear in many forms and can include:\n\n1. payments in a country with a history or reputation for corruption;\n1. refusal to provide a certification of compliance with the FCPA or other anti-bribery laws;\n1. unusual payment patterns or requests, including payments to third parties, in cash, and payments made to bank accounts outside the country;\n1. representations or boasting about influence or connections;\n1. use of a shell or holding company that obscures ownership without credible explanation;\n1. accusations of improper business practices (credible rumors or media reports, etc.);\n1. family or business relationship with the government or a government official;\n1. requests for payments \"up front\" or statements that a particular amount of money is needed to \"get the business,\" \"make the necessary arrangements,\" or similar expressions;\n1. unusually high commissions, agents' fees, or payments for goods or services;\n1. apparent lack of qualifications or resources;\n1. whether the representative or joint venture partner has been recommended by an official of the potential government customer;\n1. requests to be able to make agreements without the Company's approval; and\n1. requests that agreements or communications be kept secret (other than a customary nondisclosure or confidentiality agreement).\n\nTeam Members and Partners are responsible for monitoring their email and other communications and documents for red flags.  Any red flags should be brought promptly to the attention of your supervisor or the Chief Legal Officer.  Failure to do so is considered a violation of this Anti-Corruption Policy."
+        }
+      ]
+    },
+    {
+      "test_id": "R15",
+      "category": "Anti-Fraud",
+      "query": "Does the anti-fraud policy specify a minimum monetary threshold for fraud?",
+      "expected_document_ids": [
+        "GITLAB-0005"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0005-S0004"
+      ],
+      "relevance_notes": "Defines fraud and explicitly states that there is no monetary threshold.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0005-S0004",
+          "document_id": "GITLAB-0005",
+          "title": "Anti-Fraud Policy",
+          "section_path": "DEFINITION",
+          "text": "### DEFINITION\n\nIn the broadest sense, fraud can encompass any crime for gain that uses deception as its principal method of operation. More precisely, fraud is defined as **knowingly** misrepresenting the truth or concealing a material fact in order to induce another person to act to their detriment. Fraud may involve:\n\n- manipulation, falsification or alteration of accounting records or documents;\n- documents or statements (written or oral) that were not authorized or approved by the appropriate team members;\n- hiding, omitting or covering up impact of transactions, whether by not recording such impact, not maintaining appropriate records and documentation or not including relevant details in the applicable records or documents;\n- recording of transactions without substance;\n- misappropriation (theft) or willful destruction or loss of assets including cash;\n- deliberate misapplication of accounting or other regulations or policies;\n- bribery and corruption;\n- manipulation of information system applications and data for personal gain;\n- usurpation of corporate interests for personal gain;\n- payment or receipts of bribes, kickbacks or other inappropriate payments;\n- participation in sham or fraudulent transactions; and\n- disclosing confidential and proprietary information to outside parties.\n\nThere is no set monetary threshold that defines fraud. There is no need to be successful to be viewed as corrupt; the offering can be enough to amount to a criminal offense in certain jurisdictions. These principles apply equally in any country in which GitLab operates or carries on business."
+        }
+      ]
+    },
+    {
+      "test_id": "R16",
+      "category": "Anti-Fraud",
+      "query": "Is falsifying or altering accounting records considered fraud?",
+      "expected_document_ids": [
+        "GITLAB-0005"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0005-S0004"
+      ],
+      "relevance_notes": "Lists falsification or alteration of accounting records and documents as examples of fraud.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0005-S0004",
+          "document_id": "GITLAB-0005",
+          "title": "Anti-Fraud Policy",
+          "section_path": "DEFINITION",
+          "text": "### DEFINITION\n\nIn the broadest sense, fraud can encompass any crime for gain that uses deception as its principal method of operation. More precisely, fraud is defined as **knowingly** misrepresenting the truth or concealing a material fact in order to induce another person to act to their detriment. Fraud may involve:\n\n- manipulation, falsification or alteration of accounting records or documents;\n- documents or statements (written or oral) that were not authorized or approved by the appropriate team members;\n- hiding, omitting or covering up impact of transactions, whether by not recording such impact, not maintaining appropriate records and documentation or not including relevant details in the applicable records or documents;\n- recording of transactions without substance;\n- misappropriation (theft) or willful destruction or loss of assets including cash;\n- deliberate misapplication of accounting or other regulations or policies;\n- bribery and corruption;\n- manipulation of information system applications and data for personal gain;\n- usurpation of corporate interests for personal gain;\n- payment or receipts of bribes, kickbacks or other inappropriate payments;\n- participation in sham or fraudulent transactions; and\n- disclosing confidential and proprietary information to outside parties.\n\nThere is no set monetary threshold that defines fraud. There is no need to be successful to be viewed as corrupt; the offering can be enough to amount to a criminal offense in certain jurisdictions. These principles apply equally in any country in which GitLab operates or carries on business."
+        }
+      ]
+    },
+    {
+      "test_id": "R17",
+      "category": "Anti-Fraud",
+      "query": "How should an employee report suspected fraud if their manager may be involved?",
+      "expected_document_ids": [
+        "GITLAB-0005"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0005-S0005"
+      ],
+      "relevance_notes": "Explains reporting to the Chief Legal Officer when the supervisor may be involved.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0005-S0005",
+          "document_id": "GITLAB-0005",
+          "title": "Anti-Fraud Policy",
+          "section_path": "TEAM MEMBER AND DIRECTOR RESPONSIBILITY & REPORTING",
+          "text": "### TEAM MEMBER AND DIRECTOR RESPONSIBILITY & REPORTING\n\nAll Team Members and Directors, regardless of position or title, have a stewardship responsibility with regard to GitLab's funds and other assets. Team Members and Directors are responsible for safeguarding GitLab's resources and ensuring that those resources are used only for authorized purposes in accordance with GitLab's rules, policies, and applicable laws.\n\n- When fraud is suspected, observed, or otherwise made known to a Team Member, the Team Member must immediately report the activity to their direct supervisor (who shall notify GitLab's Chief Legal Officer (the \"***CLO***\"). In the event a Director is aware of or notified of suspected or observed fraud, the Director shall notify the CLO, Chair of the Audit Committee or outside counsel, as appropriate.\n- If the Team Member has reason to believe their direct supervisor may be involved in fraudulent activity, the Team Member is obligated to report the activity to the CLO.\n- The reporting Team Member shall refrain from discussing the matter with any Team Member unless directed to do so by the CLO.\n- You may report the matter confidentially by directly contacting your direct supervisor (who shall notify the CLO) or the CLO or confidentially and anonymously via Ethico (as more fully described in the Code of Business Conduct and Ethics). Ethico's toll free numbers and other methods of reporting are available 24 hours a day, 7 days a week for use by Team Members:\n  - Website: [Ethico](https://www.mycompliancereport.com/report?cid=GTLB)\n  - Mobile intake site: [https://gitlab.navexone.com/](https://gitlab.navexone.com/)\n  - USA Telephone: toll-free at 1-888-854-1396\n  - All other countries: to view phone numbers, please see web intake site and select the country in which you are located from the drop-down menu. If your country is not listed, please select the \"Make a Report\" link at the top of the page to access the confidential reporting tool.\n- All Team Members shall cooperate fully with any investigation performed by GitLab (or its representatives including outside counsel) and/or law enforcement officials."
+        }
+      ]
+    },
+    {
+      "test_id": "R18",
+      "category": "Anti-Fraud",
+      "query": "Does GitLab protect employees who report suspected fraud in good faith from retaliation?",
+      "expected_document_ids": [
+        "GITLAB-0005"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0005-S0006"
+      ],
+      "relevance_notes": "Covers non-retaliation for good-faith reports and cooperation with investigations.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0005-S0006",
+          "document_id": "GITLAB-0005",
+          "title": "Anti-Fraud Policy",
+          "section_path": "NON-RETALIATION POLICY",
+          "text": "### NON-RETALIATION POLICY\n\nAs every Team Member is free to raise concerns regarding any questionable practices without fear of harassment or retaliation, GitLab will not allow any retaliation against any Team Member who acts in good faith in reporting any violation of this Policy or against any person who is assisting in good faith in any investigation or process with respect to such a report. Any Team Member who participates in any such retaliation is subject to disciplinary action, including termination."
+        }
+      ]
+    },
+    {
+      "test_id": "R19",
+      "category": "Expense Management",
+      "query": "What happens when an expense claim is submitted more than 90 days after purchase?",
+      "expected_document_ids": [
+        "GITLAB-0002"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0002-S0002"
+      ],
+      "relevance_notes": "Explains the 90-day submission rule and the manager-approved exception.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0002-S0002",
+          "document_id": "GITLAB-0002",
+          "title": "Spending Company Money",
+          "section_path": "Guidelines",
+          "text": "## Guidelines\n\n1. As a public company, GitLab has an obligation to act in the best interests of the corporation and its shareholders. This obligation is shared by all team members and is the basis of our global travel and expense policy as a public company; team members must be thoughtful in spending the Company's money.\n1. Spending Company money includes travel and expenses.\n1. You may privately use GitLab property, a MacBook for example, to check your private e-mails or watch a movie as long as it does not violate the law, harm GitLab, or interfere with Intellectual Property. More details can be found in the [Internal Acceptable Use Policy](/handbook/people-group/acceptable-use-policy).\n1. File your expense report in a timely manner, as expense claims over 90 days from purchase date will not be reimbursed unless approved by your Manager.  The sooner it is submitted, the sooner you will get reimbursement.\n1. If team members knowingly submit expenses for reimbursement for personal purchases that are not covered in the expense policy, this is a violation of our [Code of Business Conduct & Ethics](https://s204.q4cdn.com/984476563/files/doc_downloads/govdoc/GitLab-Code-of-Business-Conduct-Ethics-2024-06-25.pdf)."
+        }
+      ]
+    },
+    {
+      "test_id": "R20",
+      "category": "Expense Management",
+      "query": "Which policy should an employee consult to determine whether an expense is reimbursable?",
+      "expected_document_ids": [
+        "GITLAB-0002"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0002-S0003",
+        "GITLAB-0002-S0004"
+      ],
+      "relevance_notes": "Identifies the Global Travel and Expense Policy and the relevant spending methods.",
+      "evidence_complete": true,
+      "gold_evidence": [
+        {
+          "chunk_id": "GITLAB-0002-S0003",
+          "document_id": "GITLAB-0002",
+          "title": "Spending Company Money",
+          "section_path": "Policy Links and Resources",
+          "text": "## Policy Links and Resources\n\nThis table captures all of the links for different policies that are documented around using Company money. This includes information of when to use our expense tool Navan, when to use a virtual credit card and when to get a PO from Zip.\n\n| Policy Name | Owner | Description |\n| --------------- | ----- | ----- |\n| [Global Travel and Expense Policy](/handbook/finance/expenses/) | CFO | Policy and procedures by which reimbursable expenses are reimbursed |\n| [Procurement Process (PO)](/handbook/finance/procurement/) | VP Finance | Process to engage the procurement team |\n| [Spending Company Money](/handbook/finance/spending-company-money/) | CFO | Our policy on spending Company money; Links to resources |\n| [GitLab Internal Acceptable Use Policy](/handbook/people-group/acceptable-use-policy) | CPO, CLO | Requirements related to the use of GitLab computing resources and data assets by GitLab team members |\n| [Growth and Development Benefit](/handbook/people-group/learning-and-development/growth-and-development/) | CPO | Access external resources to develop their career |\n| [Navan Physical Card Policy](/handbook/finance/accounts-payable/corp-credit-cards/) | CFO | Guidelines for acceptable use of physical corporate cards |\n| [GitLab Related Party Transactions](/handbook/legal/gitlab-related-party-transactions-policy/) | CLO | Related Party Transactions Policy |"
+        },
+        {
+          "chunk_id": "GITLAB-0002-S0004",
+          "document_id": "GITLAB-0002",
+          "title": "Spending Company Money",
+          "section_path": "Ways to spend company money",
+          "text": "## Ways to spend company money\n\n1. Individual expenses that meet the expense policy on your personal credit card: Please see our [Global Travel and Expense Policy](/handbook/finance/expenses/) to see what we will reimburse and how to get reimbursement.\n1. Individual expenses using a virtual card: Please see our [Global Travel and Expense Policy](/handbook/finance/expenses/).\n1. Individual expenses using a Navan physical card. Please see our [Navan Physical Card Policy](/handbook/finance/accounts-payable/corp-credit-cards/).\n1. Company expenses using a Coupa virtual card: [Coupa Virtual Card](/handbook/business-technology/enterprise-applications/guides/coupa-virtual-cards/).\n1. Company expenses using a purchase order: Please see our [Procurement Process (PO)](/handbook/finance/procurement/)."
+        }
+      ]
+    }
+  ]
+}

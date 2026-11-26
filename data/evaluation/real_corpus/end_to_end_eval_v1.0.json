@@ -1,0 +1,413 @@
+{
+  "dataset_version": "1.0",
+  "policy_version": "GitLab Handbook local snapshot; structure-aware V4",
+  "source_corpus": "GitLab Handbook",
+  "source_chunk_file": "gitlab_structure_aware_v4_500_overlap_100.jsonl",
+  "notice": "Supplementary real-policy end-to-end development evaluation derived from existing retrieval questions. Reference answers drafted from extracted local evidence; team review required before freezing. Not the original Week 1 dataset or an independent held-out benchmark.",
+  "evaluation_cases": [
+    {
+      "test_id": "R01",
+      "category": "Travel",
+      "query": "Are hotel receipts required for sponsored business travel?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "Yes. Receipts are required for all lodging during sponsored travel.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0003"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0003-S0002"
+      ]
+    },
+    {
+      "test_id": "R02",
+      "category": "Travel",
+      "query": "How is sponsored-travel lodging reimbursement calculated?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "Departments reimburse actual lodging expenses up to 100% of the destination city's lodging rate, using GSA rates for domestic lodging and U.S. Department of State rates for international lodging.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0003"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0003-S0002"
+      ]
+    },
+    {
+      "test_id": "R03",
+      "category": "Travel",
+      "query": "What happens if lodging exceeds the permitted rate without prior approval?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "Out-of-policy lodging requires prior approval from the appropriate authorized approver through NexTravel. Without prior approval, the department may limit reimbursement to the GSA per-diem rate.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0003"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0003-S0002"
+      ]
+    },
+    {
+      "test_id": "R04",
+      "category": "Travel",
+      "query": "Are receipts required for meals reimbursed using the sponsored-travel per-diem method?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "No. Receipts are not required for travel meals reimbursed using per-diem rates.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0003"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0003-S0003"
+      ]
+    },
+    {
+      "test_id": "R05",
+      "category": "Travel",
+      "query": "Are meals on the first and last days of sponsored travel reimbursable?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "Yes. Meals and incidental expenses on both the departure and return days of sponsored travel are reimbursable.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0003"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0003-S0003"
+      ]
+    },
+    {
+      "test_id": "R06",
+      "category": "Gifts and Entertainment",
+      "query": "What conditions must a business gift or entertainment expense satisfy?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "Gifts and entertainment must be reasonable and appropriate, infrequent, transparent, properly documented, free from improper influence, and consistent with local laws and customs. Cash and cash equivalents are prohibited unless specifically permitted under the promotional activities exception.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0006"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0006-S0003"
+      ]
+    },
+    {
+      "test_id": "R07",
+      "category": "Gifts and Entertainment",
+      "query": "Can an employee give cash or cash-equivalent gifts to a business contact?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "Cash and cash-equivalent gifts are prohibited except where specifically permitted under the promotional activities exception.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0006"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0006-S0004"
+      ]
+    },
+    {
+      "test_id": "R08",
+      "category": "Gifts and Entertainment",
+      "query": "How does the policy define a government official?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "A government official includes employees or officials of government entities, government-owned or controlled businesses or entities, political parties or candidates, and their immediate family members. Examples include employees of public universities, state-owned hospitals and government utilities. Seek Ethics and Compliance guidance when uncertain.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0006"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0006-S0002"
+      ]
+    },
+    {
+      "test_id": "R09",
+      "category": "Gifts and Entertainment",
+      "query": "What are the gift and entertainment limits for US government officials?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "The limit for a U.S. government official is USD 20 (or local currency equivalent) per person per event and USD 50 in combined gifts and entertainment to the same official per calendar year. Applicable public-sector rules and restrictions also apply; state or tribal exceptions require consultation and approval where legally permissible.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0006"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0006-S0005"
+      ]
+    },
+    {
+      "test_id": "R10",
+      "category": "Gifts and Entertainment",
+      "query": "Are gift cards ever permitted under the targeted marketing exception?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "Yes, for legitimate targeted promotional activities only. Gift cards may not be given to government officials, must not exceed USD 25 or local equivalent per recipient, and are limited to one per person per calendar year. Marketing must centrally document the activity, and applicable tier and annual limits must also be respected.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0006"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0006-S0004",
+        "GITLAB-0006-S0006"
+      ]
+    },
+    {
+      "test_id": "R11",
+      "category": "Anti-Corruption",
+      "query": "Does the anti-corruption policy prohibit indirect bribery through third parties?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "Yes. Improper payments or offers to government officials are prohibited whether made directly or indirectly through third parties. Appropriate due diligence is required before initiating third-party relationships.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0004"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0004-S0003",
+        "GITLAB-0004-S0008"
+      ]
+    },
+    {
+      "test_id": "R12",
+      "category": "Anti-Corruption",
+      "query": "What should an employee do if a payment to a government official might be improper?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "Consult the Chief Legal Officer before making or offering a potentially improper payment. Payments intended to wrongfully influence a government official or obtain an improper advantage are prohibited.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0004"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0004-S0003",
+        "GITLAB-0004-S0004"
+      ]
+    },
+    {
+      "test_id": "R13",
+      "category": "Anti-Corruption",
+      "query": "Do facilitating payments require prior approval?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "Yes. All facilitating payments require prior written approval from the Chief Legal Officer.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0004"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0004-S0007"
+      ]
+    },
+    {
+      "test_id": "R14",
+      "category": "Anti-Corruption",
+      "query": "What are examples of red flags when dealing with third parties?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "Examples include unusual payment requests, unexplained offshore accounts or cash payments, government connections, hidden ownership, excessive commissions, inadequate qualifications, refusal to certify anti-bribery compliance and requests for secrecy. Red flags should be considered in context and promptly reported to a supervisor or the Chief Legal Officer.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0004"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0004-S0009"
+      ]
+    },
+    {
+      "test_id": "R15",
+      "category": "Anti-Fraud",
+      "query": "Does the anti-fraud policy specify a minimum monetary threshold for fraud?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "No. The anti-fraud policy establishes no minimum monetary threshold for fraud.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0005"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0005-S0004"
+      ]
+    },
+    {
+      "test_id": "R16",
+      "category": "Anti-Fraud",
+      "query": "Is falsifying or altering accounting records considered fraud?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "Yes. Manipulation, falsification or alteration of accounting records or documents is listed as an example of fraud.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0005"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0005-S0004"
+      ]
+    },
+    {
+      "test_id": "R17",
+      "category": "Anti-Fraud",
+      "query": "How should an employee report suspected fraud if their manager may be involved?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "If the direct supervisor may be involved in suspected fraud, the employee must report the activity to the Chief Legal Officer. Confidential reporting and anonymous reporting through Ethico are also available. The employee should not discuss the matter with other team members unless directed by the Chief Legal Officer.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0005"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0005-S0005"
+      ]
+    },
+    {
+      "test_id": "R18",
+      "category": "Anti-Fraud",
+      "query": "Does GitLab protect employees who report suspected fraud in good faith from retaliation?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "Yes. GitLab prohibits retaliation against employees who report violations in good faith and anyone assisting in good faith with an investigation or related process. Retaliation may result in disciplinary action, including termination.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0005"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0005-S0006"
+      ]
+    },
+    {
+      "test_id": "R19",
+      "category": "Expense Management",
+      "query": "What happens when an expense claim is submitted more than 90 days after purchase?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "Expense claims submitted more than 90 days after the purchase date will not be reimbursed unless approved by the employee's manager.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0002"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0002-S0002"
+      ]
+    },
+    {
+      "test_id": "R20",
+      "category": "Expense Management",
+      "query": "Which policy should an employee consult to determine whether an expense is reimbursable?",
+      "expected_tool_calls": [
+        "search_hr_policy"
+      ],
+      "gold_answer": "Consult the Global Travel and Expense Policy for reimbursable expenses and reimbursement procedures. Other spending methods, such as physical corporate cards and purchase orders, have separate applicable policies.",
+      "expected_status": null,
+      "expected_amount": null,
+      "expected_currency": null,
+      "requires_clarification": false,
+      "citation_required": true,
+      "expected_document_ids": [
+        "GITLAB-0002"
+      ],
+      "expected_chunk_ids": [
+        "GITLAB-0002-S0003",
+        "GITLAB-0002-S0004"
+      ]
+    }
+  ]
+}

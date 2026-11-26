@@ -1,0 +1,125 @@
+{
+    "evaluation_run": {
+        "timestamp": "2026-11-26T21:57:26.948797+00:00",
+        "dataset_version": "1.0",
+        "total_cases": 1
+    },
+    "summary": {
+        "total_cases": 1,
+        "workflow_completed": 1,
+        "workflow_errors": 0,
+        "critic_approved": 1,
+        "expected_tool_calls": 1,
+        "expected_tool_calls_found": 1,
+        "not_implemented_tool_calls": 0,
+        "tool_call_coverage": 1.0,
+        "comparable_status_cases": 0,
+        "status_matches": 0,
+        "status_match_rate": null
+    },
+    "results": [
+        {
+            "test_id": "R09",
+            "category": "Gifts and Entertainment",
+            "query": "What are the gift and entertainment limits for US government officials?",
+            "gold_answer": "The limit for a U.S. government official is USD 20 (or local currency equivalent) per person per event and USD 50 in combined gifts and entertainment to the same official per calendar year. Applicable public-sector rules and restrictions also apply; state or tribal exceptions require consultation and approval where legally permissible.",
+            "expected_document_ids": [
+                "GITLAB-0006"
+            ],
+            "expected_chunk_ids": [
+                "GITLAB-0006-S0005"
+            ],
+            "citation_required": true,
+            "expected_status": null,
+            "expected_amount": null,
+            "expected_currency": null,
+            "requires_clarification": false,
+            "workflow_completed": true,
+            "latency_seconds": 15.495,
+            "selected_tools": [
+                "search_hr_policy"
+            ],
+            "actual_tools": [
+                "search_hr_policy"
+            ],
+            "expected_tools": [
+                "search_hr_policy"
+            ],
+            "missing_expected_tools": [],
+            "tool_execution": {
+                "search_hr_policy": "result_returned"
+            },
+            "critic_approved": true,
+            "retry_count": 0,
+            "workflow_status": "approved",
+            "final_answer": "The gift and entertainment limits for U.S. government officials, according to GitLab's policy, are $20 USD (or the equivalent in local currency) per person per event, with a combined total of $50 USD per calendar year for the same official. These limits are part of GitLab's Gifts and Entertainment Policy, which also emphasizes that gifts and entertainment must not be intended to influence official actions and must comply with applicable laws and ethical standards.",
+            "actual_calculator_status": null,
+            "status_match": null,
+            "actual_calculated_amount": null,
+            "actual_claimed_amount": null,
+            "actual_excess_amount": null,
+            "missing_information": [],
+            "clarification_observed": false,
+            "retrieved_evidence_count": 5,
+            "execution_log": [
+                {
+                    "agent": "critic",
+                    "approved": true,
+                    "issues": [],
+                    "feedback": "The answer is supported by the retrieved evidence."
+                }
+            ],
+            "tool_results": {
+                "search_hr_policy": {
+                    "answer": "The gift and entertainment limits for U.S. government officials, according to GitLab's policy, are $20 USD (or the equivalent in local currency) per person per event, with a combined total of $50 USD per calendar year for the same official. These limits are part of GitLab's Gifts and Entertainment Policy, which also emphasizes that gifts and entertainment must not be intended to influence official actions and must comply with applicable laws and ethical standards.",
+                    "insufficient_evidence": false,
+                    "missing_information": [],
+                    "retrieval_method": "hybrid_reranked",
+                    "citations": [
+                        {
+                            "chunk_id": "GITLAB-0006-S0005",
+                            "document_id": "GITLAB-0006",
+                            "title": "Policies related to Gifts and Contributions",
+                            "organization": "GitLab",
+                            "source_url": "https://handbook.gitlab.com/handbook/legal/policies/gifts-contributions",
+                            "section_path": "Gifts and Entertainment Policy > Government Officials - Special Considerations"
+                        }
+                    ],
+                    "retrieved_evidence": [
+                        {
+                            "chunk_id": "GITLAB-0006-S0005",
+                            "title": "Policies related to Gifts and Contributions",
+                            "section": "Gifts and Entertainment Policy > Government Officials - Special Considerations",
+                            "text": "### Government Officials - Special Considerations\n\nProviding gifts or entertainment to government officials presents significantly heightened legal and reputational risks for GitLab. Most countries have strict laws, such as the U.S. Foreign Corrupt Practices Act (“FCPA”) and UK Bribery Act, governing interactions with government officials, which are enforced with severe penalties for violations. Additionally, government employees at the Federal, State, and local levels in the United States are subject to rules that restrict their ability to accept gifts and entertainment.\n\nFor these reasons, GitLab restricts the provision of gifts and entertainment to government officials as follows:\n\n- The total value of gifts or entertainment provided to a U.S. government official cannot exceed $20 USD (or the equivalent in local currency) per person per event. The combined total value of all gifts and entertainment provided to the same government official cannot exceed $50 USD per calendar year;\n- The total value of gifts or entertainment provided to a foreign government official cannot exceed $80 USD (or the equivalent in local currency) per person per event, without pre-approval from GitLab’s Ethics and Compliance team using this form or the #ethics-and-compliance Slack channel;\n- When submitting an expense report in Navan, Team Members must identify all government officials, including their (valid) email addresses, in the “Participants” field;\n- Gifts and entertainment must never be intended to influence official actions;\n- No gifts or entertainment should be provided during pending licensing, investigations, or regulatory matters; and,\n- Team Members considering gifts or entertainment for state or tribal government officials may consult with the Ethics and Compliance team in the #ethics-and-compliance Slack channel to understand applicable local value thresholds and obtain approval for exceptions to the general limits where legally permissible.\n\nIn addition to the restrictions in this Policy, any gifts or entertainment provided to government officials must also comply with GitLab’s [Public Sector Rules of Engagement](https://internal.gitlab.com/handbook/sales/public-sector/) and [GitLab Federal Code of Ethics](https://drive.google.com/file/d/1whEuxvIwy3M33N3vbUUkGrOKvkow5LAw/view) as applicable."
+                        },
+                        {
+                            "chunk_id": "GITLAB-0006-S0003",
+                            "title": "Policies related to Gifts and Contributions",
+                            "section": "Gifts and Entertainment Policy > General Requirements",
+                            "text": "### General Requirements\n\nWhen giving or receiving gifts and entertainment, Team Members should exercise good judgment and consider whether the exchange would create the appearance of improper influence. All gifts and entertainment must be:\n\n- Reasonable and appropriate for the occasion;\n- Infrequent and not part of a pattern;\n- Given or accepted openly and transparently;\n- Properly documented;\n- Never intended to improperly influence business decisions;\n- Not cash or cash equivalents like gift cards or gift certificates, except as specifically permitted under the Exception for Promotional Activities below; and,\n- Consistent with local laws and customs."
+                        },
+                        {
+                            "chunk_id": "GITLAB-0004-S0005",
+                            "title": "Anti-Corruption Policy",
+                            "section": "GIFTS, ENTERTAINMENT, TRAVEL & PROMOTIONAL EXPENDITURES",
+                            "text": "# # # gifts, entertainment, travel & promotional expenditures gifts in the business context can be an appropriate way for businesspeople to display respect for each other. gitlab expects the use of good judgment and moderation when giving or receiving entertainment or gifts. no gift or entertainment should ever be offered, given, provided or accepted by team members and partners unless it : 1. is reasonable and not extravagant ; 1. is appropriate under the circumstances and serves a valid business purpose ; 1. is customary and appropriate under u. s. and local customs ; 1. is not being offered for any improper purpose, and could not be construed as a bribe, kickback or payoff ; 1. does not violate any company policy ; 1. does not violate any u. s., local or international laws or regulations ; and 1. is accurately described in your expense or other reports and company's books and records. it is essential that team members and partners accurately report expenditures for gifts or entertainment so that the purpose, amount, and recipient of the gift are obvious ( * i. e *., transparent ) to personnel in the company's finance team and other personnel who have responsibility for ensuring that our financial books and records are accurate and reviewing these books and records. expense reports should accurately state the purpose of the expenditures and the identities of the individuals receiving the gifts or entertainment and state whether the gift or entertainment was given to a government employee or official. 1. significant legal restrictions apply with regard to providing gifts, entertainment, travel and promotional expenditures related to government officials. team members and partners must make sure they fully understand all such restrictions and associated policies and procedures. in each instance : 1. all gifts, entertainment, or promotional expenses which are intended to induce a government employee or official to misuse their position or to obtain an improper advantage are prohibited, regardless of their value ; 1. expenses must have a valid business purpose and be reasonable and necessary under the circumstances ; 1. gifts must be of token value ( such as shirts or tote bags that reflect company's business name and / or logo ), legal and customary, and openly given ; and 1. expenses and gifts must be fully and accurately reflected in the company's books and records and backed by receipts. team members and partners should avoid even the appearance of impropriety. any gift or expense that is lavish or might otherwise prove embarrassing for the company is prohibited. if team members and partners have any question regarding"
+                        },
+                        {
+                            "chunk_id": "GITLAB-0004-S0003",
+                            "title": "Anti-Corruption Policy",
+                            "section": "PROHIBITED CONDUCT",
+                            "text": "### PROHIBITED CONDUCT\n\nGitLab and Team Members and Partners are prohibited from authorizing, making, offering, promising, requesting, receiving or accepting bribes or accepting kickbacks in any form. This prohibition applies to all forms of bribery, including commercial bribery as well as bribery of government employees or officials.\n\nThe Anti-Corruption Laws prohibiting bribery are very broad, so that many kinds of gifts or entertainment provided to government employees or officials might be considered improper. For that reason, Team Members and Partners may not give anything of value to any government employee or official in order to wrongfully influence the government employee or official, obtain or retain business or receive any improper advantage. This prohibition applies regardless of whether the payment or offer of payment is made directly to the government employee or official or indirectly through a third party. As discussed in more detail below, ***it is critical to understand that, for purposes of the Anti-Corruption Laws, the terms \"government official\" generally includes any employee of a company that is owned or controlled by a government or governmental agency***. By way of example, this means that someone working for a telecom, energy company, internet company or hospital in another country that is owned or controlled by that country's government is a \"government official.\" In other words, for purposes of the Anti-Corruption Laws, this term is much broader than how we think about \"government officials\" in the United States.\n\n**Examples of prohibited conduct include:**\n\n1. payments made directly to a government employee or official for an improper purpose;\n1. payments or gifts to third parties where Team Members and Partners know or have reason to know that at least a portion of the payments or gifts is likely to be offered by the third party to a government employee or official for an improper purpose;\n1. acts \"in furtherance of\" an improper payment, such as arranging for funds to be available for the improper payment; and\n1. payments to retain assets, such as an \"under the table\" payment to a tax official to settle a tax claim.\n\nIt is important to avoid even the appearance of impropriety. If you have any questions about whether a payment may be improper or violate this Policy, consult the Company's Chief Legal Officer before any payment or offer is made."
+                        },
+                        {
+                            "chunk_id": "GITLAB-0006-S0004",
+                            "title": "Policies related to Gifts and Contributions",
+                            "section": "Gifts and Entertainment Policy > Prohibited Activities",
+                            "text": "### Prohibited Activities\n\nThe following are never permitted:\n\n- Cash or cash equivalents (except under the Exception for Promotional Activities);\n- Excessive, lavish, or inappropriate gifts/entertainment;\n- **Gifts or entertainment given with a corrupt or improper purpose;**\n- Gifts or entertainment that would induce someone to act in breach of their duties;\n- Gifts or entertainment during active procurement or negotiations (except under the Exception for Promotional Activities); or,\n- Gifts or entertainment that would violate laws, regulations, or ethical standards, or embarrass GitLab."
+                        }
+                    ]
+                }
+            },
+            "error": null
+        }
+    ]
+}

@@ -1,4 +1,4 @@
-
+from uuid import uuid4
 import argparse
 import json
 import time
@@ -12,7 +12,11 @@ from src.agents.workflow import EmployeeOpsWorkflow
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 DEFAULT_DATASET = (
-    PROJECT_ROOT / "data" / "evaluation" / "evaluation_v1.0.json"
+    PROJECT_ROOT
+    / "data"
+    / "evaluation"
+    / "real_corpus"
+    / "end_to_end_eval_v1.0.json"
 )
 
 DEFAULT_OUTPUT = (
@@ -20,7 +24,7 @@ DEFAULT_OUTPUT = (
     / "data"
     / "evaluation"
     / "results"
-    / "evaluation_results.json"
+    / "real_policy_evaluation_results.json"
 )
 
 CALCULATOR_STATUSES = {
@@ -69,10 +73,24 @@ def evaluate_case(workflow: EmployeeOpsWorkflow, case: dict) -> dict:
 
     started = time.perf_counter()
 
+    
     case_result = {
         "test_id": case.get("test_id"),
         "category": case.get("category"),
         "query": case.get("query"),
+
+        # CAP-06: Gold answer and evidence references
+        "gold_answer": case.get("gold_answer"),
+        "expected_document_ids": case.get(
+            "expected_document_ids", []
+        ),
+        "expected_chunk_ids": case.get(
+            "expected_chunk_ids", []
+        ),
+        "citation_required": case.get(
+            "citation_required", False
+        ),
+
         "expected_status": case.get("expected_status"),
         "expected_amount": case.get("expected_amount"),
         "expected_currency": case.get("expected_currency"),
@@ -81,11 +99,13 @@ def evaluate_case(workflow: EmployeeOpsWorkflow, case: dict) -> dict:
         ),
     }
 
+
     try:
         result = workflow.run(
-            query=case["query"],
-            has_file=False,
-            expense_details=None,
+        query=case["query"],
+        expense_details=case.get("expense_details") or {},
+        thread_id=str(uuid4()),
+        conversation_history=case.get("conversation_history") or [],
         )
 
         latency = round(time.perf_counter() - started, 3)
