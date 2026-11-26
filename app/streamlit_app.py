@@ -45,6 +45,9 @@ if "conversation_id" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+if "last_result" not in st.session_state:
+    st.session_state.last_result = None
+
 
 # --------------------------------------------------
 # Workflow initialization
@@ -75,6 +78,7 @@ with st.sidebar:
     if st.button("＋ New conversation", use_container_width=True):
         st.session_state.conversation_id = str(uuid.uuid4())
         st.session_state.messages = []
+        st.session_state.last_result = None
         st.rerun()
 
     st.caption(
@@ -239,289 +243,9 @@ if submitted:
             "content": assistant_response,
         })
 
-        # Display the assistant's response immediately
-        with st.chat_message("assistant"):
-            st.markdown(assistant_response)
-
+        # Persist the latest workflow result before rerunning.
+        st.session_state.last_result = result
         st.rerun()
-        st.divider()
-        st.subheader("Copilot Response")
-
-        status = result.get("status", "unknown")
-        approved = result.get("is_approved", False)
-
-        if status == "approved" and approved:
-            st.success("Critic review passed")
-
-        elif status == "critic_rejected":
-            st.error("The answer did not pass the review process.")
-
-        else:
-            st.warning(f"Workflow status: {status}")
-
-        # --------------------------------------------------
-        # Final answer
-        # --------------------------------------------------
-
-        final_answer = result.get("final_answer", "")
-
-        if final_answer:
-            st.markdown("### Answer")
-            st.markdown(final_answer)
-        else:
-            st.warning(
-                "The workflow did not produce a final answer."
-            )
-
-        # --------------------------------------------------
-        # Planner output
-        # --------------------------------------------------
-
-        with st.expander("View agent plan", expanded=True):
-
-            st.write("**Planned steps**")
-
-            for step in result.get("plan", []):
-                st.markdown(f"- {step}")
-
-            st.write("**Selected tools**")
-            st.write(result.get("selected_tools", []))
-
-            missing = result.get("missing_information", [])
-
-            if missing:
-                st.warning("Missing information identified by Planner")
-
-                for item in missing:
-                    st.markdown(f"- {item}")
-
-        # --------------------------------------------------
-        # Tool results
-        # --------------------------------------------------
-
-        tool_results = result.get("tool_results", {})
-
-        # --------------------------------------------------
-        # Policy citations
-        # --------------------------------------------------
-
-        search_result = tool_results.get(
-            "search_hr_policy", {}
-        )
-
-        citations = search_result.get("citations", [])
-
-        if citations:
-
-            st.markdown("### Policy Sources")
-
-            for citation in citations:
-
-                title = citation.get(
-                    "title", "Policy document"
-                )
-
-                document_id = citation.get(
-                    "document_id", ""
-                )
-
-                section = citation.get(
-                    "section_path", "Section not specified"
-                )
-
-                source_url = citation.get(
-                    "source_url", ""
-                )
-
-                st.markdown(
-                    f"**{title}** ({document_id})"
-                )
-
-                st.caption(f"Section: {section}")
-
-                if source_url:
-                    st.markdown(
-                        f"[Open source document]({source_url})"
-                    )
-
-        # --------------------------------------------------
-        # Expense assessment
-        # --------------------------------------------------
-
-        expense_result = tool_results.get(
-            "calculate_expense_eligibility"
-        )
-
-        if expense_result:
-
-            st.markdown("### Expense Eligibility Assessment")
-
-            compliance_status = expense_result.get(
-                "compliance_status", "unknown"
-            )
-
-            st.write(
-                f"**Compliance status:** {compliance_status}"
-            )
-
-            # Display calculation metrics
-            metric_columns = st.columns(4)
-
-            metrics = [
-                ("Claimed amount", "claimed_amount"),
-                ("Policy limit", "policy_limit"),
-                ("Amount within limit", "eligible_amount"),
-                ("Excess amount", "excess_amount"),
-            ]
-
-            for column, (label, field) in zip(
-                metric_columns, metrics
-            ):
-
-                value = expense_result.get(field)
-
-                if value is not None:
-                    column.metric(
-                        label,
-                        f"{expense_result.get('currency', '')} {value}",
-                    )
-                else:
-                    column.metric(label, "Not determined")
-
-            # Calculation details
-            calculation = expense_result.get("calculation")
-
-            if calculation:
-                st.write("**Calculation details**")
-                st.write(calculation)
-
-            # Approval requirement
-            approval_required = expense_result.get(
-                "approval_required"
-            )
-
-            if approval_required is True:
-                st.warning("Additional approval is required.")
-
-            elif approval_required is False:
-                st.write(
-                    "**Approval requirement:** No additional approval "
-                    "requirement was identified in the extracted evidence."
-                )
-
-            else:
-                st.info(
-                    "**Approval requirement:** Not established by "
-                    "the available policy evidence."
-                )
-
-            # Recommendation
-            recommendation = expense_result.get(
-                "recommendation"
-            )
-
-            if recommendation:
-                st.write("**Recommendation**")
-                st.write(recommendation)
-
-            # Supporting policy evidence
-            st.markdown("#### Supporting Policy Evidence")
-
-            policy_evidence = expense_result.get(
-                "policy_evidence", []
-            )
-
-            if policy_evidence:
-
-                for quote in policy_evidence:
-                    st.markdown(f"> {quote}")
-
-            else:
-                st.warning(
-                    "No extracted policy quotations are available "
-                    "for this expense calculation."
-                )
-
-            # Missing information
-            expense_missing = expense_result.get(
-                "missing_information", []
-            )
-
-            if expense_missing:
-
-                st.warning("Additional information required")
-
-                for item in expense_missing:
-                    st.markdown(f"- {item}")
-
-        # --------------------------------------------------
-        # Retrieved evidence
-        # --------------------------------------------------
-
-        evidence = result.get("retrieved_evidence", [])
-
-        if evidence:
-
-            with st.expander("View retrieved policy evidence"):
-
-                for item in evidence:
-
-                    st.markdown(
-                        f"**{item.get('title', 'Policy document')}**"
-                    )
-
-                    st.caption(
-                        f"Chunk: {item.get('chunk_id', '')} | "
-                        f"Section: {item.get('section', '')}"
-                    )
-
-                    st.write(item.get("text", ""))
-                    st.divider()
-
-        # --------------------------------------------------
-        # Critic execution trace
-        # --------------------------------------------------
-
-        with st.expander(
-            "View agent execution and Critic review"
-        ):
-
-            st.write(f"**Final workflow status:** {status}")
-            st.write(f"**Critic approved:** {approved}")
-
-            st.write(
-                f"**Retry count:** {result.get('retry_count', 0)}"
-            )
-
-            for entry in result.get("execution_log", []):
-
-                st.markdown(
-                    f"**Agent:** {entry.get('agent', 'Unknown')}"
-                )
-
-                st.write(
-                    f"Approved: {entry.get('approved', 'N/A')}"
-                )
-
-                issues = entry.get("issues", [])
-
-                if issues:
-                    st.write("Issues:")
-
-                    for issue in issues:
-                        st.markdown(f"- {issue}")
-
-                feedback = entry.get("feedback")
-
-                if feedback:
-                    st.write(f"Feedback: {feedback}")
-
-        # --------------------------------------------------
-        # Complete workflow output
-        # --------------------------------------------------
-
-        with st.expander("View complete workflow output"):
-            st.json(result)
 
     except Exception as exc:
 
@@ -530,4 +254,280 @@ if submitted:
             "your request."
         )
 
-        st.exception(exc)
+        st.caption(f"Error type: {type(exc).__name__}")
+
+
+# --------------------------------------------------
+# Render persisted result independently of submission
+# --------------------------------------------------
+
+result = st.session_state.last_result
+
+if result is not None:
+    st.divider()
+    st.subheader("Latest Copilot Response Details")
+
+    status = result.get("status", "unknown")
+    approved = result.get("is_approved", False)
+
+    if status == "approved" and approved:
+        st.success("Critic review passed")
+
+    elif status == "critic_rejected":
+        st.error("The answer did not pass the review process.")
+
+    else:
+        st.warning(f"Workflow status: {status}")
+
+    # --------------------------------------------------
+    # Planner output
+    # --------------------------------------------------
+
+    with st.expander("View agent plan", expanded=True):
+
+        st.write("**Planned steps**")
+
+        for step in result.get("plan", []):
+            st.markdown(f"- {step}")
+
+        st.write("**Selected tools**")
+        st.write(result.get("selected_tools", []))
+
+        missing = result.get("missing_information", [])
+
+        if missing:
+            st.warning("Missing information identified by Planner")
+
+            for item in missing:
+                st.markdown(f"- {item}")
+
+    # --------------------------------------------------
+    # Tool results
+    # --------------------------------------------------
+
+    tool_results = result.get("tool_results", {})
+
+    # --------------------------------------------------
+    # Policy citations
+    # --------------------------------------------------
+
+    search_result = tool_results.get(
+        "search_hr_policy", {}
+    )
+
+    citations = search_result.get("citations", [])
+
+    st.markdown("### Policy Sources")
+
+    if not citations:
+        st.info("No policy citations were returned.")
+
+    if citations:
+        if not approved:
+            st.warning("Sources considered during review; the answer was not approved.")
+
+        for citation in citations:
+
+            title = citation.get(
+                "title", "Policy document"
+            )
+
+            document_id = citation.get(
+                "document_id", ""
+            )
+
+            section = citation.get(
+                "section_path", "Section not specified"
+            )
+
+            source_url = citation.get(
+                "source_url", ""
+            )
+
+            st.markdown(
+                f"**{title}** ({document_id})"
+            )
+
+            st.caption(f"Section: {section}")
+
+            if source_url:
+                st.markdown(
+                    f"[Open source document]({source_url})"
+                )
+
+    # --------------------------------------------------
+    # Expense assessment
+    # --------------------------------------------------
+
+    expense_result = tool_results.get(
+        "calculate_expense_eligibility"
+    )
+
+    if expense_result:
+
+        st.markdown("### Expense Eligibility Assessment")
+        if not approved:
+            st.warning("This assessment has not passed Critic review.")
+
+        compliance_status = expense_result.get(
+            "compliance_status", "unknown"
+        )
+
+        st.write(
+            f"**Compliance status:** {compliance_status}"
+        )
+
+        # Display calculation metrics
+        metric_columns = st.columns(4)
+
+        metrics = [
+            ("Claimed amount", "claimed_amount"),
+            ("Policy limit", "policy_limit"),
+            ("Amount within limit", "eligible_amount"),
+            ("Excess amount", "excess_amount"),
+        ]
+
+        for column, (label, field) in zip(
+            metric_columns, metrics
+        ):
+
+            value = expense_result.get(field)
+
+            if value is not None:
+                column.metric(
+                    label,
+                    f"{expense_result.get('currency', '')} {value}",
+                )
+            else:
+                column.metric(label, "Not determined")
+
+        # Calculation details
+        calculation = expense_result.get("calculation")
+
+        if calculation:
+            st.write("**Calculation details**")
+            st.write(calculation)
+
+        # Approval requirement
+        approval_required = expense_result.get(
+            "approval_required"
+        )
+
+        if approval_required is True:
+            st.warning("Additional approval is required.")
+
+        elif approval_required is False:
+            st.write(
+                "**Approval requirement:** No additional approval "
+                "requirement was identified in the extracted evidence."
+            )
+
+        else:
+            st.info(
+                "**Approval requirement:** Not established by "
+                "the available policy evidence."
+            )
+
+        # Recommendation
+        recommendation = expense_result.get(
+            "recommendation"
+        )
+
+        if recommendation:
+            st.write("**Recommendation**")
+            st.write(recommendation)
+
+        # Supporting policy evidence
+        st.markdown("#### Supporting Policy Evidence")
+
+        policy_evidence = expense_result.get(
+            "policy_evidence", []
+        )
+
+        if policy_evidence:
+
+            for quote in policy_evidence:
+                st.markdown(f"> {quote}")
+
+        else:
+            st.warning(
+                "No extracted policy quotations are available "
+                "for this expense calculation."
+            )
+
+        # Missing information
+        expense_missing = expense_result.get(
+            "missing_information", []
+        )
+
+        if expense_missing:
+
+            st.warning("Additional information required")
+
+            for item in expense_missing:
+                st.markdown(f"- {item}")
+
+    # --------------------------------------------------
+    # Retrieved evidence
+    # --------------------------------------------------
+
+    evidence = result.get("retrieved_evidence", [])
+
+    with st.expander("View retrieved policy evidence"):
+        st.write(f"Retrieved chunks: {len(evidence)}")
+        if not evidence:
+            st.info("No policy evidence was retrieved.")
+        for item in evidence:
+            st.markdown(f"**{item.get('title', 'Policy document')}**")
+            st.caption(
+                f"Chunk: {item.get('chunk_id', '')} | "
+                f"Section: {item.get('section_path') or item.get('section', '')}"
+            )
+            st.write(item.get("text", ""))
+            st.divider()
+
+    # --------------------------------------------------
+    # Critic execution trace
+    # --------------------------------------------------
+
+    with st.expander(
+        "View agent execution and Critic review"
+    ):
+
+        st.write(f"**Final workflow status:** {status}")
+        st.write(f"**Critic approved:** {approved}")
+
+        st.write(
+            f"**Retry count:** {result.get('retry_count', 0)}"
+        )
+
+        for entry in result.get("execution_log", []):
+
+            st.markdown(
+                f"**Agent:** {entry.get('agent', 'Unknown')}"
+            )
+
+            st.write(
+                f"Approved: {entry.get('approved', 'N/A')}"
+            )
+
+            issues = entry.get("issues", [])
+
+            if issues:
+                st.write("Issues:")
+
+                for issue in issues:
+                    st.markdown(f"- {issue}")
+
+            feedback = entry.get("feedback")
+
+            if feedback:
+                st.write(f"Feedback: {feedback}")
+
+    # --------------------------------------------------
+    # Complete workflow output
+    # --------------------------------------------------
+
+    if st.checkbox("Enable detailed debugging (local only)"):
+        with st.expander("View complete workflow output"):
+            st.json(result)
