@@ -51,3 +51,46 @@ jobs:
 
       - name: Docker image details
         run: docker images operations-copilot
+
+
+      - name: Start Docker container
+        run: |
+          docker run -d \
+            --name operations-copilot \
+            -p 127.0.0.1:8501:8501 \
+            operations-copilot:1.0
+
+      - name: Validate Streamlit health
+        run: |
+          for i in $(seq 1 30); do
+            if curl --fail --silent http://localhost:8501/_stcore/health; then
+              echo ""
+              echo "SUCCESS: Streamlit server is running."
+              exit 0
+            fi
+
+            echo "Checking container health..."
+            sleep 5
+          done
+
+          echo "ERROR: Health check failed."
+          exit 1
+
+      - name: Validate application HTTP response
+        run: |
+          curl --fail --silent \
+            http://localhost:8501/ \
+            -o /tmp/streamlit-response.html
+
+          echo "SUCCESS: Application HTTP endpoint accessible."
+
+      - name: Check running container
+        run: docker ps --filter name=operations-copilot
+
+      - name: Capture application logs
+        if: always()
+        run: docker logs operations-copilot || true
+
+      - name: Stop Docker container
+        if: always()
+        run: docker rm -f operations-copilot || true
