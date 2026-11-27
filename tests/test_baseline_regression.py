@@ -13,7 +13,6 @@ import os
 import re
 import time
 import uuid
-from copy import deepcopy
 from pathlib import Path
 
 import pytest
@@ -32,7 +31,7 @@ RESULTS_PATH = (
     ROOT_DIR
     / "data"
     / "evaluation"
-    / "regression_execution_results.json"
+    / "cap08_regression_results.json"
 )
 
 
@@ -396,13 +395,62 @@ def test_live_regression(
     }
 
     try:
+        # CAP-08: Persistent conversation state.
+        thread_id = str(uuid.uuid4())
+
+        setup_start_time = time.perf_counter()
+        previous_turns = 0
+
+        for message in case["conversation_history"]:
+
+            if message.get("role") != "user":
+                continue
+
+            previous_query = str(
+                message.get("content", "")
+            ).strip()
+
+            if not previous_query:
+                continue
+
+            workflow.run(
+                query=previous_query,
+                expense_details={},
+                thread_id=thread_id,
+            )
+
+            previous_turns += 1
+
+        record["previous_turns"] = previous_turns
+
+        record["context_setup_latency_seconds"] = round(
+            time.perf_counter() - setup_start_time,
+            3,
+        )
+
+        query_start_time = time.perf_counter()
+
         result = workflow.run(
             query=case["query"],
             expense_details={},
-            thread_id=str(uuid.uuid4()),
-            conversation_history=deepcopy(
-                case["conversation_history"]
-            ),
+            thread_id=thread_id,
+        )
+
+        record["query_latency_seconds"] = round(
+            time.perf_counter() - query_start_time,
+            3,
+        )
+
+        record["context_resolution"] = result.get(
+            "context_resolution", {}
+        )
+
+        record["conversation_context"] = result.get(
+            "conversation_context", {}
+        )
+
+        record["resolved_expense_details"] = result.get(
+            "expense_details", {}
         )
 
         checks = evaluate_result(

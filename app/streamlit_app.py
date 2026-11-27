@@ -201,12 +201,6 @@ if submitted:
             "headcount": int(headcount),
         }
 
-        execution_query += (
-            f"\nExpense details: claimed amount "
-            f"{claimed_amount} {currency}; "
-            f"headcount: {headcount}."
-        )
-
     try:
 
         with st.spinner(

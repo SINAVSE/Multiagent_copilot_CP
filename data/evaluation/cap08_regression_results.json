@@ -1,0 +1,50 @@
+[
+  {
+    "test_id": "REG-006",
+    "category": "expense_input_integrity",
+    "query": "Can I claim $100 for a business dinner?",
+    "recorded_manual_status": "FAIL",
+    "previous_turns": 1,
+    "context_setup_latency_seconds": 15.733,
+    "query_latency_seconds": 22.239,
+    "context_resolution": {
+      "resolution_type": "standalone",
+      "context_used": false,
+      "inherited_field_names": [],
+      "requires_clarification": false,
+      "clarification_message": null
+    },
+    "conversation_context": {
+      "topic": "expense",
+      "category": "dinner",
+      "intent": "expense_assessment",
+      "claimed_amount": 100.0,
+      "currency": "USD"
+    },
+    "resolved_expense_details": {
+      "claimed_amount": 100.0,
+      "currency": "USD"
+    },
+    "status": "PASS",
+    "checks": {
+      "claimed_amount_preserved": true
+    },
+    "actual_response": "The $100 claim for a business dinner cannot be determined as compliant or non-compliant based on the available evidence. The policy specifies a $80 limit per person per meal for meals with clients and partners, but the headcount and per person claimed amount are missing, making it impossible to determine if the $100 claim exceeds the policy limit.\n\nA definitive expense assessment could not be completed because required policy information or expense details are missing.",
+    "workflow_status": "approved",
+    "critic_approved": true,
+    "retry_count": 0,
+    "selected_tools": [
+      "search_hr_policy",
+      "calculate_expense_eligibility"
+    ],
+    "claimed_amount": 100.0,
+    "retrieved_chunk_ids": [
+      "GITLAB-0001-S0059",
+      "GITLAB-0001-S0062",
+      "GITLAB-0001-S0024",
+      "GITLAB-0001-S0027",
+      "GITLAB-0001-S0028"
+    ],
+    "latency_seconds": 37.972
+  }
+]

@@ -1,13 +1,19 @@
+
 from typing import Any, TypedDict
 
 
 class AgentState(TypedDict, total=False):
     """Shared state passed between Planner, Executor and Critic."""
 
-    # Original user request
+    # Current and resolved user requests
+    user_query: str
     query: str
     has_file: bool
-    file_path: str
+    file_path: str | None
+
+    # CAP-08: Persistent conversational context
+    conversation_context: dict[str, Any]
+    context_resolution: dict[str, Any]
 
     # Planner output
     plan: list[str]
@@ -19,7 +25,7 @@ class AgentState(TypedDict, total=False):
     retrieved_evidence: list[dict[str, Any]]
 
     # Critic output
-    critic_feedback: str
+    critic_feedback: str | None
     is_approved: bool
     retry_count: int
 
@@ -30,12 +36,9 @@ class AgentState(TypedDict, total=False):
     # Execution trace
     execution_log: list[dict[str, Any]]
 
-    # Structured expense details supplied by the user or UI
+    # Structured expense details
     expense_details: dict[str, Any]
 
-    # Metadata for observability and debugging
+    # Metadata
     thread_id: str
     execution_id: str
-
-    # Additional fields can be added as needed for specific tools or workflows
-    query: str
