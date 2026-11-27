@@ -6,6 +6,8 @@ import re
 from decimal import Decimal
 import math
 
+from src.agents.budgeted_model import invoke_model
+
 
 class PolicyEvidenceQuote(BaseModel):
     """Exact source text supporting an extracted policy rule."""
@@ -142,7 +144,7 @@ Return ONLY valid JSON using this structure:
     "missing_information": []
 }}
 """
-    response = llm.invoke(prompt)
+    response = invoke_model(llm, prompt)
 
     content = response.content
 

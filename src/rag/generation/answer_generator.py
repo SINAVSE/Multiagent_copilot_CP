@@ -10,6 +10,8 @@ from src.rag.retrieval.hybrid_retriever import HybridRetriever
 from src.rag.schemas import RetrievalResult
 from src.rag.retrieval.reranker import CrossEncoderReranker
 
+from src.agents.budgeted_model import invoke_model
+
 
 class Citation(BaseModel):
     """Source reference supporting a generated answer."""
@@ -274,7 +276,7 @@ SOURCE EVIDENCE:
 """
 
         # Step 4: Generate the answer.
-        response = self.model.invoke(prompt)
+        response = invoke_model(self.model, prompt)
 
         content = response.content
 

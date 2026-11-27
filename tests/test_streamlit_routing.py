@@ -277,3 +277,208 @@ def test_recovered_response_displays_retry_count():
         for value in markdown
     )
 
+
+# --------------------------------------------------
+# CAP-12: Runtime budget UI validation
+# --------------------------------------------------
+
+
+def make_runtime_budget(
+    agent_steps=3,
+    accounted_tokens=450,
+    estimated_tokens=0,
+):
+
+    return {
+        "max_agent_steps": 10,
+        "agent_steps": agent_steps,
+        "remaining_steps": max(
+            0, 10 - agent_steps
+        ),
+        "max_tokens": 32000,
+        "max_completion_tokens": 2048,
+        "llm_calls": 2,
+        "embedding_calls": 1,
+        "input_tokens": 300,
+        "output_tokens": 150,
+        "total_tokens": 450,
+        "estimated_tokens": estimated_tokens,
+        "accounted_tokens": accounted_tokens,
+        "remaining_tokens": max(
+            0, 32000 - accounted_tokens
+        ),
+        "estimated_usage_calls": (
+            1 if estimated_tokens else 0
+        ),
+        "unreported_usage_calls": 0,
+        "step_history": [
+            {"step": 1, "agent": "planner"},
+            {"step": 2, "agent": "executor"},
+            {"step": 3, "agent": "critic"},
+        ],
+    }
+
+
+def test_runtime_budget_metrics_render():
+
+    result = make_result(
+        "POLICY_QUERY",
+        "approved",
+        "Mock approved policy response.",
+    )
+
+    result.update({
+        "is_approved": True,
+        "runtime_budget": make_runtime_budget(),
+        "budget_exhausted": False,
+    })
+
+    app = render_result(result)
+
+    assert len(app.exception) == 0
+
+    metrics = {
+        item.label: str(item.value)
+        for item in app.metric
+    }
+
+    assert metrics["Agent steps"] == "3 / 10"
+
+    assert metrics["Accounted chat tokens"] == "450"
+
+    assert metrics["LLM calls"] == "2"
+
+    assert metrics["Embedding invocations"] == "1"
+
+
+@pytest.mark.parametrize(
+    "reason,expected_caption",
+    [
+        (
+            "agent_steps",
+            "Agent-step limit reached.",
+        ),
+        (
+            "tokens",
+            "Chat-token budget exhausted.",
+        ),
+    ],
+)
+def test_budget_exhaustion_status_rendering(
+    reason,
+    expected_caption,
+):
+
+    result = make_result(
+        "POLICY_QUERY",
+        "technical_failure",
+        "No verified policy or expense decision.",
+    )
+
+    result.update({
+        "error_code": "budget_exhausted",
+        "budget_exhausted": True,
+        "budget_exhaustion_reason": reason,
+        "failed_node": "critic",
+        "runtime_budget": make_runtime_budget(
+            agent_steps=10,
+            accounted_tokens=32000,
+        ),
+    })
+
+    app = render_result(result)
+
+    assert len(app.exception) == 0
+
+    errors = [
+        item.value for item in app.error
+    ]
+
+    captions = [
+        item.value for item in app.caption
+    ]
+
+    assert "Runtime budget exhausted." in errors
+
+    assert expected_caption in captions
+
+    assert len(app.success) == 0
+
+
+def test_estimated_token_usage_is_identified():
+
+    result = make_result(
+        "POLICY_QUERY",
+        "approved",
+        "Mock approved policy response.",
+    )
+
+    result.update({
+        "is_approved": True,
+        "runtime_budget": make_runtime_budget(
+            accounted_tokens=1450,
+            estimated_tokens=1000,
+        ),
+    })
+
+    app = render_result(result)
+
+    assert len(app.exception) == 0
+
+    captions = [
+        item.value for item in app.caption
+    ]
+
+    assert any(
+        "Estimated usage has been included"
+        in item
+        for item in captions
+    )
+
+
+def test_token_overrun_does_not_break_ui():
+
+    result = make_result(
+        "POLICY_QUERY",
+        "technical_failure",
+        "Token budget exceeded.",
+    )
+
+    result.update({
+        "budget_exhausted": True,
+        "budget_exhaustion_reason": "tokens",
+        "runtime_budget": make_runtime_budget(
+            accounted_tokens=40000,
+        ),
+    })
+
+    app = render_result(result)
+
+    assert len(app.exception) == 0
+
+    metrics = {
+        item.label: str(item.value)
+        for item in app.metric
+    }
+
+    assert metrics["Accounted chat tokens"] == "40,000"
+
+
+def test_legacy_result_without_budget_still_renders():
+
+    result = make_result(
+        "GREETING",
+        "greeting",
+        "Hello!",
+    )
+
+    app = render_result(result)
+
+    assert len(app.exception) == 0
+
+    metric_labels = [
+        item.label for item in app.metric
+    ]
+
+    assert "Agent steps" not in metric_labels
+

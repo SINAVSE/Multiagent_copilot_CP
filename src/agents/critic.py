@@ -14,6 +14,10 @@ from typing import Any
 
 from config.clients import llm
 
+from src.agents.budgeted_model import invoke_model
+
+from src.agents.runtime_budget import BudgetExceededError
+
 
 class Critic:
     def __init__(self, model: Any = None):
@@ -464,7 +468,7 @@ the problems in issues and feedback.
                 + _corrective_instruction
             )
 
-        response = self.model.invoke(prompt)
+        response = invoke_model(self.model, prompt)
 
         try:
             review = parse_json_response(
@@ -545,6 +549,9 @@ the problems in issues and feedback.
                 "feedback": llm_review["feedback"],
             }
 
+        except BudgetExceededError:
+            raise
+
         except Exception:
             return {
                 "approved": False,
@@ -588,6 +595,9 @@ the problems in issues and feedback.
                     final_answer=final_answer,
                     _corrective_instruction=corrective_instruction,
                 )
+
+            except BudgetExceededError:
+                raise
 
             except Exception as exc:
 

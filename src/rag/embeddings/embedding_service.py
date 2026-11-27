@@ -1,6 +1,8 @@
 from langchain_openai import OpenAIEmbeddings
 from config.clients import embeddings
 
+from src.agents.budgeted_model import invoke_embedding
+
 
 EXPECTED_EMBEDDING_DIMENSION = 384
 
@@ -12,7 +14,7 @@ def embed_text(text: str) -> list[float]:
     if not text or not text.strip():
         raise ValueError("Input text cannot be empty.")
 
-    vector = embeddings.embed_query(text)
+    vector = invoke_embedding(embeddings.embed_query, text)
 
     if len(vector) != EXPECTED_EMBEDDING_DIMENSION:
         raise ValueError(
@@ -33,7 +35,7 @@ def embed_texts(texts: list[str]) -> list[list[float]]:
     if any(not text or not text.strip() for text in texts):
         raise ValueError("Input texts must not contain empty values.")
 
-    vectors = embeddings.embed_documents(texts)
+    vectors = invoke_embedding(embeddings.embed_documents, texts)
 
     for index, vector in enumerate(vectors):
         if len(vector) != EXPECTED_EMBEDDING_DIMENSION:

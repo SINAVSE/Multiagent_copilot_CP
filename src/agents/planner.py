@@ -19,6 +19,10 @@ from src.agents.planner_schema import (
     PlannerOutput,
 )
 
+from src.agents.budgeted_model import invoke_model
+
+from src.agents.runtime_budget import BudgetExceededError
+
 
 AVAILABLE_TOOLS = {
     "search_hr_policy": (
@@ -228,7 +232,7 @@ UPLOADED FILE AVAILABLE:
                 + _corrective_instruction
             )
 
-        response = self.model.invoke(prompt)
+        response = invoke_model(self.model, prompt)
 
         result = parse_json_response(
             response,
@@ -300,6 +304,9 @@ UPLOADED FILE AVAILABLE:
                     expense_details=expense_details,
                     _corrective_instruction=corrective_instruction,
                 )
+
+            except BudgetExceededError:
+                raise
 
             except Exception as exc:
 

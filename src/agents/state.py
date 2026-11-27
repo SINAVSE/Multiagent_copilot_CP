@@ -37,6 +37,11 @@ class AgentState(TypedDict, total=False):
     error_code: str | None
     failed_node: str | None
 
+    # CAP-12: Runtime budget state
+    runtime_budget: dict[str, Any]
+    budget_exhausted: bool
+    budget_exhaustion_reason: str | None
+
     # Final response
     final_answer: str
     status: str

@@ -11,6 +11,8 @@ from src.tools.expense_calculator import (
 )
 from src.tools.policy_extractor import extract_expense_policy
 
+from src.agents.runtime_budget import BudgetExceededError
+
 
 class Executor:
     """Executes tools selected by the Planner."""
@@ -25,7 +27,7 @@ class Executor:
         try:
             return operation(*args, **kwargs)
 
-        except ToolExecutionError:
+        except (ToolExecutionError, BudgetExceededError):
             raise
 
         except Exception as exc:
@@ -175,6 +177,9 @@ class Executor:
 
                     results[tool_name] = result.model_dump()
                     continue
+
+                except BudgetExceededError:
+                    raise
 
                 except Exception as exc:
                     raise ToolExecutionError(

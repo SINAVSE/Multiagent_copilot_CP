@@ -294,9 +294,31 @@ if result is not None:
 
     elif status == "technical_failure":
 
-        st.error(
-            "The request could not be completed safely."
-        )
+        if result.get("budget_exhausted", False):
+
+            st.error("Runtime budget exhausted.")
+
+            reason = result.get(
+                "budget_exhaustion_reason"
+            )
+
+            if reason == "agent_steps":
+
+                st.caption(
+                    "Agent-step limit reached."
+                )
+
+            elif reason == "tokens":
+
+                st.caption(
+                    "Chat-token budget exhausted."
+                )
+
+        else:
+
+            st.error(
+                "The request could not be completed safely."
+            )
 
         st.info(
             "No verified policy or expense decision "
@@ -530,6 +552,158 @@ if result is not None:
             )
             st.write(item.get("text", ""))
             st.divider()
+
+    # --------------------------------------------------
+    # CAP-12: Runtime budget and resource usage
+    # --------------------------------------------------
+
+    budget = result.get("runtime_budget", {})
+
+    if budget:
+
+        with st.expander(
+            "Runtime budget and resource usage"
+        ):
+
+            step_limit = budget.get(
+                "max_agent_steps", 10
+            )
+
+            steps = budget.get(
+                "agent_steps", 0
+            )
+
+            token_limit = budget.get(
+                "max_tokens", 0
+            )
+
+            accounted_tokens = budget.get(
+                "accounted_tokens", 0
+            )
+
+            col1, col2 = st.columns(2)
+
+            with col1:
+
+                st.metric(
+                    "Agent steps",
+                    f"{steps} / {step_limit}",
+                )
+
+                if step_limit > 0:
+
+                    st.progress(
+                        min(
+                            max(steps / step_limit, 0.0),
+                            1.0,
+                        )
+                    )
+
+            with col2:
+
+                st.metric(
+                    "Accounted chat tokens",
+                    f"{accounted_tokens:,}",
+                )
+
+                if token_limit > 0:
+
+                    st.progress(
+                        min(
+                            max(
+                                accounted_tokens / token_limit,
+                                0.0,
+                            ),
+                            1.0,
+                        )
+                    )
+
+                st.caption(
+                    f"Chat-token budget: {token_limit:,}"
+                )
+
+            col3, col4 = st.columns(2)
+
+            col3.metric(
+                "LLM calls",
+                budget.get("llm_calls", 0),
+            )
+
+            col4.metric(
+                "Embedding invocations",
+                budget.get("embedding_calls", 0),
+            )
+
+            st.write(
+                "**Reported chat tokens:** "
+                f"{budget.get('total_tokens', 0):,}"
+            )
+
+            st.write(
+                "**Estimated chat tokens:** "
+                f"{budget.get('estimated_tokens', 0):,}"
+            )
+
+            st.write(
+                "**Reported input tokens:** "
+                f"{budget.get('input_tokens', 0):,}"
+            )
+
+            st.write(
+                "**Reported output tokens:** "
+                f"{budget.get('output_tokens', 0):,}"
+            )
+
+            st.write(
+                "**Remaining agent steps:** "
+                f"{budget.get('remaining_steps', 0)}"
+            )
+
+            st.write(
+                "**Remaining accounted token allowance:** "
+                f"{budget.get('remaining_tokens', 0):,}"
+            )
+
+            if budget.get("estimated_usage_calls", 0):
+
+                st.caption(
+                    "Some model responses did not provide "
+                    "valid token usage metadata. Estimated "
+                    "usage has been included."
+                )
+
+            if budget.get("unreported_usage_calls", 0):
+
+                st.caption(
+                    "Failed model calls are conservatively "
+                    "accounted for using estimated allowances."
+                )
+
+            if result.get("budget_exhausted", False):
+
+                st.warning(
+                    "Execution stopped to enforce runtime limits."
+                )
+
+            st.caption(
+                "Embedding invocation counts are tracked "
+                "separately. Embedding tokens are not included "
+                "in the chat-token budget."
+            )
+
+            st.caption(
+                "Chat-token accounting may include estimates "
+                "and is not the provider billing total."
+            )
+
+            st.write("**Agent execution steps**")
+
+            for item in budget.get("step_history", []):
+
+                st.write(
+                    f"Step {item.get('step')}: "
+                    f"{item.get('agent')}"
+                )
 
     # --------------------------------------------------
     # Critic execution trace

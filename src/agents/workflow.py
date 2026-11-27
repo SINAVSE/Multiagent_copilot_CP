@@ -9,6 +9,13 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 
 from src.agents.state import AgentState
 
+from src.agents.runtime_budget import (
+    RuntimeBudget,
+    BudgetExceededError,
+    budget_scope,
+    get_active_budget,
+)
+
 from src.agents.errors import (
     classify_error,
     ToolExecutionError,
@@ -59,6 +66,59 @@ class EmployeeOpsWorkflow:
     # --------------------------------------------------
     # Observability wrapper
     # --------------------------------------------------
+
+    def budget_failure_response(
+        self,
+        state: AgentState,
+        node_name: str,
+        exc: BudgetExceededError,
+    ) -> dict:
+
+        budget = get_active_budget()
+
+        metrics = (
+            budget.snapshot()
+            if budget is not None
+            else state.get("runtime_budget", {})
+        )
+
+        self.event_logger.log_event({
+            "event": "budget_exhausted",
+            "node": node_name,
+            "thread_id": state.get("thread_id"),
+            "execution_id": state.get("execution_id"),
+            "budget_type": exc.budget_type,
+            "runtime_budget": metrics,
+        })
+
+        reason = (
+            "The maximum permitted agent execution "
+            "steps have been reached."
+            if exc.budget_type == "agent_steps"
+            else
+            "The permitted request token budget "
+            "has been exhausted."
+        )
+
+        return {
+            "status": "technical_failure",
+            "final_answer": (
+                reason
+                + " No verified policy or expense "
+                "decision has been established. "
+                "Please try a more focused request."
+            ),
+            "error_code": "budget_exhausted",
+            "failed_node": node_name,
+            "budget_exhausted": True,
+            "budget_exhaustion_reason": exc.budget_type,
+            "runtime_budget": metrics,
+            "is_approved": False,
+            "critic_feedback": None,
+            "tool_results": {},
+            "retrieved_evidence": [],
+        }
+
 
     def technical_failure_response(
         self,
@@ -117,7 +177,27 @@ class EmployeeOpsWorkflow:
 
             try:
 
+                budget = get_active_budget()
+
+                if budget is not None:
+
+                    if node_name in {
+                        "planner",
+                        "executor",
+                        "critic",
+                    }:
+
+                        budget.consume_step(
+                            node_name
+                        )
+
                 result = node_function(state)
+
+                if budget is not None:
+
+                    result["runtime_budget"] = (
+                        budget.snapshot()
+                    )
 
                 duration_ms = round(
                     (time.perf_counter() - start_time) * 1000,
@@ -134,6 +214,14 @@ class EmployeeOpsWorkflow:
                 })
 
                 return result
+
+            except BudgetExceededError as exc:
+
+                return self.budget_failure_response(
+                    state,
+                    node_name,
+                    exc,
+                )
 
             except Exception as exc:
 
@@ -175,6 +263,14 @@ class EmployeeOpsWorkflow:
 
                     result["technical_errors"] = errors
 
+                    budget = get_active_budget()
+
+                    if budget is not None:
+
+                        result["runtime_budget"] = (
+                            budget.snapshot()
+                        )
+
                     return result
 
                 raise
@@ -214,6 +310,14 @@ class EmployeeOpsWorkflow:
 
             if retry_count >= retry_limit:
                 return False
+
+            budget = get_active_budget()
+
+            if budget is not None:
+
+                budget.consume_step(
+                    legacy_method + "_retry"
+                )
 
             retry_count += 1
             return True
@@ -260,6 +364,13 @@ class EmployeeOpsWorkflow:
                 "technical_errors": errors,
             }, None
 
+        except BudgetExceededError as exc:
+
+            return None, {
+                "technical_retry_count": retry_count,
+                "technical_errors": errors,
+            }, exc
+
         except Exception as exc:
 
             if (
@@ -295,6 +406,15 @@ class EmployeeOpsWorkflow:
                 expense_details=state.get("expense_details", {}),
             )
         )
+
+        if isinstance(error, BudgetExceededError):
+
+            return {
+                **self.budget_failure_response(
+                    state, "planner", error
+                ),
+                **recovery_state,
+            }
 
         if error is not None:
 
@@ -445,6 +565,15 @@ class EmployeeOpsWorkflow:
                 final_answer=state.get("final_answer", ""),
             )
         )
+
+        if isinstance(error, BudgetExceededError):
+
+            return {
+                **self.budget_failure_response(
+                    state, "critic", error
+                ),
+                **recovery_state,
+            }
 
         if error is not None:
 
@@ -912,6 +1041,8 @@ class EmployeeOpsWorkflow:
             },
         })
 
+        budget = RuntimeBudget.from_environment()
+
         initial_state: AgentState = {
             "intent": "",
             "query": contextual_query,
@@ -934,6 +1065,9 @@ class EmployeeOpsWorkflow:
             "technical_errors": [],
             "error_code": None,
             "failed_node": None,
+            "runtime_budget": budget.snapshot(),
+            "budget_exhausted": False,
+            "budget_exhaustion_reason": None,
             "final_answer": "",
             "execution_log": [],
             "status": "started",
@@ -956,10 +1090,11 @@ class EmployeeOpsWorkflow:
         })
 
         try:
-            result = app.invoke(
-                initial_state,
-                config=config,
-            )
+            with budget_scope(budget):
+                result = app.invoke(
+                    initial_state,
+                    config=config,
+                )
 
             duration_ms = round(
                 (time.perf_counter() - start_time) * 1000,
@@ -978,6 +1113,15 @@ class EmployeeOpsWorkflow:
                 ),
                 "error_code": result.get("error_code"),
                 "failed_node": result.get("failed_node"),
+                "runtime_budget": result.get(
+                    "runtime_budget", {}
+                ),
+                "budget_exhausted": result.get(
+                    "budget_exhausted", False
+                ),
+                "budget_exhaustion_reason": result.get(
+                    "budget_exhaustion_reason"
+                ),
             })
 
             return result
