@@ -11,6 +11,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     ANONYMIZED_TELEMETRY=False \
     STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
 
+ENV PIP_DEFAULT_TIMEOUT=120
+ENV PIP_RETRIES=5
+ENV PIP_DISABLE_PIP_VERSION_CHECK=1
+
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -22,8 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 
-RUN pip install --upgrade pip \
-    && pip install torch --index-url https://download.pytorch.org/whl/cpu \
+RUN pip install torch --index-url https://download.pytorch.org/whl/cpu \
     && pip install --no-cache-dir -r requirements.txt \
     && python -m pip check \
     && python -c "import torch; assert torch.version.cuda is None; print(torch.__version__)" 

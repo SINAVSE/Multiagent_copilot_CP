@@ -14,6 +14,7 @@ services:
       - .env
 
     environment:
+      LLM_SSL_CERT_PATH: /run/certs/llm-ca.crt
       EMBEDDING_SSL_CERT_PATH: /run/certs/embedding-ca.crt
       PYTHONUNBUFFERED: "1"
       ANONYMIZED_TELEMETRY: "False"
@@ -25,6 +26,12 @@ services:
       - evaluation-results:/app/data/evaluation/results
       - model-cache:/home/copilot/.cache/huggingface
 
+      - type: bind
+        source: ${LLM_CERT_HOST_PATH:?Set LLM certificate path}
+        target: /run/certs/llm-ca.crt
+        read_only: true
+        bind:
+          create_host_path: false
       - type: bind
         source: ${EMBEDDING_CERT_HOST_PATH:?Set embedding certificate path}
         target: /run/certs/embedding-ca.crt
