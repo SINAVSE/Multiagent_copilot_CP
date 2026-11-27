@@ -23,7 +23,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt .
 
 RUN pip install --upgrade pip \
-    && pip install -r requirements.txt
+    && pip install torch --index-url https://download.pytorch.org/whl/cpu \
+    && pip install --no-cache-dir -r requirements.txt \
+    && python -m pip check \
+    && python -c "import torch; assert torch.version.cuda is None; print(torch.__version__)" 
 
 RUN groupadd --gid 10001 copilot \
     && useradd --uid 10001 --gid 10001 \
