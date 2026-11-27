@@ -14,6 +14,7 @@ on:
 
 permissions:
   contents: read
+  packages: write
 
 jobs:
   docker-build:
@@ -94,3 +95,18 @@ jobs:
       - name: Stop Docker container
         if: always()
         run: docker rm -f operations-copilot || true
+
+
+      - name: Publish Docker image to GHCR
+        run: |
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}:latest"
+
+          echo "${{ secrets.GITHUB_TOKEN }}" | \
+            docker login ghcr.io \
+            -u "${{ github.actor }}" \
+            --password-stdin
+
+          docker tag operations-copilot:1.0 "$IMAGE"
+          docker push "$IMAGE"
+
+          echo "Published image: $IMAGE"
