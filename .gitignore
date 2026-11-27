@@ -49,3 +49,6 @@ data/vector_store/
 # Temporary files
 tmp/
 temp/
+
+# Streamlit secrets
+.streamlit/secrets.toml

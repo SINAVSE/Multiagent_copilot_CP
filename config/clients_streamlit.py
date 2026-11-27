@@ -5,16 +5,19 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from config.settings_streamlit import settings
 
 
+# Create HTTP clients using the SSL contexts from Streamlit Secrets
 llm_http_client = httpx.Client(
-    verify=str(settings.llm_ssl_cert_path),
+    verify=settings.llm_ssl_context,
     timeout=60.0,
 )
 
 embedding_http_client = httpx.Client(
-    verify=str(settings.embedding_ssl_cert_path),
+    verify=settings.embedding_ssl_context,
     timeout=60.0,
 )
 
+
+# LLM client
 llm = ChatOpenAI(
     model=settings.llm_model,
     api_key=settings.api_key,
@@ -23,6 +26,8 @@ llm = ChatOpenAI(
     temperature=0,
 )
 
+
+# LLM client for self-consistency
 llm_self_consistency = ChatOpenAI(
     model=settings.llm_model,
     api_key=settings.api_key,
@@ -31,6 +36,8 @@ llm_self_consistency = ChatOpenAI(
     temperature=0.7,
 )
 
+
+# Embedding client
 embeddings = OpenAIEmbeddings(
     model=settings.embedding_model,
     api_key=settings.embeddings_key,
