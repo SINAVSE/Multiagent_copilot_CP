@@ -364,9 +364,12 @@ if send_clicked:
 
         except Exception as error:
 
+            import logging
+            logging.exception("Agent request failed")
+
             st.error(
                 "I could not complete your request. "
                 "Please try again."
             )
 
-            st.caption(str(error))
+            st.caption(f"Error type: {type(error).__name__}")
