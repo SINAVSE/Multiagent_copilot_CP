@@ -1,0 +1,45 @@
+services:
+  operations-copilot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: operations-copilot:1.0
+    container_name: operations-copilot
+
+    ports:
+      - "8501:8501"
+
+    env_file:
+      - .env
+
+    environment:
+      EMBEDDING_SSL_CERT_PATH: /run/certs/embedding-ca.crt
+      PYTHONUNBUFFERED: "1"
+      ANONYMIZED_TELEMETRY: "False"
+
+    volumes:
+      - vector-store:/app/data/vector_store
+      - checkpoints:/app/data/checkpoints
+      - application-logs:/app/data/logs
+      - evaluation-results:/app/data/evaluation/results
+      - model-cache:/home/copilot/.cache/huggingface
+
+      - type: bind
+        source: ${EMBEDDING_CERT_HOST_PATH:?Set embedding certificate path}
+        target: /run/certs/embedding-ca.crt
+        read_only: true
+        bind:
+          create_host_path: false
+
+    restart: unless-stopped
+
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  vector-store:
+  checkpoints:
+  application-logs:
+  evaluation-results:
+  model-cache:
