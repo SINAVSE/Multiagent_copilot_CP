@@ -1,11 +1,18 @@
+
 from typing import Any, TypedDict
 
 
 class AgentState(TypedDict, total=False):
     """Shared state passed between Planner, Executor and Critic."""
 
-    # Original user request
+    # Current employee request
     query: str
+    user_query: str
+
+    # Previous conversation, kept separate from the current request
+    conversation_context: str
+
+    # Uploaded file
     has_file: bool
     file_path: str
 
@@ -13,6 +20,9 @@ class AgentState(TypedDict, total=False):
     plan: list[str]
     selected_tools: list[str]
     missing_information: list[str]
+
+    # Structured expense details
+    expense_details: dict[str, Any]
 
     # Executor output
     tool_results: dict[str, Any]
@@ -30,12 +40,6 @@ class AgentState(TypedDict, total=False):
     # Execution trace
     execution_log: list[dict[str, Any]]
 
-    # Structured expense details supplied by the user or UI
-    expense_details: dict[str, Any]
-
-    # Metadata for observability and debugging
+    # Metadata
     thread_id: str
     execution_id: str
-
-    # Additional fields can be added as needed for specific tools or workflows
-    query: str

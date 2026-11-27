@@ -348,3 +348,110 @@ def test_malicious_instruction_cannot_be_accepted_as_policy_limit():
 
     assert is_valid is False
     assert issues
+
+def test_quote_validation_accepts_whitespace_difference():
+    evidence = [
+        {
+            "chunk_id": "GITLAB-0001-S0045",
+            "text": (
+                "Existing team members receive a yearly refresh "
+                "of 500 USD to purchase upgrades."
+            ),
+        }
+    ]
+
+    policy = ExtractedExpensePolicy(
+        limit_type="per_person",
+        policy_limit=500,
+        currency="USD",
+        limit_unit="yearly",
+        approval_required=None,
+        evidence_quotes=[
+            PolicyEvidenceQuote(
+                chunk_id="GITLAB-0001-S0045",
+                quote=(
+                    "Existing team members receive a yearly refresh "
+                    "of 500 USD topurchase upgrades."
+                ),
+            )
+        ],
+    )
+
+    is_valid, issues = validate_policy_extraction(
+        policy,
+        evidence,
+    )
+
+    assert is_valid is True
+    assert issues == []
+
+
+def test_unknown_approval_requirement_is_allowed():
+    evidence = [
+        {
+            "chunk_id": "GITLAB-0001-S0048",
+            "text": (
+                "Team Members hired within the previous "
+                "calendar year are not eligible. "
+                "The yearly refresh amount is 500 USD."
+            ),
+        }
+    ]
+
+    policy = ExtractedExpensePolicy(
+        limit_type="per_person",
+        policy_limit=500,
+        currency="USD",
+        limit_unit="yearly",
+        approval_required=None,
+        evidence_quotes=[
+            PolicyEvidenceQuote(
+                chunk_id="GITLAB-0001-S0048",
+                quote=(
+                    "The yearly refresh amount is 500 USD."
+                ),
+            )
+        ],
+    )
+
+    is_valid, issues = validate_policy_extraction(
+        policy,
+        evidence,
+    )
+
+    assert is_valid is True
+    assert issues == []
+
+
+def test_unsupported_no_approval_claim_is_rejected():
+    evidence = [
+        {
+            "chunk_id": "GITLAB-0001-S0048",
+            "text": "The yearly refresh amount is 500 USD.",
+        }
+    ]
+
+    policy = ExtractedExpensePolicy(
+        limit_type="per_person",
+        policy_limit=500,
+        currency="USD",
+        limit_unit="yearly",
+        approval_required=False,
+        evidence_quotes=[
+            PolicyEvidenceQuote(
+                chunk_id="GITLAB-0001-S0048",
+                quote="The yearly refresh amount is 500 USD.",
+            )
+        ],
+    )
+
+    is_valid, issues = validate_policy_extraction(
+        policy,
+        evidence,
+    )
+
+    assert is_valid is False
+    assert any(
+        "approval is unnecessary" in issue.lower()
+        for issue in issues
+    )

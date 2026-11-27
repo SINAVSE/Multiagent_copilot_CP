@@ -1,6 +1,8 @@
+
 import sqlite3
 import time
 import uuid
+import re
 
 from pathlib import Path
 
@@ -21,6 +23,7 @@ class EmployeeOpsWorkflow:
 
     def __init__(self):
         self._app = None
+
         self.planner = Planner()
         self.executor = Executor()
         self.critic = Critic()
@@ -45,8 +48,6 @@ class EmployeeOpsWorkflow:
 
         self.checkpointer = SqliteSaver(self.connection)
         self.checkpointer.setup()
-
-        self._app = None
 
     # --------------------------------------------------
     # Observability wrapper
@@ -114,11 +115,16 @@ class EmployeeOpsWorkflow:
 
     def planner_node(self, state: AgentState) -> dict:
 
+        current_query = state.get(
+            "user_query",
+            state["query"],
+        )
+
         plan_result = self.planner.plan(
-        query=state["query"],
-        has_file=state.get("has_file", False),
-        expense_details=state.get("expense_details", {}),
-    )
+            query=current_query,
+            has_file=state.get("has_file", False),
+            expense_details=state.get("expense_details", {}),
+        )
 
         return {
             "plan": plan_result["plan"],
@@ -134,14 +140,51 @@ class EmployeeOpsWorkflow:
         }
 
     # --------------------------------------------------
+    # Authority boundary
+    # --------------------------------------------------
+
+    @staticmethod
+    def is_approval_request(query: str) -> bool:
+
+        patterns = [
+
+            # Direct approval requests
+            r"\bapprove\b.*\bexpense\b",
+            r"\bapprove\b.*\breimbursement\b",
+            r"\bconfirm\b.*\breimbursement\b",
+            r"\bauthori[sz]e\b.*\bpayment\b",
+            r"\brelease\b.*\bpayment\b",
+
+            # Passive or claimed approval
+            r"\b(?:my|this|the)\s+expense\s+(?:is|has been|was)\s+approved\b",
+            r"\b(?:my|this|the)\s+reimbursement\s+(?:is|has been|was)\s+approved\b",
+            r"\bsay\s+.*\b(?:expense|reimbursement)\s+is\s+approved\b",
+            r"\bconfirm\s+that\s+.*\b(?:expense|reimbursement)\s+is\s+approved\b",
+
+            # Policy circumvention
+            r"\bbypass\b.*\bpolicy\b",
+            r"\boverride\b.*\bpolicy\b",
+        ]
+
+        return any(
+            re.search(pattern, query, re.IGNORECASE)
+            for pattern in patterns
+        )
+
+    # --------------------------------------------------
     # Executor
     # --------------------------------------------------
 
     def executor_node(self, state: AgentState) -> dict:
 
+        current_query = state.get(
+            "user_query",
+            state["query"],
+        )
+
         tool_results = self.executor.execute(
             selected_tools=state.get("selected_tools", []),
-            query=state["query"],
+            query=current_query,
             has_file=state.get("has_file", False),
             file_path=state.get("file_path"),
             critic_feedback=state.get("critic_feedback"),
@@ -167,7 +210,17 @@ class EmployeeOpsWorkflow:
             "calculate_expense_eligibility", {}
         )
 
-        final_answer = policy_answer
+        if self.is_approval_request(current_query):
+
+            final_answer = (
+                "I cannot approve expenses, bypass company policy "
+                "or confirm reimbursement. I can retrieve the "
+                "relevant policy and provide a non-binding compliance "
+                "assessment if you share the expense details."
+            )
+
+        else:
+            final_answer = policy_answer
 
         if expense_result:
 
@@ -211,16 +264,36 @@ class EmployeeOpsWorkflow:
 
             elif status == "unable_to_determine":
 
-                final_answer += (
-                    "\n\nA definitive expense assessment could not "
-                    "be completed because required policy information "
-                    "or expense details are missing."
+                reason = expense_result.get("reason", "")
+
+                missing = expense_result.get(
+                    "missing_information", []
                 )
+
+                final_answer += (
+                    "\n\n### Expense Assessment\n"
+                    "A definitive expense assessment could not "
+                    "be completed using the available information."
+                )
+
+                if reason:
+                    final_answer += f"\n\n**Reason:** {reason}"
+
+                if missing:
+                    final_answer += "\n\n**Information required:**"
+
+                    for item in missing:
+                        final_answer += f"\n- {item}"
 
         return {
             "tool_results": tool_results,
             "retrieved_evidence": retrieved_evidence,
             "final_answer": final_answer,
+            "missing_information": (
+                []
+                if self.is_approval_request(current_query)
+                else state.get("missing_information", [])
+            ),
             "status": "executed",
         }
 
@@ -230,8 +303,13 @@ class EmployeeOpsWorkflow:
 
     def critic_node(self, state: AgentState) -> dict:
 
+        current_query = state.get(
+            "user_query",
+            state["query"],
+        )
+
         critic_result = self.critic.review(
-            query=state["query"],
+            query=current_query,
             tool_results=state.get("tool_results", {}),
             final_answer=state.get("final_answer", ""),
         )
@@ -243,8 +321,9 @@ class EmployeeOpsWorkflow:
         if not approved:
             retry_count += 1
 
-        # Copy the list instead of modifying checkpointed state in place.
-        execution_log = list(state.get("execution_log", []))
+        execution_log = list(
+            state.get("execution_log", [])
+        )
 
         execution_log.append({
             "agent": "critic",
@@ -300,7 +379,7 @@ class EmployeeOpsWorkflow:
 
     def build(self):
 
-        if getattr(self, "_app", None) is not None:
+        if self._app is not None:
             return self._app
 
         workflow = StateGraph(AgentState)
@@ -342,7 +421,7 @@ class EmployeeOpsWorkflow:
         workflow.add_edge("failure", END)
 
         self._app = workflow.compile(
-            checkpointer=getattr(self, "checkpointer", None)
+            checkpointer=self.checkpointer
         )
 
         return self._app
@@ -366,24 +445,32 @@ class EmployeeOpsWorkflow:
         thread_id = thread_id or str(uuid.uuid4())
         execution_id = str(uuid.uuid4())
 
-        # Build bounded context from the previous conversation.
+        # Build bounded previous conversation context.
+        # It is stored separately and is NOT passed to
+        # Planner, Executor or Critic.
         history_text = ""
 
         if conversation_history:
+
             recent_messages = conversation_history[-6:]
 
             history_lines = []
 
             for message in recent_messages:
+
                 role = message.get("role", "user")
-                content = str(message.get("content", ""))[:1500]
+                content = str(
+                    message.get("content", "")
+                )[:1500]
 
                 if role in ("user", "assistant") and content:
+
                     history_lines.append(
                         f"{role.capitalize()}: {content}"
                     )
 
             if history_lines:
+
                 history_text = (
                     "Previous conversation context follows. "
                     "Use it only to understand references and follow-up "
@@ -393,29 +480,36 @@ class EmployeeOpsWorkflow:
                     + "\n\n"
                 )
 
-        contextual_query = (
-            history_text
-            + "Current user request:\n"
-            + query.strip()
-        )
+        # Keep the current request separate.
+        current_query = query.strip()
 
         initial_state: AgentState = {
-            "query": contextual_query,
-            "user_query": query.strip(),
+
+            "query": current_query,
+            "user_query": current_query,
+            "conversation_context": history_text,
+
             "has_file": has_file,
             "file_path": file_path,
+
             "expense_details": expense_details or {},
+
             "plan": [],
             "selected_tools": [],
             "missing_information": [],
+
             "tool_results": {},
             "retrieved_evidence": [],
+
             "critic_feedback": None,
             "is_approved": False,
             "retry_count": 0,
+
             "final_answer": "",
             "execution_log": [],
+
             "status": "started",
+
             "thread_id": thread_id,
             "execution_id": execution_id,
         }
@@ -435,6 +529,7 @@ class EmployeeOpsWorkflow:
         })
 
         try:
+
             result = app.invoke(
                 initial_state,
                 config=config,
@@ -457,6 +552,7 @@ class EmployeeOpsWorkflow:
             return result
 
         except Exception as exc:
+
             duration_ms = round(
                 (time.perf_counter() - start_time) * 1000,
                 2,

@@ -1,10 +1,15 @@
-
 import sys
-from pathlib import Path
+import sqlite3
 import uuid
+from pathlib import Path
+
 import streamlit as st
 
-# Project root
+
+# ---------------------------------------------------------
+# Project paths and imports
+# ---------------------------------------------------------
+
 ROOT_DIR = Path(__file__).resolve().parents[1]
 
 if str(ROOT_DIR) not in sys.path:
@@ -13,31 +18,40 @@ if str(ROOT_DIR) not in sys.path:
 from src.agents.workflow import EmployeeOpsWorkflow
 
 
-# --------------------------------------------------
+CHECKPOINT_DB = (
+    ROOT_DIR
+    / "data"
+    / "checkpoints"
+    / "employee_ops.sqlite"
+)
+
+
+# ---------------------------------------------------------
 # Page configuration
-# --------------------------------------------------
+# ---------------------------------------------------------
 
 st.set_page_config(
     page_title="Employee Operations Copilot",
-    page_icon="📋",
-    layout="wide",
+    page_icon="💼",
+    layout="centered",
 )
 
-st.title("📋 Employee Operations & Expense Compliance Copilot")
 
-st.caption(
-    "AI-assisted employee policy guidance and expense compliance "
-    "using GitLab policy documents."
-)
+# ---------------------------------------------------------
+# Workflow initialization
+# ---------------------------------------------------------
 
-st.info(
-    "This assistant provides policy guidance, not final HR decisions "
-    "or reimbursement approvals."
-)
+@st.cache_resource
+def get_workflow():
+    return EmployeeOpsWorkflow()
 
-# --------------------------------------------------
-# Conversation session management
-# --------------------------------------------------
+
+workflow = get_workflow()
+
+
+# ---------------------------------------------------------
+# Session state initialization
+# ---------------------------------------------------------
 
 if "conversation_id" not in st.session_state:
     st.session_state.conversation_id = str(uuid.uuid4())
@@ -45,489 +59,314 @@ if "conversation_id" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+if "question_input" not in st.session_state:
+    st.session_state.question_input = ""
 
-# --------------------------------------------------
-# Workflow initialization
-# --------------------------------------------------
-
-@st.cache_resource
-def get_workflow():
-    return EmployeeOpsWorkflow()
+if "clear_question_on_next_run" not in st.session_state:
+    st.session_state.clear_question_on_next_run = False
 
 
-# --------------------------------------------------
-# Sidebar
-# --------------------------------------------------
+# Clear input only after successful workflow execution.
+# This must happen before the text_area is created.
 
-with st.sidebar:
-    st.header("About the Copilot")
-
-    st.write(
-        "The system uses a Planner, Executor and Critic workflow "
-        "with retrieval-augmented policy answers."
-    )
-
-    st.markdown("**Policy knowledge base:** 9 GitLab documents")
-    st.markdown("**Workflow:** Planner → Executor → Critic")
-
-    st.divider()
-
-    if st.button("＋ New conversation", use_container_width=True):
-        st.session_state.conversation_id = str(uuid.uuid4())
-        st.session_state.messages = []
-        st.rerun()
-
-    st.caption(
-        f"Conversation ID: "
-        f"{st.session_state.conversation_id[:8]}"
-    )
-
-    st.divider()
-    st.caption("Bill/receipt extraction is not yet implemented.")
+if st.session_state.clear_question_on_next_run:
+    st.session_state.question_input = ""
+    st.session_state.clear_question_on_next_run = False
 
 
-# --------------------------------------------------
-# Previous conversation
-# --------------------------------------------------
+# ---------------------------------------------------------
+# Previous conversation helpers
+# ---------------------------------------------------------
 
-# Conversation display container
-conversation_container = st.container()
+def get_saved_thread_ids():
+    """
+    Return saved LangGraph conversation IDs,
+    ordered from newest to oldest.
+    """
 
-with conversation_container:
-    st.subheader("Conversation")
+    if not CHECKPOINT_DB.exists():
+        return []
 
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
-
-# --------------------------------------------------
-# User input
-# --------------------------------------------------
-
-st.subheader("Ask an employee policy question")
-
-query = st.text_area(
-    "Your question",
-    placeholder=(
-        "Example: What is the notice requirement for planned time off?"
-    ),
-    height=110,
-)
-
-include_expense = st.checkbox(
-    "Include expense details for an eligibility check"
-)
-
-
-# --------------------------------------------------
-# Expense details
-# --------------------------------------------------
-
-claimed_amount = None
-currency = "INR"
-headcount = None
-
-if include_expense:
-
-    st.markdown("#### Expense details")
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        claimed_amount = st.number_input(
-            "Claimed amount",
-            min_value=0.01,
-            value=None,
-            step=100.0,
-            placeholder="Enter amount",
-        )
-
-    with col2:
-        currency = st.selectbox(
-            "Currency",
-            ["INR", "USD", "EUR", "GBP"],
-        )
-
-    with col3:
-        headcount = st.number_input(
-            "Number of people",
-            min_value=1,
-            value=None,
-            step=1,
-            placeholder="Enter number",
-        )
-
-
-# --------------------------------------------------
-# Submit
-# --------------------------------------------------
-
-submitted = st.button(
-    "Run Employee Operations Copilot",
-    type="primary",
-    use_container_width=True,
-)
-
-
-# --------------------------------------------------
-# Execute workflow
-# --------------------------------------------------
-
-if submitted:
-
-    if not query.strip():
-        st.warning("Please enter your question.")
-        st.stop()
-
-    execution_query = query.strip()
-    expense_details = {}
-
-    if include_expense:
-
-        if claimed_amount is None or headcount is None:
-            st.warning(
-                "Please enter the claimed amount and number of people."
-            )
-            st.stop()
-
-        expense_details = {
-            "claimed_amount": float(claimed_amount),
-            "currency": currency,
-            "headcount": int(headcount),
-        }
-
-        execution_query += (
-            f"\nExpense details: claimed amount "
-            f"{claimed_amount} {currency}; "
-            f"headcount: {headcount}."
-        )
+    connection = None
 
     try:
-
-        with st.spinner(
-            "Planner, Executor and Critic are processing your request..."
-        ):
-
-            workflow = get_workflow()
-
-            result = workflow.run(
-                query=execution_query,
-                expense_details=expense_details,
-                thread_id=st.session_state.conversation_id,
-                conversation_history=st.session_state.messages,
-            )
-
-        # Save the user's message
-        st.session_state.messages.append({
-            "role": "user",
-            "content": query.strip(),
-        })
-
-        # Display the user's message immediately
-        # with st.chat_message("user"):
-        #     st.markdown(query.strip())
-
-        # Save the assistant's response
-        assistant_response = result.get(
-            "final_answer",
-            "The workflow did not produce a final answer."
+        connection = sqlite3.connect(
+            f"{CHECKPOINT_DB.as_uri()}?mode=ro",
+            uri=True,
         )
 
-        st.session_state.messages.append({
-            "role": "assistant",
-            "content": assistant_response,
-        })
+        cursor = connection.cursor()
 
-        # Display the assistant's response immediately
-        with st.chat_message("assistant"):
-            st.markdown(assistant_response)
+        cursor.execute(
+            """
+            SELECT
+                thread_id,
+                MAX(rowid) AS latest_checkpoint
+            FROM checkpoints
+            GROUP BY thread_id
+            ORDER BY latest_checkpoint DESC
+            """
+        )
+
+        rows = cursor.fetchall()
+
+        return [row[0] for row in rows]
+
+    except sqlite3.Error as error:
+        st.sidebar.warning(
+            f"Could not retrieve saved conversations: {error}"
+        )
+        return []
+
+    finally:
+        if connection:
+            connection.close()
+
+
+def load_selected_conversation(selected_thread_id):
+    """
+    Load the latest saved question and answer
+    from the selected LangGraph conversation.
+    """
+
+    if not selected_thread_id:
+        st.sidebar.warning("Please select a conversation.")
+        return
+
+    try:
+        saved_state = workflow.get_thread_state(
+            selected_thread_id
+        )
+
+        if hasattr(saved_state, "values"):
+            state_values = saved_state.values
+        else:
+            state_values = saved_state
+
+        if not isinstance(state_values, dict):
+            st.sidebar.error(
+                "Could not read the saved conversation."
+            )
+            return
+
+        previous_query = (
+            state_values.get("user_query")
+            or state_values.get("query")
+            or ""
+        )
+
+        previous_answer = (
+            state_values.get("final_answer", "")
+        )
+
+        if not previous_query and not previous_answer:
+            st.sidebar.info(
+                "No conversation messages found."
+            )
+            return
+
+        # Restore the selected conversation ID.
+        st.session_state.conversation_id = selected_thread_id
+
+        # Restore the latest saved exchange.
+        st.session_state.messages = []
+
+        if previous_query:
+            st.session_state.messages.append({
+                "role": "user",
+                "content": previous_query,
+            })
+
+        if previous_answer:
+            st.session_state.messages.append({
+                "role": "assistant",
+                "content": previous_answer,
+            })
+
+        # Clear any unsent question.
+        st.session_state.question_input = ""
 
         st.rerun()
-        st.divider()
-        st.subheader("Copilot Response")
 
-        status = result.get("status", "unknown")
-        approved = result.get("is_approved", False)
-
-        if status == "approved" and approved:
-            st.success("Critic review passed")
-
-        elif status == "critic_rejected":
-            st.error("The answer did not pass the review process.")
-
-        else:
-            st.warning(f"Workflow status: {status}")
-
-        # --------------------------------------------------
-        # Final answer
-        # --------------------------------------------------
-
-        final_answer = result.get("final_answer", "")
-
-        if final_answer:
-            st.markdown("### Answer")
-            st.markdown(final_answer)
-        else:
-            st.warning(
-                "The workflow did not produce a final answer."
-            )
-
-        # --------------------------------------------------
-        # Planner output
-        # --------------------------------------------------
-
-        with st.expander("View agent plan", expanded=True):
-
-            st.write("**Planned steps**")
-
-            for step in result.get("plan", []):
-                st.markdown(f"- {step}")
-
-            st.write("**Selected tools**")
-            st.write(result.get("selected_tools", []))
-
-            missing = result.get("missing_information", [])
-
-            if missing:
-                st.warning("Missing information identified by Planner")
-
-                for item in missing:
-                    st.markdown(f"- {item}")
-
-        # --------------------------------------------------
-        # Tool results
-        # --------------------------------------------------
-
-        tool_results = result.get("tool_results", {})
-
-        # --------------------------------------------------
-        # Policy citations
-        # --------------------------------------------------
-
-        search_result = tool_results.get(
-            "search_hr_policy", {}
+    except Exception as error:
+        st.sidebar.error(
+            f"Unable to load conversation: {error}"
         )
 
-        citations = search_result.get("citations", [])
 
-        if citations:
+# ---------------------------------------------------------
+# Sidebar: conversation controls
+# ---------------------------------------------------------
 
-            st.markdown("### Policy Sources")
+st.sidebar.title("Conversations")
 
-            for citation in citations:
 
-                title = citation.get(
-                    "title", "Policy document"
-                )
+# New conversation button
 
-                document_id = citation.get(
-                    "document_id", ""
-                )
+if st.sidebar.button(
+    "＋ New conversation",
+    use_container_width=True,
+):
 
-                section = citation.get(
-                    "section_path", "Section not specified"
-                )
+    st.session_state.conversation_id = str(uuid.uuid4())
 
-                source_url = citation.get(
-                    "source_url", ""
-                )
+    st.session_state.messages = []
 
-                st.markdown(
-                    f"**{title}** ({document_id})"
-                )
+    st.session_state.question_input = ""
 
-                st.caption(f"Section: {section}")
+    st.rerun()
 
-                if source_url:
-                    st.markdown(
-                        f"[Open source document]({source_url})"
-                    )
 
-        # --------------------------------------------------
-        # Expense assessment
-        # --------------------------------------------------
+# Retrieve saved conversations
 
-        expense_result = tool_results.get(
-            "calculate_expense_eligibility"
+saved_thread_ids = get_saved_thread_ids()
+
+
+# Previous conversations dropdown
+
+if saved_thread_ids:
+
+    selected_thread_id = st.sidebar.selectbox(
+        "Previous conversations",
+        options=saved_thread_ids,
+        format_func=lambda thread_id: (
+            f"Conversation {thread_id[:8]}"
+        ),
+        index=0,
+        key="selected_conversation",
+    )
+
+    # Load selected conversation button
+
+    if st.sidebar.button(
+        "Load selected conversation",
+        use_container_width=True,
+    ):
+
+        load_selected_conversation(
+            selected_thread_id
         )
 
-        if expense_result:
+else:
 
-            st.markdown("### Expense Eligibility Assessment")
+    st.sidebar.info(
+        "No previous conversations available."
+    )
 
-            compliance_status = expense_result.get(
-                "compliance_status", "unknown"
-            )
 
-            st.write(
-                f"**Compliance status:** {compliance_status}"
-            )
+# ---------------------------------------------------------
+# Main conversation interface
+# ---------------------------------------------------------
 
-            # Display calculation metrics
-            metric_columns = st.columns(4)
+st.title("Employee Operations Copilot")
 
-            metrics = [
-                ("Claimed amount", "claimed_amount"),
-                ("Policy limit", "policy_limit"),
-                ("Amount within limit", "eligible_amount"),
-                ("Excess amount", "excess_amount"),
-            ]
+st.caption(
+    "Ask questions about HR policies, business travel, "
+    "per-diem, gifts, team outings and expense compliance."
+)
 
-            for column, (label, field) in zip(
-                metric_columns, metrics
+
+# ---------------------------------------------------------
+# Display conversation history
+# ---------------------------------------------------------
+
+for message in st.session_state.messages:
+
+    with st.chat_message(message["role"]):
+
+        st.markdown(message["content"])
+
+
+# ---------------------------------------------------------
+# User input
+# ---------------------------------------------------------
+
+with st.container():
+
+    query = st.text_area(
+        "Your question",
+        key="question_input",
+        height=90,
+        placeholder="Type your question here...",
+        label_visibility="collapsed",
+    )
+
+    send_clicked = st.button(
+        "Send",
+        type="primary",
+        use_container_width=True,
+    )
+
+
+# ---------------------------------------------------------
+# Process user request
+# ---------------------------------------------------------
+
+if send_clicked:
+
+    execution_query = query.strip()
+
+    if not execution_query:
+
+        st.warning(
+            "Please enter a question before sending."
+        )
+
+    else:
+
+        # Preserve existing conversation history.
+        conversation_history = list(
+            st.session_state.messages
+        )
+
+        try:
+
+            with st.spinner(
+                "Preparing your response..."
             ):
 
-                value = expense_result.get(field)
-
-                if value is not None:
-                    column.metric(
-                        label,
-                        f"{expense_result.get('currency', '')} {value}",
-                    )
-                else:
-                    column.metric(label, "Not determined")
-
-            # Calculation details
-            calculation = expense_result.get("calculation")
-
-            if calculation:
-                st.write("**Calculation details**")
-                st.write(calculation)
-
-            # Approval requirement
-            approval_required = expense_result.get(
-                "approval_required"
-            )
-
-            if approval_required is True:
-                st.warning("Additional approval is required.")
-
-            elif approval_required is False:
-                st.write(
-                    "**Approval requirement:** No additional approval "
-                    "requirement was identified in the extracted evidence."
+                result = workflow.run(
+                    query=execution_query,
+                    expense_details={},
+                    thread_id=st.session_state.conversation_id,
+                    conversation_history=conversation_history,
                 )
 
-            else:
-                st.info(
-                    "**Approval requirement:** Not established by "
-                    "the available policy evidence."
-                )
-
-            # Recommendation
-            recommendation = expense_result.get(
-                "recommendation"
+            final_answer = (
+                result.get("final_answer")
+                if isinstance(result, dict)
+                else None
             )
 
-            if recommendation:
-                st.write("**Recommendation**")
-                st.write(recommendation)
+            if not final_answer:
 
-            # Supporting policy evidence
-            st.markdown("#### Supporting Policy Evidence")
-
-            policy_evidence = expense_result.get(
-                "policy_evidence", []
-            )
-
-            if policy_evidence:
-
-                for quote in policy_evidence:
-                    st.markdown(f"> {quote}")
-
-            else:
-                st.warning(
-                    "No extracted policy quotations are available "
-                    "for this expense calculation."
+                raise RuntimeError(
+                    "The workflow did not return a final answer."
                 )
 
-            # Missing information
-            expense_missing = expense_result.get(
-                "missing_information", []
+            # Save user message.
+            st.session_state.messages.append({
+                "role": "user",
+                "content": execution_query,
+            })
+
+            # Save assistant response.
+            st.session_state.messages.append({
+                "role": "assistant",
+                "content": final_answer,
+            })
+
+            # Clear input on the next rerun.
+            # This happens only after successful execution.
+            st.session_state.clear_question_on_next_run = True
+
+            st.rerun()
+
+        except Exception as error:
+
+            st.error(
+                "I could not complete your request. "
+                "Please try again."
             )
 
-            if expense_missing:
-
-                st.warning("Additional information required")
-
-                for item in expense_missing:
-                    st.markdown(f"- {item}")
-
-        # --------------------------------------------------
-        # Retrieved evidence
-        # --------------------------------------------------
-
-        evidence = result.get("retrieved_evidence", [])
-
-        if evidence:
-
-            with st.expander("View retrieved policy evidence"):
-
-                for item in evidence:
-
-                    st.markdown(
-                        f"**{item.get('title', 'Policy document')}**"
-                    )
-
-                    st.caption(
-                        f"Chunk: {item.get('chunk_id', '')} | "
-                        f"Section: {item.get('section', '')}"
-                    )
-
-                    st.write(item.get("text", ""))
-                    st.divider()
-
-        # --------------------------------------------------
-        # Critic execution trace
-        # --------------------------------------------------
-
-        with st.expander(
-            "View agent execution and Critic review"
-        ):
-
-            st.write(f"**Final workflow status:** {status}")
-            st.write(f"**Critic approved:** {approved}")
-
-            st.write(
-                f"**Retry count:** {result.get('retry_count', 0)}"
-            )
-
-            for entry in result.get("execution_log", []):
-
-                st.markdown(
-                    f"**Agent:** {entry.get('agent', 'Unknown')}"
-                )
-
-                st.write(
-                    f"Approved: {entry.get('approved', 'N/A')}"
-                )
-
-                issues = entry.get("issues", [])
-
-                if issues:
-                    st.write("Issues:")
-
-                    for issue in issues:
-                        st.markdown(f"- {issue}")
-
-                feedback = entry.get("feedback")
-
-                if feedback:
-                    st.write(f"Feedback: {feedback}")
-
-        # --------------------------------------------------
-        # Complete workflow output
-        # --------------------------------------------------
-
-        with st.expander("View complete workflow output"):
-            st.json(result)
-
-    except Exception as exc:
-
-        st.error(
-            "The application encountered an error while processing "
-            "your request."
-        )
-
-        st.exception(exc)
+            st.caption(str(error))

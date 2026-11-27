@@ -1,6 +1,7 @@
 
 import argparse
 import json
+import re
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -11,8 +12,12 @@ from src.agents.workflow import EmployeeOpsWorkflow
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
+
 DEFAULT_DATASET = (
-    PROJECT_ROOT / "data" / "evaluation" / "evaluation_v1.0.json"
+    PROJECT_ROOT
+    / "data"
+    / "evaluation"
+    / "evaluation_gitlab_v1.1.json"
 )
 
 DEFAULT_OUTPUT = (
@@ -20,29 +25,58 @@ DEFAULT_OUTPUT = (
     / "data"
     / "evaluation"
     / "results"
-    / "evaluation_results.json"
+    / "evaluation_gitlab_v1.1_results.json"
 )
 
-CALCULATOR_STATUSES = {
-    "within_policy",
-    "requires_approval",
-    "exceeds_policy",
-    "unable_to_determine",
+FAILED_TOOL_STATUSES = {
+    "error",
+    "failed",
+    "not_implemented",
+    "missing_file",
 }
 
 
-def load_dataset(dataset_path: Path) -> dict:
-    """Load and validate the evaluation dataset."""
+def normalize_text(value: Any) -> str:
+    """Normalize text for case-insensitive matching."""
+    if value is None:
+        return ""
+    return re.sub(r"\s+", " ", str(value)).strip().casefold()
 
-    with dataset_path.open("r", encoding="utf-8") as file:
+
+def as_list(value: Any) -> list:
+    """Convert optional values to a list."""
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return value
+    return [value]
+
+
+def load_dataset(dataset_path: Path) -> dict:
+    """Load and validate the GitLab evaluation dataset."""
+
+    with dataset_path.open("r", encoding="utf-8-sig") as file:
         dataset = json.load(file)
 
     cases = dataset.get("evaluation_cases")
 
-    if not isinstance(cases, list):
+    if not isinstance(cases, list) or not cases:
         raise ValueError(
-            "Dataset must contain an evaluation_cases list."
+            "Dataset must contain a non-empty evaluation_cases list."
         )
+
+    required_fields = {"test_id", "query", "gold_answer"}
+
+    for index, case in enumerate(cases, start=1):
+        if not isinstance(case, dict):
+            raise ValueError(f"Case {index} must be a JSON object.")
+
+        missing = required_fields - case.keys()
+
+        if missing:
+            raise ValueError(
+                f"Case {index} is missing required fields: {sorted(missing)}"
+            )
 
     return dataset
 
@@ -52,33 +86,184 @@ def get_missing_information(result: dict) -> list:
 
     missing = list(result.get("missing_information") or [])
 
-    tool_results = result.get("tool_results") or {}
-
-    for tool_result in tool_results.values():
+    for tool_result in (result.get("tool_results") or {}).values():
         if isinstance(tool_result, dict):
             missing.extend(
                 tool_result.get("missing_information") or []
             )
 
-    # Remove duplicates while preserving order.
     return list(dict.fromkeys(missing))
 
 
-def evaluate_case(workflow: EmployeeOpsWorkflow, case: dict) -> dict:
-    """Run one evaluation case and capture its results."""
+def get_evidence(result: dict) -> list[dict]:
+    """Collect retrieved evidence from the workflow result."""
+
+    evidence = result.get("retrieved_evidence") or []
+
+    return [
+        item for item in evidence
+        if isinstance(item, dict)
+    ]
+
+
+def evaluate_sources(
+    expected_sources: list,
+    evidence: list[dict],
+) -> dict:
+    """Compare expected document IDs with retrieved document IDs."""
+
+    expected = set(str(item) for item in expected_sources)
+
+    actual = {
+        str(item.get("document_id"))
+        for item in evidence
+        if item.get("document_id")
+    }
+
+    matched = expected & actual
+
+    return {
+        "expected": sorted(expected),
+        "retrieved": sorted(actual),
+        "matched": sorted(matched),
+        "missing": sorted(expected - actual),
+        "recall": (
+            round(len(matched) / len(expected), 3)
+            if expected else None
+        ),
+        "all_expected_found": (
+            len(matched) == len(expected)
+            if expected else None
+        ),
+    }
+
+def evaluate_sections(
+    expected_sections: list,
+    evidence: list[dict],
+) -> dict:
+    """Compare expected section names with retrieved section paths.
+
+    A match requires an exact section-name match against one
+    segment of the retrieved section path.
+    """
+
+    actual_sections = [
+        str(item.get("section") or "")
+        for item in evidence
+        if item.get("section")
+    ]
+
+    # Split section paths into individual heading names.
+    actual_section_segments = []
+
+    for section_path in actual_sections:
+        segments = [
+            normalize_text(segment)
+            for segment in section_path.split(">")
+            if normalize_text(segment)
+        ]
+        actual_section_segments.extend(segments)
+
+    matched = []
+    missing = []
+
+    for expected in expected_sections:
+        expected_text = normalize_text(expected)
+
+        found = (
+            expected_text in actual_section_segments
+        )
+
+        if found:
+            matched.append(expected)
+        else:
+            missing.append(expected)
+
+    return {
+        "expected": expected_sections,
+        "retrieved": actual_sections,
+        "matched": matched,
+        "missing": missing,
+        "recall": (
+            round(len(matched) / len(expected_sections), 3)
+            if expected_sections else None
+        ),
+        "all_expected_found": (
+            len(matched) == len(expected_sections)
+            if expected_sections else None
+        ),
+    }
+
+def evaluate_tool_execution(
+    expected_tools: list,
+    tool_results: dict,
+) -> dict:
+    """Check whether expected tools returned usable results."""
+
+    execution = {}
+
+    for tool in expected_tools:
+        tool_result = tool_results.get(tool)
+
+        if tool_result is None:
+            execution[tool] = "not_executed"
+            continue
+
+        if not isinstance(tool_result, dict):
+            execution[tool] = "returned_non_dict_result"
+            continue
+
+        status = normalize_text(tool_result.get("status"))
+
+        if status in FAILED_TOOL_STATUSES:
+            execution[tool] = status
+        else:
+            execution[tool] = "result_returned"
+
+    successful = [
+        tool for tool, status in execution.items()
+        if status == "result_returned"
+    ]
+
+    return {
+        "execution": execution,
+        "successful_tools": successful,
+        "missing_tools": [
+            tool for tool, status in execution.items()
+            if status == "not_executed"
+        ],
+        "successful_count": len(successful),
+        "expected_count": len(expected_tools),
+    }
+
+
+def evaluate_case(
+    workflow: EmployeeOpsWorkflow,
+    case: dict,
+) -> dict:
+    """Run one GitLab evaluation case."""
 
     started = time.perf_counter()
+
+    expected_tools = as_list(case.get("expected_tool_calls"))
+    expected_sources = as_list(case.get("expected_sources"))
+    expected_sections = as_list(case.get("expected_sections"))
 
     case_result = {
         "test_id": case.get("test_id"),
         "category": case.get("category"),
         "query": case.get("query"),
+        "gold_answer": case.get("gold_answer"),
         "expected_status": case.get("expected_status"),
-        "expected_amount": case.get("expected_amount"),
-        "expected_currency": case.get("expected_currency"),
         "requires_clarification": case.get(
             "requires_clarification"
         ),
+        "source_verification_required": case.get(
+            "source_verification_required"
+        ),
+        "expected_tool_calls": expected_tools,
+        "expected_sources": expected_sources,
+        "expected_sections": expected_sections,
     }
 
     try:
@@ -88,101 +273,101 @@ def evaluate_case(workflow: EmployeeOpsWorkflow, case: dict) -> dict:
             expense_details=None,
         )
 
+        if not isinstance(result, dict):
+            raise TypeError("Workflow did not return a dictionary.")
+
         latency = round(time.perf_counter() - started, 3)
 
         tool_results = result.get("tool_results") or {}
         selected_tools = result.get("selected_tools") or []
+        evidence = get_evidence(result)
 
-        expected_tools = case.get("expected_tool_calls") or []
-        actual_tools = list(tool_results.keys())
+        tool_metrics = evaluate_tool_execution(
+            expected_tools,
+            tool_results,
+        )
 
-        missing_tools = [
-            tool for tool in expected_tools
-            if tool not in actual_tools
-        ]
+        source_metrics = evaluate_sources(
+            expected_sources,
+            evidence,
+        )
 
-        tool_execution = {}
+        section_metrics = evaluate_sections(
+            expected_sections,
+            evidence,
+        )
 
-        for tool in expected_tools:
-            tool_result = tool_results.get(tool)
+        # Preserve all missing-information details for diagnostics.
+        missing_information = get_missing_information(result)
 
-            if tool_result is None:
-                tool_execution[tool] = "not_executed"
+        # Planner missing_information represents details missing
+        # from the employee request before policy retrieval.
+        employee_missing_information = (
+            result.get("missing_information") or []
+        )
 
-            elif not isinstance(tool_result, dict):
-                tool_execution[tool] = "returned_non_dict_result"
+        insufficient_evidence = any(
+            isinstance(tool_result, dict)
+            and tool_result.get("insufficient_evidence") is True
+            for tool_result in tool_results.values()
+        )
 
-            else:
-                tool_status = tool_result.get("status")
+        # Policy evidence gaps alone do not mean the employee
+        # needs to provide additional information.
+        clarification_observed = bool(employee_missing_information)
 
-                if tool_status == "not_implemented":
-                    tool_execution[tool] = "not_implemented"
-                elif tool_status == "missing_file":
-                    tool_execution[tool] = "missing_file"
-                else:
-                    tool_execution[tool] = "result_returned"
+        expected_clarification = case.get(
+            "requires_clarification"
+        )
 
+        clarification_match = None
+
+        if isinstance(expected_clarification, bool):
+            clarification_match = (
+                expected_clarification == clarification_observed
+            )
+
+        # Capture calculator status only if a calculator result exists.
         calculation = tool_results.get(
             "calculate_expense_eligibility"
         )
 
-        if not isinstance(calculation, dict):
-            calculation = {}
-
-        actual_calculator_status = calculation.get(
-            "compliance_status"
+        actual_status = (
+            calculation.get("compliance_status")
+            if isinstance(calculation, dict)
+            else None
         )
 
         expected_status = case.get("expected_status")
 
-        # Compare statuses only when both use the calculator's
-        # recognised status vocabulary.
         status_match = None
 
-        if (
-            actual_calculator_status in CALCULATOR_STATUSES
-            and expected_status in CALCULATOR_STATUSES
-        ):
+        if actual_status and expected_status:
             status_match = (
-                actual_calculator_status == expected_status
+                normalize_text(actual_status)
+                == normalize_text(expected_status)
             )
-
-        missing_information = get_missing_information(result)
-
-        clarification_observed = (
-            len(missing_information) > 0
-        )
-
-        retrieved_evidence = result.get(
-            "retrieved_evidence"
-        ) or []
 
         case_result.update({
             "workflow_completed": True,
             "latency_seconds": latency,
-            "selected_tools": selected_tools,
-            "actual_tools": actual_tools,
-            "expected_tools": expected_tools,
-            "missing_expected_tools": missing_tools,
-            "tool_execution": tool_execution,
+            "workflow_status": result.get("status"),
             "critic_approved": result.get("is_approved"),
             "retry_count": result.get("retry_count", 0),
-            "workflow_status": result.get("status"),
-            "final_answer": result.get("final_answer", ""),
-            "actual_calculator_status": actual_calculator_status,
-            "status_match": status_match,
-            "actual_calculated_amount": calculation.get(
-                "eligible_amount"
-            ),
-            "actual_claimed_amount": calculation.get(
-                "claimed_amount"
-            ),
-            "actual_excess_amount": calculation.get(
-                "excess_amount"
-            ),
+            "selected_tools": selected_tools,
+            "actual_tools": list(tool_results.keys()),
+            "tool_execution": tool_metrics,
+            "source_evaluation": source_metrics,
+            "section_evaluation": section_metrics,
+            "retrieved_evidence_count": len(evidence),
+            "retrieved_evidence": evidence,
             "missing_information": missing_information,
+            "insufficient_evidence": insufficient_evidence,
             "clarification_observed": clarification_observed,
-            "retrieved_evidence_count": len(retrieved_evidence),
+            "clarification_match": clarification_match,
+            "actual_calculator_status": actual_status,
+            "status_match": status_match,
+            "generated_answer": result.get("final_answer", ""),
             "execution_log": result.get("execution_log", []),
             "tool_results": tool_results,
             "error": None,
@@ -195,13 +380,26 @@ def evaluate_case(workflow: EmployeeOpsWorkflow, case: dict) -> dict:
                 time.perf_counter() - started, 3
             ),
             "error": f"{type(exc).__name__}: {exc}",
+            "tool_execution": {
+                "execution": {
+                    tool: "not_executed"
+                    for tool in expected_tools
+                },
+                "successful_tools": [],
+                "missing_tools": expected_tools,
+                "successful_count": 0,
+                "expected_count": len(expected_tools),
+            },
+            "source_evaluation": None,
+            "section_evaluation": None,
+            "clarification_match": None,
         })
 
     return case_result
 
 
 def build_summary(results: list[dict]) -> dict:
-    """Build high-level evaluation statistics."""
+    """Calculate aggregate evaluation metrics."""
 
     total = len(results)
 
@@ -210,32 +408,57 @@ def build_summary(results: list[dict]) -> dict:
         for item in results
     )
 
-    approved = sum(
-        item.get("critic_approved") is True
+    expected_tool_count = sum(
+        item.get("tool_execution", {}).get("expected_count", 0)
         for item in results
     )
 
-    expected_tool_count = 0
-    executed_tool_count = 0
-    not_implemented_count = 0
+    successful_tool_count = sum(
+        item.get("tool_execution", {}).get("successful_count", 0)
+        for item in results
+    )
 
-    for item in results:
-        for tool in item.get("expected_tools", []):
-            expected_tool_count += 1
+    source_cases = [
+        item for item in results
+        if item.get("source_evaluation")
+        and item["source_evaluation"]["recall"] is not None
+    ]
 
-            status = item.get(
-                "tool_execution", {}
-            ).get(tool)
+    section_cases = [
+        item for item in results
+        if item.get("section_evaluation")
+        and item["section_evaluation"]["recall"] is not None
+    ]
 
-            if status in {
-                "result_returned",
-                "not_implemented",
-                "missing_file",
-            }:
-                executed_tool_count += 1
+    source_expected = sum(
+        len(item["source_evaluation"]["expected"])
+        for item in source_cases
+    )
 
-            if status == "not_implemented":
-                not_implemented_count += 1
+    source_matched = sum(
+        len(item["source_evaluation"]["matched"])
+        for item in source_cases
+    )
+
+    section_expected = sum(
+        len(item["section_evaluation"]["expected"])
+        for item in section_cases
+    )
+
+    section_matched = sum(
+        len(item["section_evaluation"]["matched"])
+        for item in section_cases
+    )
+
+    clarification_cases = [
+        item for item in results
+        if item.get("clarification_match") is not None
+    ]
+
+    clarification_matches = sum(
+        item["clarification_match"]
+        for item in clarification_cases
+    )
 
     comparable_statuses = [
         item["status_match"]
@@ -243,25 +466,66 @@ def build_summary(results: list[dict]) -> dict:
         if item.get("status_match") is not None
     ]
 
-    status_matches = sum(comparable_statuses)
+    completed_latencies = [
+        item["latency_seconds"]
+        for item in results
+        if item.get("workflow_completed")
+    ]
 
     return {
         "total_cases": total,
         "workflow_completed": completed,
         "workflow_errors": total - completed,
-        "critic_approved": approved,
+        "workflow_completion_rate": (
+            round(completed / total, 3) if total else None
+        ),
         "expected_tool_calls": expected_tool_count,
-        "expected_tool_calls_found": executed_tool_count,
-        "not_implemented_tool_calls": not_implemented_count,
-        "tool_call_coverage": (
-            round(executed_tool_count / expected_tool_count, 3)
+        "successful_tool_calls": successful_tool_count,
+        "tool_execution_rate": (
+            round(
+                successful_tool_count / expected_tool_count, 3
+            )
             if expected_tool_count else None
         ),
+        "source_cases_evaluated": len(source_cases),
+        "expected_source_references": source_expected,
+        "matched_source_references": source_matched,
+        "source_recall": (
+            round(source_matched / source_expected, 3)
+            if source_expected else None
+        ),
+        "section_cases_evaluated": len(section_cases),
+        "expected_section_references": section_expected,
+        "matched_section_references": section_matched,
+        "section_recall": (
+            round(section_matched / section_expected, 3)
+            if section_expected else None
+        ),
+        "clarification_cases_evaluated": len(clarification_cases),
+        "clarification_matches": clarification_matches,
+        "clarification_accuracy": (
+            round(
+                clarification_matches / len(clarification_cases), 3
+            )
+            if clarification_cases else None
+        ),
         "comparable_status_cases": len(comparable_statuses),
-        "status_matches": status_matches,
+        "status_matches": sum(comparable_statuses),
         "status_match_rate": (
-            round(status_matches / len(comparable_statuses), 3)
+            round(
+                sum(comparable_statuses) / len(comparable_statuses), 3
+            )
             if comparable_statuses else None
+        ),
+        "critic_approved": sum(
+            item.get("critic_approved") is True
+            for item in results
+        ),
+        "average_latency_seconds": (
+            round(
+                sum(completed_latencies) / len(completed_latencies), 3
+            )
+            if completed_latencies else None
         ),
     }
 
@@ -272,7 +536,10 @@ def run_evaluation(
     limit: int | None = None,
     selected_case: str | None = None,
 ) -> None:
-    """Run the evaluation dataset and save results."""
+    """Run evaluation and save the detailed results."""
+
+    if limit is not None and limit < 1:
+        raise ValueError("--limit must be at least 1.")
 
     dataset = load_dataset(dataset_path)
     cases = dataset["evaluation_cases"]
@@ -291,38 +558,47 @@ def run_evaluation(
     if limit is not None:
         cases = cases[:limit]
 
+    print(f"Dataset: {dataset.get('dataset_name', dataset_path.name)}")
+    print(f"Dataset version: {dataset.get('dataset_version')}")
     print(f"Evaluation cases: {len(cases)}")
     print("Initialising Employee Operations Copilot...")
 
-    workflow = EmployeeOpsWorkflow()
-
+    workflow = None
     results = []
 
-    for index, case in enumerate(cases, start=1):
-        test_id = case.get("test_id", f"case_{index}")
+    try:
+        workflow = EmployeeOpsWorkflow()
 
-        print(
-            f"[{index}/{len(cases)}] Running {test_id}...",
-            end=" ",
-            flush=True,
-        )
+        for index, case in enumerate(cases, start=1):
+            test_id = case.get("test_id", f"case_{index}")
 
-        case_result = evaluate_case(workflow, case)
-        results.append(case_result)
+            print(
+                f"[{index}/{len(cases)}] Running {test_id}...",
+                end=" ",
+                flush=True,
+            )
 
-        if case_result.get("workflow_completed"):
-            print("Completed")
-        else:
-            print("Error")
+            case_result = evaluate_case(workflow, case)
+            results.append(case_result)
+
+            if case_result.get("workflow_completed"):
+                print("Completed")
+            else:
+                print("Error")
+
+    finally:
+        if workflow is not None:
+            workflow.close()
 
     summary = build_summary(results)
 
     output = {
         "evaluation_run": {
-            "timestamp": datetime.now(
-                timezone.utc
-            ).isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "dataset_name": dataset.get("dataset_name"),
             "dataset_version": dataset.get("dataset_version"),
+            "dataset_status": dataset.get("status"),
+            "dataset_path": str(dataset_path),
             "total_cases": len(results),
         },
         "summary": summary,
@@ -354,7 +630,8 @@ def run_evaluation(
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Evaluate the Employee Operations Copilot."
+        description="Evaluate the Employee Operations Copilot "
+                    "using the GitLab policy dataset."
     )
 
     parser.add_argument(
@@ -380,7 +657,7 @@ def main() -> None:
         "--case",
         type=str,
         default=None,
-        help="Run one specific test case, e.g. A01.",
+        help="Run one specific test case.",
     )
 
     args = parser.parse_args()

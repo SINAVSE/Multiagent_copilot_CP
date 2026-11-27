@@ -174,6 +174,13 @@ Return ONLY valid JSON using this structure:
 
     return extracted
 
+# def normalize_quote_text(text: str) -> str:
+#     """Normalize whitespace for evidence quotation comparison."""
+#     return " ".join(text.split())
+
+def normalize_quote_text(text: str) -> str:
+    """Ignore whitespace differences when comparing source quotations."""
+    return re.sub(r"\s+", "", text).casefold()
 
 def validate_policy_extraction(
     extracted: ExtractedExpensePolicy,
@@ -228,8 +235,15 @@ def validate_policy_extraction(
 
         if not quote_text:
             issues.append(f"Empty quotation for chunk: {quote.chunk_id}")
-        elif quote_text not in source_text:
-            issues.append(f"Quotation does not match chunk: {quote.chunk_id}")
+
+        elif (
+            normalize_quote_text(quote_text)
+            not in normalize_quote_text(source_text)
+        ):
+            issues.append(
+                f"Quotation does not match chunk: {quote.chunk_id}"
+            )
+
         else:
             valid_quotes.append(quote_text)
 

@@ -1,5 +1,7 @@
-﻿from src.agents.workflow import EmployeeOpsWorkflow
+﻿import sqlite3
+from langgraph.checkpoint.sqlite import SqliteSaver
 from src.observability.event_logger import EventLogger
+from src.agents.workflow import EmployeeOpsWorkflow
 
 class FakePlanner:
     def plan(self, query, has_file=False,expense_details=None,):
@@ -110,3 +112,105 @@ def test_workflow_stops_after_maximum_retries():
     assert "could not produce an answer" in result["final_answer"]
 
     assert len(result["execution_log"]) == 3
+
+def test_workflow_checkpoint_persists_across_instances(tmp_path):
+    db_path = tmp_path / "test_checkpoints.sqlite"
+    thread_id = "checkpoint-persistence-test"
+
+    # First workflow instance
+    workflow1 = EmployeeOpsWorkflow.__new__(EmployeeOpsWorkflow)
+
+    workflow1._app = None
+    workflow1.planner = FakePlanner()
+    workflow1.executor = FakeExecutor()
+    workflow1.critic = FakeCritic([True])
+    workflow1.event_logger = EventLogger()
+
+    workflow1.connection = sqlite3.connect(
+        str(db_path),
+        check_same_thread=False,
+    )
+    workflow1.checkpointer = SqliteSaver(workflow1.connection)
+    workflow1.checkpointer.setup()
+
+    result = workflow1.run(
+        query="Test checkpoint persistence",
+        thread_id=thread_id,
+    )
+
+    assert result["status"] == "approved"
+
+    workflow1.close()
+
+    # Second workflow instance using the same database
+    workflow2 = EmployeeOpsWorkflow.__new__(EmployeeOpsWorkflow)
+
+    workflow2._app = None
+    workflow2.planner = FakePlanner()
+    workflow2.executor = FakeExecutor()
+    workflow2.critic = FakeCritic([True])
+    workflow2.event_logger = EventLogger()
+
+    workflow2.connection = sqlite3.connect(
+        str(db_path),
+        check_same_thread=False,
+    )
+    workflow2.checkpointer = SqliteSaver(workflow2.connection)
+    workflow2.checkpointer.setup()
+
+    saved_state = workflow2.get_thread_state(thread_id)
+
+    assert saved_state is not None
+    assert saved_state.values["status"] == "approved"
+    assert saved_state.values["thread_id"] == thread_id
+
+    workflow2.close()
+
+def test_workflow_preserves_previous_checkpoint_after_failure(tmp_path):
+    db_path = tmp_path / "failure_checkpoint.sqlite"
+    thread_id = "failure-recovery-test"
+
+    workflow = EmployeeOpsWorkflow.__new__(EmployeeOpsWorkflow)
+
+    workflow._app = None
+    workflow.planner = FakePlanner()
+    workflow.executor = FakeExecutor()
+    workflow.critic = FakeCritic([True])
+    workflow.event_logger = EventLogger()
+
+    workflow.connection = sqlite3.connect(
+        str(db_path),
+        check_same_thread=False,
+    )
+    workflow.checkpointer = SqliteSaver(workflow.connection)
+    workflow.checkpointer.setup()
+
+    # First execution succeeds and saves a checkpoint.
+    first_result = workflow.run(
+        query="First successful request",
+        thread_id=thread_id,
+    )
+
+    assert first_result["status"] == "approved"
+
+    # Force the next execution to fail in the planner.
+    def failing_plan(*args, **kwargs):
+        raise RuntimeError("Simulated planner failure")
+
+    workflow.planner.plan = failing_plan
+
+    try:
+        workflow.run(
+            query="Second request that fails",
+            thread_id=thread_id,
+        )
+        assert False, "Expected planner failure"
+    except RuntimeError as exc:
+        assert "Simulated planner failure" in str(exc)
+
+    # Check that a checkpoint is still available.
+    saved_state = workflow.get_thread_state(thread_id)
+
+    assert saved_state is not None
+
+    workflow.close()
