@@ -38,6 +38,7 @@ def create_test_workflow(database_path):
 
     workflow.planner.plan.side_effect = (
         lambda **kwargs: {
+            "intent": "POLICY_QUERY",
             "plan": ["Retrieve relevant policy"],
             "selected_tools": ["search_hr_policy"],
             "missing_information": [],
@@ -444,3 +445,191 @@ def test_clarification_state_is_persisted(workflow):
     assert snapshot.values["context_resolution"][
         "requires_clarification"
     ] is True
+
+
+# --------------------------------------------------
+# CAP-09: Structured Planner intent persistence
+# --------------------------------------------------
+
+
+def set_mock_planner_intent(workflow, intent):
+
+    def planner_response(**kwargs):
+        tools = ["search_hr_policy"]
+
+        if intent == "EXPENSE_ELIGIBILITY":
+            tools.append(
+                "calculate_expense_eligibility"
+            )
+
+        return {
+            "intent": intent,
+            "plan": ["Process employee request"],
+            "selected_tools": tools,
+            "missing_information": [],
+            "expense_details": kwargs.get(
+                "expense_details", {}
+            ),
+        }
+
+    workflow.planner.plan.side_effect = (
+        planner_response
+    )
+
+
+def test_planner_intent_saved_in_checkpoint(workflow):
+
+    thread_id = str(uuid.uuid4())
+
+    set_mock_planner_intent(
+        workflow,
+        "POLICY_QUERY",
+    )
+
+    result = workflow.run(
+        query="What is the annual leave policy?",
+        thread_id=thread_id,
+    )
+
+    assert result["intent"] == "POLICY_QUERY"
+
+    snapshot = workflow.get_thread_state(
+        thread_id
+    )
+
+    assert snapshot.values["intent"] == (
+        "POLICY_QUERY"
+    )
+
+
+def test_planner_intent_changes_across_turns(workflow):
+
+    thread_id = str(uuid.uuid4())
+
+    set_mock_planner_intent(
+        workflow,
+        "POLICY_QUERY",
+    )
+
+    first = workflow.run(
+        query="What is the travel policy?",
+        thread_id=thread_id,
+    )
+
+    assert first["intent"] == "POLICY_QUERY"
+
+    set_mock_planner_intent(
+        workflow,
+        "EXPENSE_ELIGIBILITY",
+    )
+
+    second = workflow.run(
+        query="Can I claim $100 for dinner?",
+        thread_id=thread_id,
+    )
+
+    assert second["intent"] == (
+        "EXPENSE_ELIGIBILITY"
+    )
+
+    snapshot = workflow.get_thread_state(
+        thread_id
+    )
+
+    assert snapshot.values["intent"] == (
+        "EXPENSE_ELIGIBILITY"
+    )
+
+
+def test_clarification_overrides_previous_intent(workflow):
+
+    thread_id = str(uuid.uuid4())
+
+    set_mock_planner_intent(
+        workflow,
+        "POLICY_QUERY",
+    )
+
+    first = workflow.run(
+        query="What is the annual leave policy?",
+        thread_id=thread_id,
+    )
+
+    assert first["intent"] == "POLICY_QUERY"
+
+    workflow.planner.plan.reset_mock()
+    workflow.executor.execute.reset_mock()
+    workflow.critic.review.reset_mock()
+
+    second = workflow.run(
+        query="Can I claim the same amount?",
+        thread_id=thread_id,
+    )
+
+    assert second["intent"] == (
+        "CLARIFICATION_REQUIRED"
+    )
+
+    assert second["status"] == (
+        "clarification_required"
+    )
+
+    assert second["selected_tools"] == []
+
+    assert second["tool_results"] == {}
+
+    assert second["retrieved_evidence"] == []
+
+    assert second["is_approved"] is False
+
+    workflow.planner.plan.assert_not_called()
+    workflow.executor.execute.assert_not_called()
+    workflow.critic.review.assert_not_called()
+
+    snapshot = workflow.get_thread_state(
+        thread_id
+    )
+
+    assert snapshot.values["intent"] == (
+        "CLARIFICATION_REQUIRED"
+    )
+
+
+def test_planner_intent_thread_isolation(workflow):
+
+    thread_one = str(uuid.uuid4())
+    thread_two = str(uuid.uuid4())
+
+    set_mock_planner_intent(
+        workflow,
+        "POLICY_QUERY",
+    )
+
+    workflow.run(
+        query="What is the annual leave policy?",
+        thread_id=thread_one,
+    )
+
+    set_mock_planner_intent(
+        workflow,
+        "EXPENSE_ELIGIBILITY",
+    )
+
+    workflow.run(
+        query="Can I claim $100 for dinner?",
+        thread_id=thread_two,
+    )
+
+    state_one = workflow.get_thread_state(
+        thread_one
+    ).values
+
+    state_two = workflow.get_thread_state(
+        thread_two
+    ).values
+
+    assert state_one["intent"] == "POLICY_QUERY"
+
+    assert state_two["intent"] == (
+        "EXPENSE_ELIGIBILITY"
+    )

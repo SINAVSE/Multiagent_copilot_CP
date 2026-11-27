@@ -123,6 +123,7 @@ class EmployeeOpsWorkflow:
     )
 
         return {
+            "intent": plan_result["intent"],
             "plan": plan_result["plan"],
             "selected_tools": plan_result["selected_tools"],
             "missing_information": plan_result.get(
@@ -331,6 +332,7 @@ class EmployeeOpsWorkflow:
         )
 
         return {
+            "intent": "CLARIFICATION_REQUIRED",
             "final_answer": message,
             "status": "clarification_required",
             "is_approved": False,
@@ -529,6 +531,7 @@ class EmployeeOpsWorkflow:
         })
 
         initial_state: AgentState = {
+            "intent": "",
             "query": contextual_query,
             "user_query": query.strip(),
             "conversation_context": conversation_context,

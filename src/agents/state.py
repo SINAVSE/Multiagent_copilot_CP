@@ -16,6 +16,7 @@ class AgentState(TypedDict, total=False):
     context_resolution: dict[str, Any]
 
     # Planner output
+    intent: str
     plan: list[str]
     selected_tools: list[str]
     missing_information: list[str]

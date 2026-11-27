@@ -1,9 +1,12 @@
-﻿from src.agents.workflow import EmployeeOpsWorkflow
+from src.agents.workflow import EmployeeOpsWorkflow
+from src.agents.query_resolver import QueryResolver
+from langgraph.checkpoint.memory import MemorySaver
 from src.observability.event_logger import EventLogger
 
 class FakePlanner:
     def plan(self, query, has_file=False,expense_details=None,):
         return {
+            "intent": "POLICY_QUERY",
             "plan": ["Search the relevant HR policy"],
             "selected_tools": ["search_hr_policy"],
             "missing_information": [],
@@ -55,6 +58,7 @@ def create_test_workflow(critic_decisions):
     workflow = EmployeeOpsWorkflow.__new__(EmployeeOpsWorkflow)
 
     workflow._app = None
+    workflow.query_resolver = QueryResolver()
 
     workflow.planner = FakePlanner()
     workflow.executor = FakeExecutor()
@@ -63,8 +67,8 @@ def create_test_workflow(critic_decisions):
     # Use a real event logger for workflow execution.
     workflow.event_logger = EventLogger()
 
-    # Tests do not need persistent SQLite checkpoints.
-    workflow.checkpointer = None
+    # Isolated in-memory checkpoint for workflow tests.
+    workflow.checkpointer = MemorySaver()
 
     return workflow
 
