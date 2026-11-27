@@ -1,0 +1,40 @@
+name: Docker Build and Validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feature/capstone-enhancements
+    paths:
+      - Dockerfile
+      - .dockerignore
+      - docker-compose.yml
+      - requirements.txt
+      - .github/workflows/docker-build.yml
+
+permissions:
+  contents: read
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t operations-copilot:1.0 .
+
+      - name: Validate Python dependencies
+        run: docker run --rm operations-copilot:1.0 python -m pip check
+
+      - name: Validate application syntax
+        run: docker run --rm operations-copilot:1.0 python -m compileall -q /app/src /app/app
+
+      - name: Inspect Docker image
+        run: docker image inspect operations-copilot:1.0
+
+      - name: Docker image details
+        run: docker images operations-copilot
