@@ -124,6 +124,7 @@ class BM25Retriever:
         query: str,
         top_k: int = 5,
         where: dict[str, Any] | None = None,
+        allowed_document_ids: set[str] | None = None,
     ) -> RetrievalResult:
 
         if not query or not query.strip():
@@ -131,6 +132,24 @@ class BM25Retriever:
 
         if top_k < 1:
             raise ValueError("top_k must be at least 1.")
+
+        if allowed_document_ids is not None:
+
+            if not isinstance(allowed_document_ids, set):
+
+                raise ValueError(
+                    "allowed_document_ids must be a set."
+                )
+
+            if any(
+                not isinstance(item, str)
+                or not item.strip()
+                for item in allowed_document_ids
+            ):
+
+                raise ValueError(
+                    "Invalid allowed document identifier."
+                )
 
         start_time = time.perf_counter()
 
@@ -151,6 +170,14 @@ class BM25Retriever:
 
         for index in ranked_indices:
             chunk = self.chunks[index]
+
+            if (
+                allowed_document_ids is not None
+                and chunk.document_id
+                not in allowed_document_ids
+            ):
+
+                continue
 
             if where:
                 if any(

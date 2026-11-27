@@ -11,6 +11,10 @@ if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
 from src.agents.workflow import EmployeeOpsWorkflow
+from src.agents.policy_scope import (
+    ORGANIZATION_ALIASES,
+    COUNTRY_ALIASES,
+)
 
 
 # --------------------------------------------------
@@ -27,7 +31,7 @@ st.title("📋 Employee Operations & Expense Compliance Copilot")
 
 st.caption(
     "AI-assisted employee policy guidance and expense compliance "
-    "using GitLab policy documents."
+    "using applicable organizational policy documents."
 )
 
 st.info(
@@ -70,7 +74,80 @@ with st.sidebar:
         "with retrieval-augmented policy answers."
     )
 
-    st.markdown("**Policy knowledge base:** 9 GitLab documents")
+    knowledge_base = st.radio(
+        "Policy knowledge base",
+        [
+            "V1 - GitLab",
+            "V2 - Multi-organization preview",
+        ],
+        key="knowledge_base_mode",
+    )
+
+    scoped_mode = knowledge_base.startswith("V2")
+
+    organization = None
+    employment_country = None
+
+    if scoped_mode:
+
+        organization = st.selectbox(
+            "Organization",
+            list(ORGANIZATION_ALIASES),
+            index=None,
+            placeholder="Select organization",
+            key="selected_organization",
+        )
+
+        country_selection = st.selectbox(
+            "Employment country",
+            [None] + list(COUNTRY_ALIASES),
+            format_func=lambda value: (
+                "Not specified"
+                if value is None
+                else value
+            ),
+            key="selected_employment_country",
+        )
+
+        employment_country = country_selection
+
+        st.caption(
+            "Employment country is not the travel destination."
+        )
+
+        st.warning(
+            "V2 preview: 659 provisional policy documents. "
+            "Policy execution is not yet enabled."
+        )
+
+    else:
+
+        st.markdown(
+            "**Policy knowledge base:** 9 GitLab documents"
+        )
+
+    current_scope = (
+        knowledge_base,
+        organization,
+        employment_country,
+    )
+
+    previous_scope = st.session_state.get(
+        "ui_policy_scope"
+    )
+
+    if (
+        previous_scope is not None
+        and previous_scope != current_scope
+    ):
+
+        st.session_state.conversation_id = str(uuid.uuid4())
+        st.session_state.messages = []
+        st.session_state.last_result = None
+
+    st.session_state.ui_policy_scope = current_scope
+
+
     st.markdown("**Workflow:** Planner - Intent Router - Direct Response or Executor - Critic")
 
     st.divider()
@@ -117,10 +194,12 @@ query = st.text_area(
         "Example: What is the notice requirement for planned time off?"
     ),
     height=110,
+    key="question_" + st.session_state.conversation_id,
 )
 
 include_expense = st.checkbox(
-    "Include expense details for an eligibility check"
+    "Include expense details for an eligibility check",
+    key="include_expense_" + st.session_state.conversation_id,
 )
 
 
@@ -145,12 +224,14 @@ if include_expense:
             value=None,
             step=100.0,
             placeholder="Enter amount",
+            key="amount_" + st.session_state.conversation_id,
         )
 
     with col2:
         currency = st.selectbox(
             "Currency",
             ["INR", "USD", "EUR", "GBP"],
+            key="currency_" + st.session_state.conversation_id,
         )
 
     with col3:
@@ -160,6 +241,7 @@ if include_expense:
             value=None,
             step=1,
             placeholder="Enter number",
+            key="headcount_" + st.session_state.conversation_id,
         )
 
 
@@ -179,6 +261,21 @@ submitted = st.button(
 # --------------------------------------------------
 
 if submitted:
+
+    if scoped_mode:
+
+        if organization is None:
+
+            st.warning("Please select your organization.")
+            st.stop()
+
+        st.info(
+            "Organization-aware policy execution is not yet "
+            "enabled. No policy or expense decision has "
+            "been established."
+        )
+
+        st.stop()
 
     if not query.strip():
         st.warning("Please enter your question.")

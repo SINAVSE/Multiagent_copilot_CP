@@ -14,6 +14,11 @@ from src.rag.retrieval.policy_context_selector import PolicyContextSelector
 
 from src.agents.budgeted_model import invoke_model
 from src.agents.response_parser import parse_json_response
+from src.agents.policy_scope import (
+    PolicyScope,
+    PolicyScopeError,
+    validate_organization_evidence,
+)
 
 
 class Citation(BaseModel):
@@ -164,7 +169,11 @@ CONTENT:
 
         return selected
 
-    def retrieve(self, query: str) -> RetrievalResult:
+    def retrieve(
+        self,
+        query: str,
+        policy_scope: PolicyScope | None = None,
+    ) -> RetrievalResult:
         """Retrieve and rerank policy evidence for a query."""
 
         if not query or not query.strip():
@@ -172,11 +181,31 @@ CONTENT:
 
         query = query.strip()
 
+        retrieval_options = {}
+
+        if policy_scope is not None:
+
+            if not isinstance(policy_scope, PolicyScope):
+                raise PolicyScopeError(
+                    "A validated policy scope is required."
+                )
+
+            retrieval_options["where"] = (
+                policy_scope.organization_filter()
+            )
+
         retrieval_result = self.retriever.retrieve(
             query=query,
             top_k=self.candidate_k,
             candidate_k=self.candidate_k,
+            **retrieval_options,
         )
+
+        if policy_scope is not None:
+            validate_organization_evidence(
+                policy_scope, retrieval_result
+            )
+
 
         retrieval_result = self.reranker.rerank(
             query=query,
@@ -184,12 +213,31 @@ CONTENT:
             top_k=self.candidate_k,
         )
 
-        return self.prepare_evidence(
+        if policy_scope is not None:
+            validate_organization_evidence(
+                policy_scope, retrieval_result
+            )
+
+        prepared = self.prepare_evidence(
             query=query,
             retrieval_result=retrieval_result,
         )
 
-    def generate(self,query: str,critic_feedback: str | None = None,expense_result: dict | None = None,retrieval_result: RetrievalResult | None = None,) -> RAGAnswer:
+        if policy_scope is not None:
+            validate_organization_evidence(
+                policy_scope, prepared
+            )
+
+        return prepared
+
+    def generate(
+        self,
+        query: str,
+        critic_feedback: str | None = None,
+        expense_result: dict | None = None,
+        retrieval_result: RetrievalResult | None = None,
+        policy_scope: PolicyScope | None = None,
+    ) -> RAGAnswer:
         if not query or not query.strip():
             raise ValueError("Question cannot be empty.")
 
@@ -198,13 +246,27 @@ CONTENT:
         # Step 1: Use supplied evidence or retrieve it.
         if retrieval_result is None:
 
-            retrieval_result = self.retrieve(query)
+            retrieval_result = (
+                self.retrieve(query, policy_scope=policy_scope)
+                if policy_scope is not None
+                else self.retrieve(query)
+            )
 
         else:
+
+            if policy_scope is not None:
+                validate_organization_evidence(
+                    policy_scope, retrieval_result
+                )
 
             retrieval_result = self.prepare_evidence(
                 query=query,
                 retrieval_result=retrieval_result,
+            )
+
+        if policy_scope is not None:
+            validate_organization_evidence(
+                policy_scope, retrieval_result
             )
 
         if not retrieval_result.retrieved_chunks:

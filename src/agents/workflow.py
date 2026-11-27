@@ -24,6 +24,11 @@ from src.agents.planner import Planner
 from src.agents.executor import Executor
 from src.agents.critic import Critic
 from src.agents.query_resolver import QueryResolver
+from src.agents.scoped_query_resolver import ScopedQueryResolver
+from src.agents.policy_scope import PolicyScope, PolicyScopeError
+from src.agents.scope_evidence_validator import (
+    validate_scoped_tool_results,
+)
 from src.observability.event_logger import EventLogger
 
 
@@ -446,6 +451,23 @@ class EmployeeOpsWorkflow:
 
     def executor_node(self, state: AgentState) -> dict:
 
+        scope = None
+        scope_options = {}
+
+        if state.get("scoped_mode", False):
+
+            if not isinstance(state.get("policy_scope"), dict):
+
+                raise PolicyScopeError(
+                    "Missing validated policy scope."
+                )
+
+            scope = PolicyScope(
+                **state["policy_scope"]
+            )
+
+            scope_options["policy_scope"] = scope
+
         tool_results = self.executor.execute(
             selected_tools=state.get("selected_tools", []),
             query=state["query"],
@@ -453,6 +475,7 @@ class EmployeeOpsWorkflow:
             file_path=state.get("file_path"),
             critic_feedback=state.get("critic_feedback"),
             expense_details=state.get("expense_details"),
+            **scope_options,
         )
 
         # CAP-11: Validate required tool-result contracts.
@@ -471,6 +494,13 @@ class EmployeeOpsWorkflow:
 
             if not tool_result:
                 raise ToolExecutionError(tool_name)
+
+        if scope is not None:
+
+            validate_scoped_tool_results(
+                scope,
+                tool_results,
+            )
 
         retrieved_evidence = []
 
@@ -553,6 +583,19 @@ class EmployeeOpsWorkflow:
     # --------------------------------------------------
 
     def critic_node(self, state: AgentState) -> dict:
+
+        if state.get("scoped_mode", False):
+
+            if not isinstance(state.get("policy_scope"), dict):
+
+                raise PolicyScopeError(
+                    "Missing validated policy scope."
+                )
+
+            validate_scoped_tool_results(
+                PolicyScope(**state["policy_scope"]),
+                state.get("tool_results", {}),
+            )
 
         critic_result, recovery_state, error = (
             self.invoke_with_recovery(
@@ -663,6 +706,9 @@ class EmployeeOpsWorkflow:
         ):
             return "clarification"
 
+        if state.get("scoped_mode", False):
+            return "clarification"
+
         return "planner"
 
     def clarification_node(
@@ -679,6 +725,16 @@ class EmployeeOpsWorkflow:
             "Please provide additional information "
             "so I can understand your request."
         )
+
+        if (
+            state.get("scoped_mode", False)
+            and not resolution.get("requires_clarification", False)
+        ):
+            message = (
+                "Organization-aware policy retrieval is not yet "
+                "enabled. No policy or expense decision has "
+                "been established."
+            )
 
         return {
             "intent": "CLARIFICATION_REQUIRED",
@@ -934,6 +990,9 @@ class EmployeeOpsWorkflow:
         expense_details: dict | None = None,
         thread_id: str | None = None,
         conversation_history: list[dict] | None = None,
+        organization: str | None = None,
+        employment_country: str | None = None,
+        scoped_mode: bool = False,
     ) -> dict:
 
         app = self.build()
@@ -956,10 +1015,48 @@ class EmployeeOpsWorkflow:
             else {}
         )
 
-        resolution = self.query_resolver.resolve(
-            query=query,
-            previous_context=previous_context,
+        previous_values = (
+            previous_state.values
+            if previous_state and previous_state.values
+            else {}
         )
+
+        previous_scope = previous_values.get(
+            "policy_scope"
+        )
+
+        previous_scoped_mode = bool(
+            previous_values.get("scoped_mode", False)
+        )
+
+        scoped_mode = bool(
+            scoped_mode
+            or organization is not None
+            or employment_country is not None
+            or previous_scoped_mode
+        )
+
+        if scoped_mode:
+
+            resolution = ScopedQueryResolver(
+                resolver=self.query_resolver
+            ).resolve(
+                query=query,
+                organization=organization,
+                employment_country=employment_country,
+                previous_scope=previous_scope,
+                previous_context=previous_context,
+            )
+
+        else:
+
+            resolution = self.query_resolver.resolve(
+                query=query,
+                previous_context=previous_context,
+            )
+
+            resolution["policy_scope"] = None
+            resolution["scope_changed"] = False
 
         contextual_query = resolution["resolved_query"]
 
@@ -1017,6 +1114,9 @@ class EmployeeOpsWorkflow:
             conversation_context["intent"] = "expense_assessment"
 
         context_resolution = {
+            "scope_changed": resolution.get(
+                "scope_changed", False
+            ),
             "resolution_type": resolution["resolution_type"],
             "context_used": resolution["context_used"],
             "inherited_field_names": list(
@@ -1048,6 +1148,9 @@ class EmployeeOpsWorkflow:
             "query": contextual_query,
             "user_query": query.strip(),
             "conversation_context": conversation_context,
+            "policy_scope": resolution.get("policy_scope"),
+            "scope_changed": resolution.get("scope_changed", False),
+            "scoped_mode": scoped_mode,
             "context_resolution": context_resolution,
             "has_file": has_file,
             "file_path": file_path,

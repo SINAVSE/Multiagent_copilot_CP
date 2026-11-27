@@ -15,6 +15,12 @@ class AgentState(TypedDict, total=False):
     conversation_context: dict[str, Any]
     context_resolution: dict[str, Any]
 
+    # CAP-14: Policy applicability context
+    policy_scope: dict[str, Any] | None
+    scoped_mode: bool
+    scope_changed: bool
+
+
     # Planner output
     intent: str
     plan: list[str]

@@ -1,0 +1,21 @@
+{
+  "corpus_version": "2.0-provisional",
+  "acquired_documents": 701,
+  "selected_documents": 659,
+  "held_documents": 42,
+  "minimum_required_documents": 500,
+  "selected_word_count": 911178,
+  "organization_counts": {
+    "University of Washington": 1,
+    "GitLab": 38,
+    "University of Utah": 159,
+    "University of Connecticut": 77,
+    "Rice University": 67,
+    "University of Arizona": 254,
+    "University of Colorado System": 63
+  },
+  "acquisition_manifest_sha256": "fed9559b5bd898388d53ecb613215a3070f203b7d93d8edfd6e6c012788462ff",
+  "provisional_manifest_sha256": "d171aa77c703d5181e77c043953e643659fa845af85f45a07d026f553fc35b5c",
+  "final_eligibility_approval": "pending",
+  "hosted_ai_api_calls": 0
+}

@@ -1,0 +1,3282 @@
+{
+  "dataset_sha256": "2678ba31570f0fa854d06da10b850a6540fff700d61eea2547115a21f1b809fc",
+  "dataset_status": "draft_integrity_validated",
+  "corpus": {
+    "manifest_sha256": "d171aa77c703d5181e77c043953e643659fa845af85f45a07d026f553fc35b5c",
+    "chunk_sha256": "4ec0840471835b8c65220486f99642878a2c64942b9e278dab5bd59be417c15e",
+    "documents": 659,
+    "chunks": 3224,
+    "embedding_model": "BAAI/bge-small-en-v1.5",
+    "embedding_dimensions": 384,
+    "estimated_input_tokens": 1422321,
+    "maximum_chunk_tokens": 482,
+    "estimated_batches": 202
+  },
+  "total_executions": 80,
+  "strategies": {
+    "B1": "organization_filtered_bm25",
+    "B2": "organization_country_filtered_bm25"
+  },
+  "summaries": {
+    "B1": {
+      "queries": 40,
+      "document_recall": {
+        "1": 0.75,
+        "3": 0.875,
+        "5": 0.975,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0.625,
+        "3": 0.8,
+        "5": 0.95,
+        "10": 1
+      },
+      "mrr_at_10": 0.741875,
+      "mean_latency_ms": 39.276997500110156,
+      "p95_latency_ms": 56.118600001354935,
+      "organization_leakage": 0,
+      "allowlist_violations": 12,
+      "gold_document_unavailable": [],
+      "evidence_misses_at_5": [
+        "V2-R002",
+        "V2-R009"
+      ]
+    },
+    "B2": {
+      "queries": 40,
+      "document_recall": {
+        "1": 0.75,
+        "3": 0.875,
+        "5": 0.975,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0.625,
+        "3": 0.8,
+        "5": 0.95,
+        "10": 1
+      },
+      "mrr_at_10": 0.741875,
+      "mean_latency_ms": 62.655777500049226,
+      "p95_latency_ms": 81.30809999966004,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_unavailable": [],
+      "evidence_misses_at_5": [
+        "V2-R002",
+        "V2-R009"
+      ]
+    }
+  },
+  "results": [
+    {
+      "query_id": "V2-R001",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 18.613599999298458,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-b434e8c75996265f-C3-00002",
+        "ARIZONA-V2-66e05d29adfcefbe-C3-00009",
+        "ARIZONA-V2-b434e8c75996265f-C3-00006",
+        "ARIZONA-V2-0fb18e57f11aafa5-C3-00001",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00008",
+        "ARIZONA-V2-b434e8c75996265f-C3-00007",
+        "ARIZONA-V2-6d5909768461f1b0-C3-00001",
+        "ARIZONA-V2-6d5909768461f1b0-C3-00002",
+        "ARIZONA-V2-66e05d29adfcefbe-C3-00002",
+        "ARIZONA-V2-0fb18e57f11aafa5-C3-00007"
+      ]
+    },
+    {
+      "query_id": "V2-R001",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 32.94610000011744,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-b434e8c75996265f-C3-00002",
+        "ARIZONA-V2-66e05d29adfcefbe-C3-00009",
+        "ARIZONA-V2-b434e8c75996265f-C3-00006",
+        "ARIZONA-V2-0fb18e57f11aafa5-C3-00001",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00008",
+        "ARIZONA-V2-b434e8c75996265f-C3-00007",
+        "ARIZONA-V2-6d5909768461f1b0-C3-00001",
+        "ARIZONA-V2-6d5909768461f1b0-C3-00002",
+        "ARIZONA-V2-66e05d29adfcefbe-C3-00002",
+        "ARIZONA-V2-0fb18e57f11aafa5-C3-00007"
+      ]
+    },
+    {
+      "query_id": "V2-R002",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 10,
+      "reciprocal_rank": 0.1,
+      "elapsed_ms": 19.21580000089307,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 0,
+        "5": 0,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-66e05d29adfcefbe-C3-00003",
+        "ARIZONA-V2-66e05d29adfcefbe-C3-00009",
+        "ARIZONA-V2-327f35cf9e4fedfb-C3-00004",
+        "ARIZONA-V2-0fb18e57f11aafa5-C3-00002",
+        "ARIZONA-V2-eb455c54b1f5f774-C3-00006",
+        "ARIZONA-V2-b434e8c75996265f-C3-00007",
+        "ARIZONA-V2-eb455c54b1f5f774-C3-00004",
+        "ARIZONA-V2-6492ae39148e9661-C3-00018",
+        "ARIZONA-V2-99c6294d9b60059a-C3-00002",
+        "ARIZONA-V2-66e05d29adfcefbe-C3-00002"
+      ]
+    },
+    {
+      "query_id": "V2-R002",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 10,
+      "reciprocal_rank": 0.1,
+      "elapsed_ms": 25.232199999663862,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 0,
+        "5": 0,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-66e05d29adfcefbe-C3-00003",
+        "ARIZONA-V2-66e05d29adfcefbe-C3-00009",
+        "ARIZONA-V2-327f35cf9e4fedfb-C3-00004",
+        "ARIZONA-V2-0fb18e57f11aafa5-C3-00002",
+        "ARIZONA-V2-eb455c54b1f5f774-C3-00006",
+        "ARIZONA-V2-b434e8c75996265f-C3-00007",
+        "ARIZONA-V2-eb455c54b1f5f774-C3-00004",
+        "ARIZONA-V2-6492ae39148e9661-C3-00018",
+        "ARIZONA-V2-99c6294d9b60059a-C3-00002",
+        "ARIZONA-V2-66e05d29adfcefbe-C3-00002"
+      ]
+    },
+    {
+      "query_id": "V2-R003",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Utah",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 12.762300000758842,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UTAH-V2-5ea2c65cecb6f8d8-C3-00002",
+        "UTAH-V2-5ea2c65cecb6f8d8-C3-00003",
+        "UTAH-V2-5ea2c65cecb6f8d8-C3-00007",
+        "UTAH-V2-7c46e91601d053f8-C3-00003",
+        "UTAH-V2-ca347ed3767b5e58-C3-00005",
+        "UTAH-V2-5ea2c65cecb6f8d8-C3-00006",
+        "UTAH-V2-5b7a119e8e3cbec5-C3-00002",
+        "UTAH-V2-7c46e91601d053f8-C3-00002",
+        "UTAH-V2-5ea2c65cecb6f8d8-C3-00004",
+        "UTAH-V2-0ff84fa757f29f30-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R003",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Utah",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 22.799799999120296,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UTAH-V2-5ea2c65cecb6f8d8-C3-00002",
+        "UTAH-V2-5ea2c65cecb6f8d8-C3-00003",
+        "UTAH-V2-5ea2c65cecb6f8d8-C3-00007",
+        "UTAH-V2-7c46e91601d053f8-C3-00003",
+        "UTAH-V2-ca347ed3767b5e58-C3-00005",
+        "UTAH-V2-5ea2c65cecb6f8d8-C3-00006",
+        "UTAH-V2-5b7a119e8e3cbec5-C3-00002",
+        "UTAH-V2-7c46e91601d053f8-C3-00002",
+        "UTAH-V2-5ea2c65cecb6f8d8-C3-00004",
+        "UTAH-V2-0ff84fa757f29f30-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R004",
+      "strategy": "B1",
+      "scope": {
+        "organization": "Rice University",
+        "employment_country": "US"
+      },
+      "document_first_rank": 2,
+      "evidence_first_rank": 2,
+      "reciprocal_rank": 0.5,
+      "elapsed_ms": 19.22969999941415,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "RICE-V2-0386a8d1dbd58b4e-C3-00009",
+        "RICE-V2-1aa057a93f2d9210-C3-00002",
+        "RICE-V2-1aa057a93f2d9210-C3-00004",
+        "RICE-V2-0386a8d1dbd58b4e-C3-00008",
+        "RICE-V2-1aa057a93f2d9210-C3-00001",
+        "RICE-V2-7551a76a586aa943-C3-00001",
+        "RICE-V2-0386a8d1dbd58b4e-C3-00002",
+        "RICE-V2-b9a1738300175995-C3-00002",
+        "RICE-V2-0386a8d1dbd58b4e-C3-00006",
+        "RICE-V2-7551a76a586aa943-C3-00004"
+      ]
+    },
+    {
+      "query_id": "V2-R004",
+      "strategy": "B2",
+      "scope": {
+        "organization": "Rice University",
+        "employment_country": "US"
+      },
+      "document_first_rank": 2,
+      "evidence_first_rank": 2,
+      "reciprocal_rank": 0.5,
+      "elapsed_ms": 63.27139999848441,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "RICE-V2-0386a8d1dbd58b4e-C3-00009",
+        "RICE-V2-1aa057a93f2d9210-C3-00002",
+        "RICE-V2-1aa057a93f2d9210-C3-00004",
+        "RICE-V2-0386a8d1dbd58b4e-C3-00008",
+        "RICE-V2-1aa057a93f2d9210-C3-00001",
+        "RICE-V2-7551a76a586aa943-C3-00001",
+        "RICE-V2-0386a8d1dbd58b4e-C3-00002",
+        "RICE-V2-b9a1738300175995-C3-00002",
+        "RICE-V2-0386a8d1dbd58b4e-C3-00006",
+        "RICE-V2-7551a76a586aa943-C3-00004"
+      ]
+    },
+    {
+      "query_id": "V2-R005",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Colorado System",
+        "employment_country": "US"
+      },
+      "document_first_rank": 4,
+      "evidence_first_rank": 4,
+      "reciprocal_rank": 0.25,
+      "elapsed_ms": 34.76960000079998,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 0,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "COLORADO-V2-92856336b42f6f28-C3-00001",
+        "COLORADO-V2-aa1fcd8a8584cbec-C3-00002",
+        "COLORADO-V2-92856336b42f6f28-C3-00002",
+        "COLORADO-V2-3e93a53b896a1fd2-C3-00001",
+        "COLORADO-V2-3e93a53b896a1fd2-C3-00002",
+        "COLORADO-V2-2a88f7e08a43e93b-C3-00028",
+        "COLORADO-V2-aa1fcd8a8584cbec-C3-00001",
+        "COLORADO-V2-0eaa7d8d7ee94cba-C3-00007",
+        "COLORADO-V2-431463f4327830bf-C3-00002",
+        "COLORADO-V2-0eaa7d8d7ee94cba-C3-00008"
+      ]
+    },
+    {
+      "query_id": "V2-R005",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Colorado System",
+        "employment_country": "US"
+      },
+      "document_first_rank": 4,
+      "evidence_first_rank": 4,
+      "reciprocal_rank": 0.25,
+      "elapsed_ms": 54.18610000015178,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 0,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "COLORADO-V2-92856336b42f6f28-C3-00001",
+        "COLORADO-V2-aa1fcd8a8584cbec-C3-00002",
+        "COLORADO-V2-92856336b42f6f28-C3-00002",
+        "COLORADO-V2-3e93a53b896a1fd2-C3-00001",
+        "COLORADO-V2-3e93a53b896a1fd2-C3-00002",
+        "COLORADO-V2-2a88f7e08a43e93b-C3-00028",
+        "COLORADO-V2-aa1fcd8a8584cbec-C3-00001",
+        "COLORADO-V2-0eaa7d8d7ee94cba-C3-00007",
+        "COLORADO-V2-431463f4327830bf-C3-00002",
+        "COLORADO-V2-0eaa7d8d7ee94cba-C3-00008"
+      ]
+    },
+    {
+      "query_id": "V2-R006",
+      "strategy": "B1",
+      "scope": {
+        "organization": "GitLab",
+        "employment_country": null
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 30.280900000434485,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 5,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "GITLAB-V2-2847cc968d0dfdf3-C3-00001",
+        "GITLAB-V2-224a1b4009eb431b-C3-00002",
+        "GITLAB-V2-a8b12791379d461c-C3-00001",
+        "GITLAB-V2-d924f5daab5f1216-C3-00003",
+        "GITLAB-V2-224a1b4009eb431b-C3-00003",
+        "GITLAB-V2-3011b041f34fd07f-C3-00016",
+        "GITLAB-V2-668ece87ffb3affc-C3-00004",
+        "GITLAB-V2-0c6ec1765762e927-C3-00007",
+        "GITLAB-V2-668ece87ffb3affc-C3-00005",
+        "GITLAB-V2-a8b12791379d461c-C3-00017"
+      ]
+    },
+    {
+      "query_id": "V2-R006",
+      "strategy": "B2",
+      "scope": {
+        "organization": "GitLab",
+        "employment_country": null
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 56.3066999984585,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "GITLAB-V2-2847cc968d0dfdf3-C3-00001",
+        "GITLAB-V2-a8b12791379d461c-C3-00001",
+        "GITLAB-V2-d924f5daab5f1216-C3-00003",
+        "GITLAB-V2-0c6ec1765762e927-C3-00007",
+        "GITLAB-V2-a8b12791379d461c-C3-00017",
+        "GITLAB-V2-a8b12791379d461c-C3-00002",
+        "GITLAB-V2-d924f5daab5f1216-C3-00005",
+        "GITLAB-V2-e449d28af86d7d9f-C3-00002",
+        "GITLAB-V2-2847cc968d0dfdf3-C3-00002",
+        "GITLAB-V2-d924f5daab5f1216-C3-00006"
+      ]
+    },
+    {
+      "query_id": "V2-R007",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 45.45639999923878,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-10bd5b557987226b-C3-00003",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00007",
+        "ARIZONA-V2-10bd5b557987226b-C3-00002",
+        "ARIZONA-V2-0fb18e57f11aafa5-C3-00003",
+        "ARIZONA-V2-10bd5b557987226b-C3-00007",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00008",
+        "ARIZONA-V2-10bd5b557987226b-C3-00001",
+        "ARIZONA-V2-c29c797964ea5637-C3-00003",
+        "ARIZONA-V2-76ea7422fdc6f6eb-C3-00004",
+        "ARIZONA-V2-c29c797964ea5637-C3-00004"
+      ]
+    },
+    {
+      "query_id": "V2-R007",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 81.30809999966004,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-10bd5b557987226b-C3-00003",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00007",
+        "ARIZONA-V2-10bd5b557987226b-C3-00002",
+        "ARIZONA-V2-0fb18e57f11aafa5-C3-00003",
+        "ARIZONA-V2-10bd5b557987226b-C3-00007",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00008",
+        "ARIZONA-V2-10bd5b557987226b-C3-00001",
+        "ARIZONA-V2-c29c797964ea5637-C3-00003",
+        "ARIZONA-V2-76ea7422fdc6f6eb-C3-00004",
+        "ARIZONA-V2-c29c797964ea5637-C3-00004"
+      ]
+    },
+    {
+      "query_id": "V2-R008",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 4,
+      "reciprocal_rank": 0.25,
+      "elapsed_ms": 37.420900000142865,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 0,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00007",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00005",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00008",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00003",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00004",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00006",
+        "ARIZONA-V2-b434e8c75996265f-C3-00006",
+        "ARIZONA-V2-10bd5b557987226b-C3-00006",
+        "ARIZONA-V2-66e05d29adfcefbe-C3-00010",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R008",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 4,
+      "reciprocal_rank": 0.25,
+      "elapsed_ms": 63.31349999891245,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 0,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00007",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00005",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00008",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00003",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00004",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00006",
+        "ARIZONA-V2-b434e8c75996265f-C3-00006",
+        "ARIZONA-V2-10bd5b557987226b-C3-00006",
+        "ARIZONA-V2-66e05d29adfcefbe-C3-00010",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R009",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 8,
+      "evidence_first_rank": 8,
+      "reciprocal_rank": 0.125,
+      "elapsed_ms": 35.09180000037304,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 0,
+        "5": 0,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-f5513ac77a221132-C3-00010",
+        "ARIZONA-V2-05b662d5a29cdd25-C3-00002",
+        "ARIZONA-V2-05b662d5a29cdd25-C3-00003",
+        "ARIZONA-V2-fdb83a32da9fac16-C3-00001",
+        "ARIZONA-V2-d63665882f214501-C3-00001",
+        "ARIZONA-V2-02331e4d41c8d8d9-C3-00006",
+        "ARIZONA-V2-8715546ed847146a-C3-00004",
+        "ARIZONA-V2-91ca2eb7be2d4b7b-C3-00002",
+        "ARIZONA-V2-5691206fdfac8e0e-C3-00001",
+        "ARIZONA-V2-6d5909768461f1b0-C3-00005"
+      ]
+    },
+    {
+      "query_id": "V2-R009",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 8,
+      "evidence_first_rank": 8,
+      "reciprocal_rank": 0.125,
+      "elapsed_ms": 59.69519999962358,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 0,
+        "5": 0,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-f5513ac77a221132-C3-00010",
+        "ARIZONA-V2-05b662d5a29cdd25-C3-00002",
+        "ARIZONA-V2-05b662d5a29cdd25-C3-00003",
+        "ARIZONA-V2-fdb83a32da9fac16-C3-00001",
+        "ARIZONA-V2-d63665882f214501-C3-00001",
+        "ARIZONA-V2-02331e4d41c8d8d9-C3-00006",
+        "ARIZONA-V2-8715546ed847146a-C3-00004",
+        "ARIZONA-V2-91ca2eb7be2d4b7b-C3-00002",
+        "ARIZONA-V2-5691206fdfac8e0e-C3-00001",
+        "ARIZONA-V2-6d5909768461f1b0-C3-00005"
+      ]
+    },
+    {
+      "query_id": "V2-R010",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Connecticut",
+        "employment_country": "US"
+      },
+      "document_first_rank": 2,
+      "evidence_first_rank": 2,
+      "reciprocal_rank": 0.5,
+      "elapsed_ms": 45.61040000044159,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UCONN-V2-bb993856f0e4669f-C3-00003",
+        "UCONN-V2-12eeecbea4b08ac5-C3-00001",
+        "UCONN-V2-8371e23c8f60e42f-C3-00003",
+        "UCONN-V2-8371e23c8f60e42f-C3-00004",
+        "UCONN-V2-9dd3a9617156ad8e-C3-00004",
+        "UCONN-V2-8371e23c8f60e42f-C3-00005",
+        "UCONN-V2-e955a6b91a90baf0-C3-00005",
+        "UCONN-V2-12eeecbea4b08ac5-C3-00006",
+        "UCONN-V2-caea6e66c6ebb582-C3-00009",
+        "UCONN-V2-36075e205469e1c3-C3-00002"
+      ]
+    },
+    {
+      "query_id": "V2-R010",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Connecticut",
+        "employment_country": "US"
+      },
+      "document_first_rank": 2,
+      "evidence_first_rank": 2,
+      "reciprocal_rank": 0.5,
+      "elapsed_ms": 65.60560000070836,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UCONN-V2-bb993856f0e4669f-C3-00003",
+        "UCONN-V2-12eeecbea4b08ac5-C3-00001",
+        "UCONN-V2-8371e23c8f60e42f-C3-00003",
+        "UCONN-V2-8371e23c8f60e42f-C3-00004",
+        "UCONN-V2-9dd3a9617156ad8e-C3-00004",
+        "UCONN-V2-8371e23c8f60e42f-C3-00005",
+        "UCONN-V2-e955a6b91a90baf0-C3-00005",
+        "UCONN-V2-12eeecbea4b08ac5-C3-00006",
+        "UCONN-V2-caea6e66c6ebb582-C3-00009",
+        "UCONN-V2-36075e205469e1c3-C3-00002"
+      ]
+    },
+    {
+      "query_id": "V2-R011",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Utah",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 37.41169999921112,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UTAH-V2-f5e29a066b6e2c40-C3-00001",
+        "UTAH-V2-f5e29a066b6e2c40-C3-00002",
+        "UTAH-V2-352c4203de709729-C3-00007",
+        "UTAH-V2-5b7a119e8e3cbec5-C3-00002",
+        "UTAH-V2-14f4ea247762530a-C3-00002",
+        "UTAH-V2-5b7a119e8e3cbec5-C3-00001",
+        "UTAH-V2-5ea2c65cecb6f8d8-C3-00007",
+        "UTAH-V2-352c4203de709729-C3-00009",
+        "UTAH-V2-fabcb98f154d4acd-C3-00006",
+        "UTAH-V2-064977bcc3a8b868-C3-00010"
+      ]
+    },
+    {
+      "query_id": "V2-R011",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Utah",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 51.708000000871834,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UTAH-V2-f5e29a066b6e2c40-C3-00001",
+        "UTAH-V2-f5e29a066b6e2c40-C3-00002",
+        "UTAH-V2-352c4203de709729-C3-00007",
+        "UTAH-V2-5b7a119e8e3cbec5-C3-00002",
+        "UTAH-V2-14f4ea247762530a-C3-00002",
+        "UTAH-V2-5b7a119e8e3cbec5-C3-00001",
+        "UTAH-V2-5ea2c65cecb6f8d8-C3-00007",
+        "UTAH-V2-352c4203de709729-C3-00009",
+        "UTAH-V2-fabcb98f154d4acd-C3-00006",
+        "UTAH-V2-064977bcc3a8b868-C3-00010"
+      ]
+    },
+    {
+      "query_id": "V2-R012",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Colorado System",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 24.014900000111084,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "COLORADO-V2-92856336b42f6f28-C3-00001",
+        "COLORADO-V2-92856336b42f6f28-C3-00002",
+        "COLORADO-V2-a13c92b22b84b6a0-C3-00003",
+        "COLORADO-V2-aa1fcd8a8584cbec-C3-00001",
+        "COLORADO-V2-b584451b21699e5b-C3-00002",
+        "COLORADO-V2-e1f7e927d89f2c4e-C3-00016",
+        "COLORADO-V2-0eaa7d8d7ee94cba-C3-00007",
+        "COLORADO-V2-431463f4327830bf-C3-00003",
+        "COLORADO-V2-ec7325fdd4224caf-C3-00004",
+        "COLORADO-V2-0eaa7d8d7ee94cba-C3-00008"
+      ]
+    },
+    {
+      "query_id": "V2-R012",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Colorado System",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 65.51630000103614,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "COLORADO-V2-92856336b42f6f28-C3-00001",
+        "COLORADO-V2-92856336b42f6f28-C3-00002",
+        "COLORADO-V2-a13c92b22b84b6a0-C3-00003",
+        "COLORADO-V2-aa1fcd8a8584cbec-C3-00001",
+        "COLORADO-V2-b584451b21699e5b-C3-00002",
+        "COLORADO-V2-e1f7e927d89f2c4e-C3-00016",
+        "COLORADO-V2-0eaa7d8d7ee94cba-C3-00007",
+        "COLORADO-V2-431463f4327830bf-C3-00003",
+        "COLORADO-V2-ec7325fdd4224caf-C3-00004",
+        "COLORADO-V2-0eaa7d8d7ee94cba-C3-00008"
+      ]
+    },
+    {
+      "query_id": "V2-R013",
+      "strategy": "B1",
+      "scope": {
+        "organization": "Rice University",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 37.21939999923052,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "RICE-V2-8121786ecb80e6d9-C3-00003",
+        "RICE-V2-8121786ecb80e6d9-C3-00002",
+        "RICE-V2-8121786ecb80e6d9-C3-00010",
+        "RICE-V2-8121786ecb80e6d9-C3-00009",
+        "RICE-V2-8121786ecb80e6d9-C3-00001",
+        "RICE-V2-8121786ecb80e6d9-C3-00011",
+        "RICE-V2-4edd458848700a98-C3-00003",
+        "RICE-V2-ceae28182820876c-C3-00006",
+        "RICE-V2-7551a76a586aa943-C3-00008",
+        "RICE-V2-8121786ecb80e6d9-C3-00005"
+      ]
+    },
+    {
+      "query_id": "V2-R013",
+      "strategy": "B2",
+      "scope": {
+        "organization": "Rice University",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 56.94080000102986,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "RICE-V2-8121786ecb80e6d9-C3-00003",
+        "RICE-V2-8121786ecb80e6d9-C3-00002",
+        "RICE-V2-8121786ecb80e6d9-C3-00010",
+        "RICE-V2-8121786ecb80e6d9-C3-00009",
+        "RICE-V2-8121786ecb80e6d9-C3-00001",
+        "RICE-V2-8121786ecb80e6d9-C3-00011",
+        "RICE-V2-4edd458848700a98-C3-00003",
+        "RICE-V2-ceae28182820876c-C3-00006",
+        "RICE-V2-7551a76a586aa943-C3-00008",
+        "RICE-V2-8121786ecb80e6d9-C3-00005"
+      ]
+    },
+    {
+      "query_id": "V2-R014",
+      "strategy": "B1",
+      "scope": {
+        "organization": "Rice University",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 2,
+      "reciprocal_rank": 0.5,
+      "elapsed_ms": 48.41530000157945,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "RICE-V2-e118d1c08f2b424f-C3-00002",
+        "RICE-V2-e118d1c08f2b424f-C3-00001",
+        "RICE-V2-2787afc47297fdbb-C3-00001",
+        "RICE-V2-8121786ecb80e6d9-C3-00006",
+        "RICE-V2-8121786ecb80e6d9-C3-00002",
+        "RICE-V2-4edd458848700a98-C3-00004",
+        "RICE-V2-2787afc47297fdbb-C3-00002",
+        "RICE-V2-4edd458848700a98-C3-00003",
+        "RICE-V2-2787afc47297fdbb-C3-00003",
+        "RICE-V2-1cf828462cae0860-C3-00003"
+      ]
+    },
+    {
+      "query_id": "V2-R014",
+      "strategy": "B2",
+      "scope": {
+        "organization": "Rice University",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 2,
+      "reciprocal_rank": 0.5,
+      "elapsed_ms": 71.87540000086301,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "RICE-V2-e118d1c08f2b424f-C3-00002",
+        "RICE-V2-e118d1c08f2b424f-C3-00001",
+        "RICE-V2-2787afc47297fdbb-C3-00001",
+        "RICE-V2-8121786ecb80e6d9-C3-00006",
+        "RICE-V2-8121786ecb80e6d9-C3-00002",
+        "RICE-V2-4edd458848700a98-C3-00004",
+        "RICE-V2-2787afc47297fdbb-C3-00002",
+        "RICE-V2-4edd458848700a98-C3-00003",
+        "RICE-V2-2787afc47297fdbb-C3-00003",
+        "RICE-V2-1cf828462cae0860-C3-00003"
+      ]
+    },
+    {
+      "query_id": "V2-R015",
+      "strategy": "B1",
+      "scope": {
+        "organization": "GitLab",
+        "employment_country": null
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 50.96799999955692,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "GITLAB-V2-27d99a093caf5de2-C3-00005",
+        "GITLAB-V2-27d99a093caf5de2-C3-00008",
+        "GITLAB-V2-27d99a093caf5de2-C3-00010",
+        "GITLAB-V2-27d99a093caf5de2-C3-00009",
+        "GITLAB-V2-27d99a093caf5de2-C3-00001",
+        "GITLAB-V2-27d99a093caf5de2-C3-00006",
+        "GITLAB-V2-27d99a093caf5de2-C3-00007",
+        "GITLAB-V2-27d99a093caf5de2-C3-00004",
+        "GITLAB-V2-27d99a093caf5de2-C3-00003",
+        "GITLAB-V2-a8b12791379d461c-C3-00016"
+      ]
+    },
+    {
+      "query_id": "V2-R015",
+      "strategy": "B2",
+      "scope": {
+        "organization": "GitLab",
+        "employment_country": null
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 59.38799999967159,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "GITLAB-V2-27d99a093caf5de2-C3-00005",
+        "GITLAB-V2-27d99a093caf5de2-C3-00008",
+        "GITLAB-V2-27d99a093caf5de2-C3-00010",
+        "GITLAB-V2-27d99a093caf5de2-C3-00009",
+        "GITLAB-V2-27d99a093caf5de2-C3-00001",
+        "GITLAB-V2-27d99a093caf5de2-C3-00006",
+        "GITLAB-V2-27d99a093caf5de2-C3-00007",
+        "GITLAB-V2-27d99a093caf5de2-C3-00004",
+        "GITLAB-V2-27d99a093caf5de2-C3-00003",
+        "GITLAB-V2-a8b12791379d461c-C3-00016"
+      ]
+    },
+    {
+      "query_id": "V2-R016",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 38.13589999845135,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-65ef51470105d5d9-C3-00001",
+        "ARIZONA-V2-02331e4d41c8d8d9-C3-00007",
+        "ARIZONA-V2-76ea7422fdc6f6eb-C3-00001",
+        "ARIZONA-V2-02331e4d41c8d8d9-C3-00004",
+        "ARIZONA-V2-02331e4d41c8d8d9-C3-00005",
+        "ARIZONA-V2-0d0613c9cd48a7ab-C3-00002",
+        "ARIZONA-V2-65ef51470105d5d9-C3-00002",
+        "ARIZONA-V2-02331e4d41c8d8d9-C3-00006",
+        "ARIZONA-V2-0d0613c9cd48a7ab-C3-00003",
+        "ARIZONA-V2-f107290128ef67af-C3-00006"
+      ]
+    },
+    {
+      "query_id": "V2-R016",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 48.751199999969685,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-65ef51470105d5d9-C3-00001",
+        "ARIZONA-V2-02331e4d41c8d8d9-C3-00007",
+        "ARIZONA-V2-76ea7422fdc6f6eb-C3-00001",
+        "ARIZONA-V2-02331e4d41c8d8d9-C3-00004",
+        "ARIZONA-V2-02331e4d41c8d8d9-C3-00005",
+        "ARIZONA-V2-0d0613c9cd48a7ab-C3-00002",
+        "ARIZONA-V2-65ef51470105d5d9-C3-00002",
+        "ARIZONA-V2-02331e4d41c8d8d9-C3-00006",
+        "ARIZONA-V2-0d0613c9cd48a7ab-C3-00003",
+        "ARIZONA-V2-f107290128ef67af-C3-00006"
+      ]
+    },
+    {
+      "query_id": "V2-R017",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Connecticut",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 46.779100001003826,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UCONN-V2-846a5d8921035019-C3-00002",
+        "UCONN-V2-846a5d8921035019-C3-00003",
+        "UCONN-V2-bb8db6d0f594208c-C3-00002",
+        "UCONN-V2-411f542953b6b99e-C3-00002",
+        "UCONN-V2-dd4d50926d076db6-C3-00003",
+        "UCONN-V2-846a5d8921035019-C3-00001",
+        "UCONN-V2-371c25c2de5caa29-C3-00006",
+        "UCONN-V2-8371e23c8f60e42f-C3-00003",
+        "UCONN-V2-2334af2fceb18720-C3-00003",
+        "UCONN-V2-a8584ecd6f048a7a-C3-00002"
+      ]
+    },
+    {
+      "query_id": "V2-R017",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Connecticut",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 65.97460000011779,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UCONN-V2-846a5d8921035019-C3-00002",
+        "UCONN-V2-846a5d8921035019-C3-00003",
+        "UCONN-V2-bb8db6d0f594208c-C3-00002",
+        "UCONN-V2-411f542953b6b99e-C3-00002",
+        "UCONN-V2-dd4d50926d076db6-C3-00003",
+        "UCONN-V2-846a5d8921035019-C3-00001",
+        "UCONN-V2-371c25c2de5caa29-C3-00006",
+        "UCONN-V2-8371e23c8f60e42f-C3-00003",
+        "UCONN-V2-2334af2fceb18720-C3-00003",
+        "UCONN-V2-a8584ecd6f048a7a-C3-00002"
+      ]
+    },
+    {
+      "query_id": "V2-R018",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Colorado System",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 25.22049999970477,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "COLORADO-V2-e31a1d7613607c9b-C3-00004",
+        "COLORADO-V2-e31a1d7613607c9b-C3-00003",
+        "COLORADO-V2-e31a1d7613607c9b-C3-00001",
+        "COLORADO-V2-e1f7e927d89f2c4e-C3-00011",
+        "COLORADO-V2-a6f810636093db2a-C3-00002",
+        "COLORADO-V2-e31a1d7613607c9b-C3-00002",
+        "COLORADO-V2-e31a1d7613607c9b-C3-00005",
+        "COLORADO-V2-431463f4327830bf-C3-00003",
+        "COLORADO-V2-3eafb290985c70ea-C3-00005",
+        "COLORADO-V2-d4e3462a137c0f78-C3-00011"
+      ]
+    },
+    {
+      "query_id": "V2-R018",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Colorado System",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 47.43640000015148,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "COLORADO-V2-e31a1d7613607c9b-C3-00004",
+        "COLORADO-V2-e31a1d7613607c9b-C3-00003",
+        "COLORADO-V2-e31a1d7613607c9b-C3-00001",
+        "COLORADO-V2-e1f7e927d89f2c4e-C3-00011",
+        "COLORADO-V2-a6f810636093db2a-C3-00002",
+        "COLORADO-V2-e31a1d7613607c9b-C3-00002",
+        "COLORADO-V2-e31a1d7613607c9b-C3-00005",
+        "COLORADO-V2-431463f4327830bf-C3-00003",
+        "COLORADO-V2-3eafb290985c70ea-C3-00005",
+        "COLORADO-V2-d4e3462a137c0f78-C3-00011"
+      ]
+    },
+    {
+      "query_id": "V2-R019",
+      "strategy": "B1",
+      "scope": {
+        "organization": "Rice University",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 67.0642000004591,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "RICE-V2-d487208f391f401b-C3-00001",
+        "RICE-V2-a5595ef72971f2bf-C3-00003",
+        "RICE-V2-68d8512241e9bcd1-C3-00001",
+        "RICE-V2-afd2b4f7ba6459f4-C3-00004",
+        "RICE-V2-89928a3fda24f47c-C3-00003",
+        "RICE-V2-89928a3fda24f47c-C3-00002",
+        "RICE-V2-afd2b4f7ba6459f4-C3-00008",
+        "RICE-V2-d0644bd5e526106d-C3-00002",
+        "RICE-V2-a5595ef72971f2bf-C3-00002",
+        "RICE-V2-9e23b566a47e347e-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R019",
+      "strategy": "B2",
+      "scope": {
+        "organization": "Rice University",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 75.23620000029041,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "RICE-V2-d487208f391f401b-C3-00001",
+        "RICE-V2-a5595ef72971f2bf-C3-00003",
+        "RICE-V2-68d8512241e9bcd1-C3-00001",
+        "RICE-V2-afd2b4f7ba6459f4-C3-00004",
+        "RICE-V2-89928a3fda24f47c-C3-00003",
+        "RICE-V2-89928a3fda24f47c-C3-00002",
+        "RICE-V2-afd2b4f7ba6459f4-C3-00008",
+        "RICE-V2-d0644bd5e526106d-C3-00002",
+        "RICE-V2-a5595ef72971f2bf-C3-00002",
+        "RICE-V2-9e23b566a47e347e-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R020",
+      "strategy": "B1",
+      "scope": {
+        "organization": "Rice University",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 3,
+      "reciprocal_rank": 0.3333333333333333,
+      "elapsed_ms": 56.118600001354935,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "RICE-V2-68d8512241e9bcd1-C3-00001",
+        "RICE-V2-68d8512241e9bcd1-C3-00003",
+        "RICE-V2-68d8512241e9bcd1-C3-00002",
+        "RICE-V2-942094b7dc4e17c4-C3-00004",
+        "RICE-V2-942094b7dc4e17c4-C3-00005",
+        "RICE-V2-d0644bd5e526106d-C3-00001",
+        "RICE-V2-afd2b4f7ba6459f4-C3-00003",
+        "RICE-V2-89928a3fda24f47c-C3-00002",
+        "RICE-V2-942094b7dc4e17c4-C3-00006",
+        "RICE-V2-a5595ef72971f2bf-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R020",
+      "strategy": "B2",
+      "scope": {
+        "organization": "Rice University",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 3,
+      "reciprocal_rank": 0.3333333333333333,
+      "elapsed_ms": 79.37930000116467,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "RICE-V2-68d8512241e9bcd1-C3-00001",
+        "RICE-V2-68d8512241e9bcd1-C3-00003",
+        "RICE-V2-68d8512241e9bcd1-C3-00002",
+        "RICE-V2-942094b7dc4e17c4-C3-00004",
+        "RICE-V2-942094b7dc4e17c4-C3-00005",
+        "RICE-V2-d0644bd5e526106d-C3-00001",
+        "RICE-V2-afd2b4f7ba6459f4-C3-00003",
+        "RICE-V2-89928a3fda24f47c-C3-00002",
+        "RICE-V2-942094b7dc4e17c4-C3-00006",
+        "RICE-V2-a5595ef72971f2bf-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R021",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 50.483600000006845,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-cb3dc6ed994b9b87-C3-00001",
+        "ARIZONA-V2-3fd39acee2a2e7c7-C3-00002",
+        "ARIZONA-V2-6f2a3ed889a28896-C3-00003",
+        "ARIZONA-V2-1e5a1aea57d12a0f-C3-00002",
+        "ARIZONA-V2-6f2a3ed889a28896-C3-00001",
+        "ARIZONA-V2-49db561aa3a62d3b-C3-00004",
+        "ARIZONA-V2-3fd39acee2a2e7c7-C3-00001",
+        "ARIZONA-V2-4f7d9993d0259f02-C3-00003",
+        "ARIZONA-V2-4f7d9993d0259f02-C3-00002",
+        "ARIZONA-V2-0eec44ceaf62aebf-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R021",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 92.43680000145105,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-cb3dc6ed994b9b87-C3-00001",
+        "ARIZONA-V2-3fd39acee2a2e7c7-C3-00002",
+        "ARIZONA-V2-6f2a3ed889a28896-C3-00003",
+        "ARIZONA-V2-1e5a1aea57d12a0f-C3-00002",
+        "ARIZONA-V2-6f2a3ed889a28896-C3-00001",
+        "ARIZONA-V2-49db561aa3a62d3b-C3-00004",
+        "ARIZONA-V2-3fd39acee2a2e7c7-C3-00001",
+        "ARIZONA-V2-4f7d9993d0259f02-C3-00003",
+        "ARIZONA-V2-4f7d9993d0259f02-C3-00002",
+        "ARIZONA-V2-0eec44ceaf62aebf-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R022",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Utah",
+        "employment_country": "US"
+      },
+      "document_first_rank": 4,
+      "evidence_first_rank": 4,
+      "reciprocal_rank": 0.25,
+      "elapsed_ms": 27.9766000003292,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 0,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UTAH-V2-b8514f3c56fd94d2-C3-00001",
+        "UTAH-V2-7977db806e827c73-C3-00001",
+        "UTAH-V2-9c4c9c78abebf96f-C3-00001",
+        "UTAH-V2-aa28217524ceda91-C3-00001",
+        "UTAH-V2-7977db806e827c73-C3-00002",
+        "UTAH-V2-9c4c9c78abebf96f-C3-00002",
+        "UTAH-V2-962486c9caf7be73-C3-00006",
+        "UTAH-V2-9c4c9c78abebf96f-C3-00009",
+        "UTAH-V2-99bf4a36be846222-C3-00006",
+        "UTAH-V2-99bf4a36be846222-C3-00007"
+      ]
+    },
+    {
+      "query_id": "V2-R022",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Utah",
+        "employment_country": "US"
+      },
+      "document_first_rank": 4,
+      "evidence_first_rank": 4,
+      "reciprocal_rank": 0.25,
+      "elapsed_ms": 61.59029999980703,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 0,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UTAH-V2-b8514f3c56fd94d2-C3-00001",
+        "UTAH-V2-7977db806e827c73-C3-00001",
+        "UTAH-V2-9c4c9c78abebf96f-C3-00001",
+        "UTAH-V2-aa28217524ceda91-C3-00001",
+        "UTAH-V2-7977db806e827c73-C3-00002",
+        "UTAH-V2-9c4c9c78abebf96f-C3-00002",
+        "UTAH-V2-962486c9caf7be73-C3-00006",
+        "UTAH-V2-9c4c9c78abebf96f-C3-00009",
+        "UTAH-V2-99bf4a36be846222-C3-00006",
+        "UTAH-V2-99bf4a36be846222-C3-00007"
+      ]
+    },
+    {
+      "query_id": "V2-R023",
+      "strategy": "B1",
+      "scope": {
+        "organization": "GitLab",
+        "employment_country": "IN"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 2,
+      "reciprocal_rank": 0.5,
+      "elapsed_ms": 35.46000000096683,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 6,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "GITLAB-V2-56e412213443f100-C3-00002",
+        "GITLAB-V2-56e412213443f100-C3-00003",
+        "GITLAB-V2-224a1b4009eb431b-C3-00006",
+        "GITLAB-V2-60989f2c0430de8c-C3-00008",
+        "GITLAB-V2-56e412213443f100-C3-00001",
+        "GITLAB-V2-56e412213443f100-C3-00004",
+        "GITLAB-V2-60989f2c0430de8c-C3-00031",
+        "GITLAB-V2-2e2c6e8ac10bc35e-C3-00008",
+        "GITLAB-V2-60989f2c0430de8c-C3-00030",
+        "GITLAB-V2-3011b041f34fd07f-C3-00002"
+      ]
+    },
+    {
+      "query_id": "V2-R023",
+      "strategy": "B2",
+      "scope": {
+        "organization": "GitLab",
+        "employment_country": "IN"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 2,
+      "reciprocal_rank": 0.5,
+      "elapsed_ms": 64.28890000097454,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "GITLAB-V2-56e412213443f100-C3-00002",
+        "GITLAB-V2-56e412213443f100-C3-00003",
+        "GITLAB-V2-56e412213443f100-C3-00001",
+        "GITLAB-V2-56e412213443f100-C3-00004",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00023",
+        "GITLAB-V2-f616c27b04aabf1c-C3-00001",
+        "GITLAB-V2-90587de0725d372a-C3-00006",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00022",
+        "GITLAB-V2-f616c27b04aabf1c-C3-00003",
+        "GITLAB-V2-56e412213443f100-C3-00007"
+      ]
+    },
+    {
+      "query_id": "V2-R024",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Connecticut",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 34.05639999982668,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UCONN-V2-36075e205469e1c3-C3-00002",
+        "UCONN-V2-36075e205469e1c3-C3-00001",
+        "UCONN-V2-1c094485d07ef14a-C3-00005",
+        "UCONN-V2-323e54eea0bb8ce7-C3-00003",
+        "UCONN-V2-1c094485d07ef14a-C3-00006",
+        "UCONN-V2-1c094485d07ef14a-C3-00003",
+        "UCONN-V2-36075e205469e1c3-C3-00003",
+        "UCONN-V2-1c094485d07ef14a-C3-00004",
+        "UCONN-V2-2334af2fceb18720-C3-00003",
+        "UCONN-V2-679f0e6d649e5b36-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R024",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Connecticut",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 73.87240000025486,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UCONN-V2-36075e205469e1c3-C3-00002",
+        "UCONN-V2-36075e205469e1c3-C3-00001",
+        "UCONN-V2-1c094485d07ef14a-C3-00005",
+        "UCONN-V2-323e54eea0bb8ce7-C3-00003",
+        "UCONN-V2-1c094485d07ef14a-C3-00006",
+        "UCONN-V2-1c094485d07ef14a-C3-00003",
+        "UCONN-V2-36075e205469e1c3-C3-00003",
+        "UCONN-V2-1c094485d07ef14a-C3-00004",
+        "UCONN-V2-2334af2fceb18720-C3-00003",
+        "UCONN-V2-679f0e6d649e5b36-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R025",
+      "strategy": "B1",
+      "scope": {
+        "organization": "Rice University",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 37.88460000032501,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "RICE-V2-4edd458848700a98-C3-00001",
+        "RICE-V2-2787afc47297fdbb-C3-00001",
+        "RICE-V2-8121786ecb80e6d9-C3-00010",
+        "RICE-V2-4edd458848700a98-C3-00005",
+        "RICE-V2-4edd458848700a98-C3-00002",
+        "RICE-V2-b6368dc17f41cf2b-C3-00011",
+        "RICE-V2-b37244186e7644ce-C3-00002",
+        "RICE-V2-b37244186e7644ce-C3-00001",
+        "RICE-V2-4edd458848700a98-C3-00004",
+        "RICE-V2-93a0ecc8632caf6d-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R025",
+      "strategy": "B2",
+      "scope": {
+        "organization": "Rice University",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 64.27010000152222,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "RICE-V2-4edd458848700a98-C3-00001",
+        "RICE-V2-2787afc47297fdbb-C3-00001",
+        "RICE-V2-8121786ecb80e6d9-C3-00010",
+        "RICE-V2-4edd458848700a98-C3-00005",
+        "RICE-V2-4edd458848700a98-C3-00002",
+        "RICE-V2-b6368dc17f41cf2b-C3-00011",
+        "RICE-V2-b37244186e7644ce-C3-00002",
+        "RICE-V2-b37244186e7644ce-C3-00001",
+        "RICE-V2-4edd458848700a98-C3-00004",
+        "RICE-V2-93a0ecc8632caf6d-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R026",
+      "strategy": "B1",
+      "scope": {
+        "organization": "GitLab",
+        "employment_country": null
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 31.510600001638522,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "GITLAB-V2-d924f5daab5f1216-C3-00001",
+        "GITLAB-V2-d924f5daab5f1216-C3-00007",
+        "GITLAB-V2-d924f5daab5f1216-C3-00006",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00007",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00006",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00011",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00002",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00003",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00004",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00013"
+      ]
+    },
+    {
+      "query_id": "V2-R026",
+      "strategy": "B2",
+      "scope": {
+        "organization": "GitLab",
+        "employment_country": null
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 62.315000001035514,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "GITLAB-V2-d924f5daab5f1216-C3-00001",
+        "GITLAB-V2-d924f5daab5f1216-C3-00007",
+        "GITLAB-V2-d924f5daab5f1216-C3-00006",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00007",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00006",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00011",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00002",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00003",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00004",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00013"
+      ]
+    },
+    {
+      "query_id": "V2-R027",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 35.80429999965418,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-9bb59a8a4e379048-C3-00002",
+        "ARIZONA-V2-9bb59a8a4e379048-C3-00003",
+        "ARIZONA-V2-e09a3093dafa4fe2-C3-00001",
+        "ARIZONA-V2-9bb59a8a4e379048-C3-00004",
+        "ARIZONA-V2-9ac2d21d036b257d-C3-00003",
+        "ARIZONA-V2-99c6294d9b60059a-C3-00002",
+        "ARIZONA-V2-f5513ac77a221132-C3-00008",
+        "ARIZONA-V2-a7e1db065f526c10-C3-00001",
+        "ARIZONA-V2-cce367e1e227a6b6-C3-00006",
+        "ARIZONA-V2-e791933232ba98b6-C3-00006"
+      ]
+    },
+    {
+      "query_id": "V2-R027",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 59.75439999929222,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-9bb59a8a4e379048-C3-00002",
+        "ARIZONA-V2-9bb59a8a4e379048-C3-00003",
+        "ARIZONA-V2-e09a3093dafa4fe2-C3-00001",
+        "ARIZONA-V2-9bb59a8a4e379048-C3-00004",
+        "ARIZONA-V2-9ac2d21d036b257d-C3-00003",
+        "ARIZONA-V2-99c6294d9b60059a-C3-00002",
+        "ARIZONA-V2-f5513ac77a221132-C3-00008",
+        "ARIZONA-V2-a7e1db065f526c10-C3-00001",
+        "ARIZONA-V2-cce367e1e227a6b6-C3-00006",
+        "ARIZONA-V2-e791933232ba98b6-C3-00006"
+      ]
+    },
+    {
+      "query_id": "V2-R028",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 4,
+      "evidence_first_rank": 4,
+      "reciprocal_rank": 0.25,
+      "elapsed_ms": 45.792200000505545,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 0,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-9bb59a8a4e379048-C3-00002",
+        "ARIZONA-V2-bce28efe3e887b1c-C3-00003",
+        "ARIZONA-V2-d63665882f214501-C3-00001",
+        "ARIZONA-V2-a7e1db065f526c10-C3-00001",
+        "ARIZONA-V2-e09a3093dafa4fe2-C3-00001",
+        "ARIZONA-V2-e26b2ac403eb4534-C3-00001",
+        "ARIZONA-V2-76ea7422fdc6f6eb-C3-00003",
+        "ARIZONA-V2-4d13a5410a09ae3f-C3-00001",
+        "ARIZONA-V2-6492ae39148e9661-C3-00012",
+        "ARIZONA-V2-9bb59a8a4e379048-C3-00003"
+      ]
+    },
+    {
+      "query_id": "V2-R028",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 4,
+      "evidence_first_rank": 4,
+      "reciprocal_rank": 0.25,
+      "elapsed_ms": 67.51249999979336,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 0,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-9bb59a8a4e379048-C3-00002",
+        "ARIZONA-V2-bce28efe3e887b1c-C3-00003",
+        "ARIZONA-V2-d63665882f214501-C3-00001",
+        "ARIZONA-V2-a7e1db065f526c10-C3-00001",
+        "ARIZONA-V2-e09a3093dafa4fe2-C3-00001",
+        "ARIZONA-V2-e26b2ac403eb4534-C3-00001",
+        "ARIZONA-V2-76ea7422fdc6f6eb-C3-00003",
+        "ARIZONA-V2-4d13a5410a09ae3f-C3-00001",
+        "ARIZONA-V2-6492ae39148e9661-C3-00012",
+        "ARIZONA-V2-9bb59a8a4e379048-C3-00003"
+      ]
+    },
+    {
+      "query_id": "V2-R029",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Utah",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 48.4253999984503,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UTAH-V2-ca347ed3767b5e58-C3-00002",
+        "UTAH-V2-ca347ed3767b5e58-C3-00001",
+        "UTAH-V2-ca347ed3767b5e58-C3-00003",
+        "UTAH-V2-80f066538a4085b7-C3-00006",
+        "UTAH-V2-ca347ed3767b5e58-C3-00004",
+        "UTAH-V2-2e4286618d32de1b-C3-00002",
+        "UTAH-V2-80f066538a4085b7-C3-00004",
+        "UTAH-V2-9e137a4dcd09ada8-C3-00001",
+        "UTAH-V2-ca347ed3767b5e58-C3-00006",
+        "UTAH-V2-1dae3ca5f1290909-C3-00004"
+      ]
+    },
+    {
+      "query_id": "V2-R029",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Utah",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 76.83069999984582,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UTAH-V2-ca347ed3767b5e58-C3-00002",
+        "UTAH-V2-ca347ed3767b5e58-C3-00001",
+        "UTAH-V2-ca347ed3767b5e58-C3-00003",
+        "UTAH-V2-80f066538a4085b7-C3-00006",
+        "UTAH-V2-ca347ed3767b5e58-C3-00004",
+        "UTAH-V2-2e4286618d32de1b-C3-00002",
+        "UTAH-V2-80f066538a4085b7-C3-00004",
+        "UTAH-V2-9e137a4dcd09ada8-C3-00001",
+        "UTAH-V2-ca347ed3767b5e58-C3-00006",
+        "UTAH-V2-1dae3ca5f1290909-C3-00004"
+      ]
+    },
+    {
+      "query_id": "V2-R030",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Connecticut",
+        "employment_country": "US"
+      },
+      "document_first_rank": 3,
+      "evidence_first_rank": 3,
+      "reciprocal_rank": 0.3333333333333333,
+      "elapsed_ms": 55.80230000123265,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UCONN-V2-beb99859448446af-C3-00002",
+        "UCONN-V2-a0bea36a5a581791-C3-00002",
+        "UCONN-V2-b15fd88b4a8dec7d-C3-00002",
+        "UCONN-V2-a0bea36a5a581791-C3-00001",
+        "UCONN-V2-b15fd88b4a8dec7d-C3-00001",
+        "UCONN-V2-8371e23c8f60e42f-C3-00003",
+        "UCONN-V2-bb993856f0e4669f-C3-00001",
+        "UCONN-V2-beb99859448446af-C3-00003",
+        "UCONN-V2-bb993856f0e4669f-C3-00003",
+        "UCONN-V2-8371e23c8f60e42f-C3-00004"
+      ]
+    },
+    {
+      "query_id": "V2-R030",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Connecticut",
+        "employment_country": "US"
+      },
+      "document_first_rank": 3,
+      "evidence_first_rank": 3,
+      "reciprocal_rank": 0.3333333333333333,
+      "elapsed_ms": 86.76920000107202,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UCONN-V2-beb99859448446af-C3-00002",
+        "UCONN-V2-a0bea36a5a581791-C3-00002",
+        "UCONN-V2-b15fd88b4a8dec7d-C3-00002",
+        "UCONN-V2-a0bea36a5a581791-C3-00001",
+        "UCONN-V2-b15fd88b4a8dec7d-C3-00001",
+        "UCONN-V2-8371e23c8f60e42f-C3-00003",
+        "UCONN-V2-bb993856f0e4669f-C3-00001",
+        "UCONN-V2-beb99859448446af-C3-00003",
+        "UCONN-V2-bb993856f0e4669f-C3-00003",
+        "UCONN-V2-8371e23c8f60e42f-C3-00004"
+      ]
+    },
+    {
+      "query_id": "V2-R031",
+      "strategy": "B1",
+      "scope": {
+        "organization": "GitLab",
+        "employment_country": null
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 43.99310000007972,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 1,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "GITLAB-V2-a8b12791379d461c-C3-00001",
+        "GITLAB-V2-8b5e7c1a17372a30-C3-00002",
+        "GITLAB-V2-a8b12791379d461c-C3-00017",
+        "GITLAB-V2-a8b12791379d461c-C3-00004",
+        "GITLAB-V2-a8b12791379d461c-C3-00011",
+        "GITLAB-V2-a8b12791379d461c-C3-00003",
+        "GITLAB-V2-a8b12791379d461c-C3-00002",
+        "GITLAB-V2-f616c27b04aabf1c-C3-00006",
+        "GITLAB-V2-a8b12791379d461c-C3-00008",
+        "GITLAB-V2-2de13b4ffdf010cf-C3-00004"
+      ]
+    },
+    {
+      "query_id": "V2-R031",
+      "strategy": "B2",
+      "scope": {
+        "organization": "GitLab",
+        "employment_country": null
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 69.9733000001288,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "GITLAB-V2-a8b12791379d461c-C3-00001",
+        "GITLAB-V2-8b5e7c1a17372a30-C3-00002",
+        "GITLAB-V2-a8b12791379d461c-C3-00017",
+        "GITLAB-V2-a8b12791379d461c-C3-00004",
+        "GITLAB-V2-a8b12791379d461c-C3-00011",
+        "GITLAB-V2-a8b12791379d461c-C3-00003",
+        "GITLAB-V2-a8b12791379d461c-C3-00002",
+        "GITLAB-V2-a8b12791379d461c-C3-00008",
+        "GITLAB-V2-2de13b4ffdf010cf-C3-00004",
+        "GITLAB-V2-a8b12791379d461c-C3-00010"
+      ]
+    },
+    {
+      "query_id": "V2-R032",
+      "strategy": "B1",
+      "scope": {
+        "organization": "GitLab",
+        "employment_country": null
+      },
+      "document_first_rank": 2,
+      "evidence_first_rank": 4,
+      "reciprocal_rank": 0.25,
+      "elapsed_ms": 43.2901000003767,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 0,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00020",
+        "GITLAB-V2-5bff2d1a7b4e06b4-C3-00001",
+        "GITLAB-V2-0c6ec1765762e927-C3-00010",
+        "GITLAB-V2-5bff2d1a7b4e06b4-C3-00006",
+        "GITLAB-V2-5bff2d1a7b4e06b4-C3-00011",
+        "GITLAB-V2-5bff2d1a7b4e06b4-C3-00003",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00022",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00021",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00002",
+        "GITLAB-V2-5bff2d1a7b4e06b4-C3-00013"
+      ]
+    },
+    {
+      "query_id": "V2-R032",
+      "strategy": "B2",
+      "scope": {
+        "organization": "GitLab",
+        "employment_country": null
+      },
+      "document_first_rank": 2,
+      "evidence_first_rank": 4,
+      "reciprocal_rank": 0.25,
+      "elapsed_ms": 62.172199999622535,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 0,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00020",
+        "GITLAB-V2-5bff2d1a7b4e06b4-C3-00001",
+        "GITLAB-V2-0c6ec1765762e927-C3-00010",
+        "GITLAB-V2-5bff2d1a7b4e06b4-C3-00006",
+        "GITLAB-V2-5bff2d1a7b4e06b4-C3-00011",
+        "GITLAB-V2-5bff2d1a7b4e06b4-C3-00003",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00022",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00021",
+        "GITLAB-V2-c56dc5f9fd1a9e63-C3-00002",
+        "GITLAB-V2-5bff2d1a7b4e06b4-C3-00013"
+      ]
+    },
+    {
+      "query_id": "V2-R033",
+      "strategy": "B1",
+      "scope": {
+        "organization": "Rice University",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 54.74039999899105,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "RICE-V2-30909ed6bf5b9075-C3-00001",
+        "RICE-V2-2f0b4c23af190efd-C3-00029",
+        "RICE-V2-8f4c5540e8c50459-C3-00003",
+        "RICE-V2-b6368dc17f41cf2b-C3-00006",
+        "RICE-V2-8f4c5540e8c50459-C3-00004",
+        "RICE-V2-30909ed6bf5b9075-C3-00002",
+        "RICE-V2-96468f268d5c1476-C3-00001",
+        "RICE-V2-8121786ecb80e6d9-C3-00007",
+        "RICE-V2-f1e98f2ecc853baa-C3-00004",
+        "RICE-V2-b6368dc17f41cf2b-C3-00004"
+      ]
+    },
+    {
+      "query_id": "V2-R033",
+      "strategy": "B2",
+      "scope": {
+        "organization": "Rice University",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 78.52169999932812,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "RICE-V2-30909ed6bf5b9075-C3-00001",
+        "RICE-V2-2f0b4c23af190efd-C3-00029",
+        "RICE-V2-8f4c5540e8c50459-C3-00003",
+        "RICE-V2-b6368dc17f41cf2b-C3-00006",
+        "RICE-V2-8f4c5540e8c50459-C3-00004",
+        "RICE-V2-30909ed6bf5b9075-C3-00002",
+        "RICE-V2-96468f268d5c1476-C3-00001",
+        "RICE-V2-8121786ecb80e6d9-C3-00007",
+        "RICE-V2-f1e98f2ecc853baa-C3-00004",
+        "RICE-V2-b6368dc17f41cf2b-C3-00004"
+      ]
+    },
+    {
+      "query_id": "V2-R034",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Colorado System",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 52.63139999988198,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "COLORADO-V2-12ff889552aecda4-C3-00003",
+        "COLORADO-V2-d4e3462a137c0f78-C3-00011",
+        "COLORADO-V2-2a88f7e08a43e93b-C3-00025",
+        "COLORADO-V2-12ff889552aecda4-C3-00001",
+        "COLORADO-V2-e3825f44499c1403-C3-00007",
+        "COLORADO-V2-12ff889552aecda4-C3-00002",
+        "COLORADO-V2-e3825f44499c1403-C3-00008",
+        "COLORADO-V2-2c1933701084be30-C3-00003",
+        "COLORADO-V2-2a88f7e08a43e93b-C3-00027",
+        "COLORADO-V2-d4e3462a137c0f78-C3-00004"
+      ]
+    },
+    {
+      "query_id": "V2-R034",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Colorado System",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 75.76659999904223,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "COLORADO-V2-12ff889552aecda4-C3-00003",
+        "COLORADO-V2-d4e3462a137c0f78-C3-00011",
+        "COLORADO-V2-2a88f7e08a43e93b-C3-00025",
+        "COLORADO-V2-12ff889552aecda4-C3-00001",
+        "COLORADO-V2-e3825f44499c1403-C3-00007",
+        "COLORADO-V2-12ff889552aecda4-C3-00002",
+        "COLORADO-V2-e3825f44499c1403-C3-00008",
+        "COLORADO-V2-2c1933701084be30-C3-00003",
+        "COLORADO-V2-2a88f7e08a43e93b-C3-00027",
+        "COLORADO-V2-d4e3462a137c0f78-C3-00004"
+      ]
+    },
+    {
+      "query_id": "V2-R035",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Connecticut",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 32.0821999994223,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UCONN-V2-eee414593b71b007-C3-00002",
+        "UCONN-V2-eee414593b71b007-C3-00001",
+        "UCONN-V2-c236e240b133e3c3-C3-00027",
+        "UCONN-V2-c236e240b133e3c3-C3-00022",
+        "UCONN-V2-c236e240b133e3c3-C3-00028",
+        "UCONN-V2-c236e240b133e3c3-C3-00012",
+        "UCONN-V2-c236e240b133e3c3-C3-00017",
+        "UCONN-V2-c236e240b133e3c3-C3-00015",
+        "UCONN-V2-82aad1f4a7ecff4f-C3-00002",
+        "UCONN-V2-9e76544837ede825-C3-00003"
+      ]
+    },
+    {
+      "query_id": "V2-R035",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Connecticut",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 47.07799999960116,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UCONN-V2-eee414593b71b007-C3-00002",
+        "UCONN-V2-eee414593b71b007-C3-00001",
+        "UCONN-V2-c236e240b133e3c3-C3-00027",
+        "UCONN-V2-c236e240b133e3c3-C3-00022",
+        "UCONN-V2-c236e240b133e3c3-C3-00028",
+        "UCONN-V2-c236e240b133e3c3-C3-00012",
+        "UCONN-V2-c236e240b133e3c3-C3-00017",
+        "UCONN-V2-c236e240b133e3c3-C3-00015",
+        "UCONN-V2-82aad1f4a7ecff4f-C3-00002",
+        "UCONN-V2-9e76544837ede825-C3-00003"
+      ]
+    },
+    {
+      "query_id": "V2-R036",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Utah",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 24.815999999191263,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UTAH-V2-2a29c42bea6a843d-C3-00002",
+        "UTAH-V2-fabcb98f154d4acd-C3-00003",
+        "UTAH-V2-b3ace12fe68933b4-C3-00003",
+        "UTAH-V2-2a29c42bea6a843d-C3-00001",
+        "UTAH-V2-99bf4a36be846222-C3-00009",
+        "UTAH-V2-5b7a119e8e3cbec5-C3-00002",
+        "UTAH-V2-99bf4a36be846222-C3-00005",
+        "UTAH-V2-61b4f8c73ab4829d-C3-00003",
+        "UTAH-V2-c1b61b4ddc7012a8-C3-00002",
+        "UTAH-V2-61bb5a82b17e2c64-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R036",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Utah",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 46.93950000000768,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UTAH-V2-2a29c42bea6a843d-C3-00002",
+        "UTAH-V2-fabcb98f154d4acd-C3-00003",
+        "UTAH-V2-b3ace12fe68933b4-C3-00003",
+        "UTAH-V2-2a29c42bea6a843d-C3-00001",
+        "UTAH-V2-99bf4a36be846222-C3-00009",
+        "UTAH-V2-5b7a119e8e3cbec5-C3-00002",
+        "UTAH-V2-99bf4a36be846222-C3-00005",
+        "UTAH-V2-61b4f8c73ab4829d-C3-00003",
+        "UTAH-V2-c1b61b4ddc7012a8-C3-00002",
+        "UTAH-V2-61bb5a82b17e2c64-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R037",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 45.94629999883182,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-10bd5b557987226b-C3-00003",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00007",
+        "ARIZONA-V2-10bd5b557987226b-C3-00007",
+        "ARIZONA-V2-66e05d29adfcefbe-C3-00009",
+        "ARIZONA-V2-b5814c88b47bd9fc-C3-00006",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00006",
+        "ARIZONA-V2-c29c797964ea5637-C3-00003",
+        "ARIZONA-V2-10bd5b557987226b-C3-00006",
+        "ARIZONA-V2-9bb59a8a4e379048-C3-00003",
+        "ARIZONA-V2-b434e8c75996265f-C3-00006"
+      ]
+    },
+    {
+      "query_id": "V2-R037",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 63.70269999933953,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-10bd5b557987226b-C3-00003",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00007",
+        "ARIZONA-V2-10bd5b557987226b-C3-00007",
+        "ARIZONA-V2-66e05d29adfcefbe-C3-00009",
+        "ARIZONA-V2-b5814c88b47bd9fc-C3-00006",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00006",
+        "ARIZONA-V2-c29c797964ea5637-C3-00003",
+        "ARIZONA-V2-10bd5b557987226b-C3-00006",
+        "ARIZONA-V2-9bb59a8a4e379048-C3-00003",
+        "ARIZONA-V2-b434e8c75996265f-C3-00006"
+      ]
+    },
+    {
+      "query_id": "V2-R038",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Connecticut",
+        "employment_country": "US"
+      },
+      "document_first_rank": 2,
+      "evidence_first_rank": 3,
+      "reciprocal_rank": 0.3333333333333333,
+      "elapsed_ms": 37.20100000100501,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UCONN-V2-a8e8d12f1c03e1af-C3-00009",
+        "UCONN-V2-12eeecbea4b08ac5-C3-00001",
+        "UCONN-V2-12eeecbea4b08ac5-C3-00003",
+        "UCONN-V2-12eeecbea4b08ac5-C3-00005",
+        "UCONN-V2-a8e8d12f1c03e1af-C3-00005",
+        "UCONN-V2-bb993856f0e4669f-C3-00003",
+        "UCONN-V2-8371e23c8f60e42f-C3-00003",
+        "UCONN-V2-8371e23c8f60e42f-C3-00004",
+        "UCONN-V2-82aad1f4a7ecff4f-C3-00002",
+        "UCONN-V2-12eeecbea4b08ac5-C3-00004"
+      ]
+    },
+    {
+      "query_id": "V2-R038",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Connecticut",
+        "employment_country": "US"
+      },
+      "document_first_rank": 2,
+      "evidence_first_rank": 3,
+      "reciprocal_rank": 0.3333333333333333,
+      "elapsed_ms": 58.68740000005346,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "UCONN-V2-a8e8d12f1c03e1af-C3-00009",
+        "UCONN-V2-12eeecbea4b08ac5-C3-00001",
+        "UCONN-V2-12eeecbea4b08ac5-C3-00003",
+        "UCONN-V2-12eeecbea4b08ac5-C3-00005",
+        "UCONN-V2-a8e8d12f1c03e1af-C3-00005",
+        "UCONN-V2-bb993856f0e4669f-C3-00003",
+        "UCONN-V2-8371e23c8f60e42f-C3-00003",
+        "UCONN-V2-8371e23c8f60e42f-C3-00004",
+        "UCONN-V2-82aad1f4a7ecff4f-C3-00002",
+        "UCONN-V2-12eeecbea4b08ac5-C3-00004"
+      ]
+    },
+    {
+      "query_id": "V2-R039",
+      "strategy": "B1",
+      "scope": {
+        "organization": "Rice University",
+        "employment_country": "US"
+      },
+      "document_first_rank": 5,
+      "evidence_first_rank": 5,
+      "reciprocal_rank": 0.2,
+      "elapsed_ms": 45.99980000057258,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 0,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "RICE-V2-034c3d267183ef85-C3-00001",
+        "RICE-V2-89928a3fda24f47c-C3-00003",
+        "RICE-V2-afd2b4f7ba6459f4-C3-00004",
+        "RICE-V2-89928a3fda24f47c-C3-00002",
+        "RICE-V2-d487208f391f401b-C3-00001",
+        "RICE-V2-afd2b4f7ba6459f4-C3-00003",
+        "RICE-V2-9e23b566a47e347e-C3-00008",
+        "RICE-V2-a5595ef72971f2bf-C3-00001",
+        "RICE-V2-68d8512241e9bcd1-C3-00001",
+        "RICE-V2-9e23b566a47e347e-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R039",
+      "strategy": "B2",
+      "scope": {
+        "organization": "Rice University",
+        "employment_country": "US"
+      },
+      "document_first_rank": 5,
+      "evidence_first_rank": 5,
+      "reciprocal_rank": 0.2,
+      "elapsed_ms": 66.22570000035921,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 0,
+        "3": 0,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "RICE-V2-034c3d267183ef85-C3-00001",
+        "RICE-V2-89928a3fda24f47c-C3-00003",
+        "RICE-V2-afd2b4f7ba6459f4-C3-00004",
+        "RICE-V2-89928a3fda24f47c-C3-00002",
+        "RICE-V2-d487208f391f401b-C3-00001",
+        "RICE-V2-afd2b4f7ba6459f4-C3-00003",
+        "RICE-V2-9e23b566a47e347e-C3-00008",
+        "RICE-V2-a5595ef72971f2bf-C3-00001",
+        "RICE-V2-68d8512241e9bcd1-C3-00001",
+        "RICE-V2-9e23b566a47e347e-C3-00001"
+      ]
+    },
+    {
+      "query_id": "V2-R040",
+      "strategy": "B1",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 57.3846000006597,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-cb3dc6ed994b9b87-C3-00001",
+        "ARIZONA-V2-49db561aa3a62d3b-C3-00004",
+        "ARIZONA-V2-3fd39acee2a2e7c7-C3-00002",
+        "ARIZONA-V2-66e05d29adfcefbe-C3-00009",
+        "ARIZONA-V2-4f7d9993d0259f02-C3-00003",
+        "ARIZONA-V2-eb455c54b1f5f774-C3-00004",
+        "ARIZONA-V2-6f2a3ed889a28896-C3-00003",
+        "ARIZONA-V2-6d5909768461f1b0-C3-00010",
+        "ARIZONA-V2-20b0180679add7a5-C3-00001",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00008"
+      ]
+    },
+    {
+      "query_id": "V2-R040",
+      "strategy": "B2",
+      "scope": {
+        "organization": "University of Arizona",
+        "employment_country": "US"
+      },
+      "document_first_rank": 1,
+      "evidence_first_rank": 1,
+      "reciprocal_rank": 1.0,
+      "elapsed_ms": 80.65279999937047,
+      "returned_chunks": 10,
+      "organization_leakage": 0,
+      "allowlist_violations": 0,
+      "gold_document_available": true,
+      "document_recall": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0,
+        "10": 1.0
+      },
+      "evidence_hit": {
+        "1": 1,
+        "3": 1,
+        "5": 1,
+        "10": 1
+      },
+      "retrieved_chunk_ids": [
+        "ARIZONA-V2-cb3dc6ed994b9b87-C3-00001",
+        "ARIZONA-V2-49db561aa3a62d3b-C3-00004",
+        "ARIZONA-V2-3fd39acee2a2e7c7-C3-00002",
+        "ARIZONA-V2-66e05d29adfcefbe-C3-00009",
+        "ARIZONA-V2-4f7d9993d0259f02-C3-00003",
+        "ARIZONA-V2-eb455c54b1f5f774-C3-00004",
+        "ARIZONA-V2-6f2a3ed889a28896-C3-00003",
+        "ARIZONA-V2-6d5909768461f1b0-C3-00010",
+        "ARIZONA-V2-20b0180679add7a5-C3-00001",
+        "ARIZONA-V2-6820e7fcfdc55936-C3-00008"
+      ]
+    }
+  ],
+  "hosted_ai_api_calls": 0,
+  "limitations": [
+    "Draft gold evidence requires semantic review.",
+    "Evidence hit measures any complete annotated span.",
+    "A retrieved passage does not prove answer correctness.",
+    "Country classifications are provisional.",
+    "No definitive eligibility decisions are evaluated."
+  ]
+}

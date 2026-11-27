@@ -1,0 +1,215 @@
+{
+  "corpus_version": "v1.0",
+  "status": "frozen_with_raw_integrity_discrepancies",
+  "benchmark_integrity_verified": true,
+  "evaluation_integrity_verified": true,
+  "document_count": 9,
+  "chunk_count": 224,
+  "unique_chunk_count": 224,
+  "raw_documents_verified": 7,
+  "raw_document_discrepancies": 2,
+  "raw_document_audit": [
+    {
+      "document_id": "GITLAB-0001",
+      "title": "Global Travel and Expense Policy",
+      "source_url": "https://handbook.gitlab.com/handbook/finance/expenses",
+      "local_path": "data/real_corpus/raw/gitlab/finance/expenses.md",
+      "historical_manifest_hash": "56501c94adb71ca800494ec5fd82aaf1808cb323d53d857637c81b00c4bb51c7",
+      "current_file_hash": "bf9828f28b225158252c611ac9c796383f2240307350499846e474389b78d625",
+      "historical_hash_matches": false,
+      "status": "historical_hash_discrepancy"
+    },
+    {
+      "document_id": "GITLAB-0002",
+      "title": "Spending Company Money",
+      "source_url": "https://handbook.gitlab.com/handbook/finance/spending-company-money",
+      "local_path": "data/real_corpus/raw/gitlab/finance/spending-company-money.md",
+      "historical_manifest_hash": "ef735ffa39840495469e591eb6ec5cbf962f26e34bfdbe1b29715bbea97739e9",
+      "current_file_hash": "ef735ffa39840495469e591eb6ec5cbf962f26e34bfdbe1b29715bbea97739e9",
+      "historical_hash_matches": true,
+      "status": "verified"
+    },
+    {
+      "document_id": "GITLAB-0003",
+      "title": "Sponsored Travel",
+      "source_url": "https://handbook.gitlab.com/handbook/finance/travel/sponsored",
+      "local_path": "data/real_corpus/raw/gitlab/finance/travel/sponsored.md",
+      "historical_manifest_hash": "5b2d381009dc4280e39c623dcdb08e816ca3db0d5948d2aed8acdbb17121403f",
+      "current_file_hash": "5b2d381009dc4280e39c623dcdb08e816ca3db0d5948d2aed8acdbb17121403f",
+      "historical_hash_matches": true,
+      "status": "verified"
+    },
+    {
+      "document_id": "GITLAB-0004",
+      "title": "Anti-Corruption Policy",
+      "source_url": "https://handbook.gitlab.com/handbook/legal/anti-corruption-policy",
+      "local_path": "data/real_corpus/raw/gitlab/legal/anti-corruption-policy.md",
+      "historical_manifest_hash": "7a1463a5ead907214d6cf890d36f018d08b31a0c7c470624cb189e47b01efe96",
+      "current_file_hash": "7a1463a5ead907214d6cf890d36f018d08b31a0c7c470624cb189e47b01efe96",
+      "historical_hash_matches": true,
+      "status": "verified"
+    },
+    {
+      "document_id": "GITLAB-0005",
+      "title": "Anti-Fraud Policy",
+      "source_url": "https://handbook.gitlab.com/handbook/legal/anti-fraud-policy",
+      "local_path": "data/real_corpus/raw/gitlab/legal/anti-fraud-policy.md",
+      "historical_manifest_hash": "41ea225e257a8af3a23f1acc05807366e11d2f2951cf0f27515f671a17bed76d",
+      "current_file_hash": "41ea225e257a8af3a23f1acc05807366e11d2f2951cf0f27515f671a17bed76d",
+      "historical_hash_matches": true,
+      "status": "verified"
+    },
+    {
+      "document_id": "GITLAB-0006",
+      "title": "Policies related to Gifts and Contributions",
+      "source_url": "https://handbook.gitlab.com/handbook/legal/policies/gifts-contributions",
+      "local_path": "data/real_corpus/raw/gitlab/legal/policies/gifts-contributions.md",
+      "historical_manifest_hash": "75c02a1ef4f07b433e0c3dc233d193e5a18bc74f12288eb1733994f1db7cee3f",
+      "current_file_hash": "75c02a1ef4f07b433e0c3dc233d193e5a18bc74f12288eb1733994f1db7cee3f",
+      "historical_hash_matches": true,
+      "status": "verified"
+    },
+    {
+      "document_id": "GITLAB-0007",
+      "title": "Leave Types",
+      "source_url": "https://handbook.gitlab.com/handbook/people-group/time-off-and-absence/leave-types",
+      "local_path": "data/real_corpus/raw/gitlab/people-group/time-off-and-absence/leave-types.md",
+      "historical_manifest_hash": "625206862ee4f65178434e1bb24ae94f5d42c1ef2f29906b921f88d75b304d2e",
+      "current_file_hash": "625206862ee4f65178434e1bb24ae94f5d42c1ef2f29906b921f88d75b304d2e",
+      "historical_hash_matches": true,
+      "status": "verified"
+    },
+    {
+      "document_id": "GITLAB-0008",
+      "title": "Time Away Philosophy",
+      "source_url": "https://handbook.gitlab.com/handbook/people-group/time-off-and-absence/time-away-philosophy",
+      "local_path": "data/real_corpus/raw/gitlab/people-group/time-off-and-absence/time-away-philosophy.md",
+      "historical_manifest_hash": "aba4a0945b8559056ca9ce93c36e82a8ef7659dd99d32a0695ce63077467f6c6",
+      "current_file_hash": "601318755e5d9f8ffbb985c6f3edba7a27bef7b0b1f9954d2aa6ca462386ca88",
+      "historical_hash_matches": false,
+      "status": "historical_hash_discrepancy"
+    },
+    {
+      "document_id": "GITLAB-0009",
+      "title": "Time Off Types",
+      "source_url": "https://handbook.gitlab.com/handbook/people-group/time-off-and-absence/time-off-types",
+      "local_path": "data/real_corpus/raw/gitlab/people-group/time-off-and-absence/time-off-types.md",
+      "historical_manifest_hash": "0f5654b5471931fb585b1e96bac81bb0faab2c8ece6c37969534a13403da1b2e",
+      "current_file_hash": "0f5654b5471931fb585b1e96bac81bb0faab2c8ece6c37969534a13403da1b2e",
+      "historical_hash_matches": true,
+      "status": "verified"
+    }
+  ],
+  "chunk_counts_by_document": {
+    "GITLAB-0001": 87,
+    "GITLAB-0002": 4,
+    "GITLAB-0003": 9,
+    "GITLAB-0004": 17,
+    "GITLAB-0005": 10,
+    "GITLAB-0006": 11,
+    "GITLAB-0007": 19,
+    "GITLAB-0008": 23,
+    "GITLAB-0009": 44
+  },
+  "integrity_notes": [
+    "Historical manifest hashes preserved.",
+    "Two raw documents have historical hash discrepancies.",
+    "LF, CRLF and BOM normalization did not resolve them.",
+    "Exact historical cause remains unverified.",
+    "CAP-13 benchmark corpus fingerprint matches.",
+    "Frozen evaluation dataset fingerprint matches.",
+    "Original corpus files have not been modified.",
+    "Raw discrepancies require provenance review before reuse in V2."
+  ],
+  "protected_files": [
+    {
+      "path": "data/real_corpus/metadata/corpus_manifest.jsonl",
+      "sha256": "f472eb2239b2ed4527b5639454c325d335d90df918b383faa6b898c50809f075"
+    },
+    {
+      "path": "data/real_corpus/chunks/gitlab_structure_aware_v4_500_overlap_100.jsonl",
+      "sha256": "4e210e4e16cb3e5b3bfaed680aa5a0aefd1acab08b3edb802b081bff4adddd60"
+    },
+    {
+      "path": "data/evaluation/real_corpus/retrieval_eval_v1.0.json",
+      "sha256": "1ef642a6b63b37f48ed4d08a32d2c2e466c1557dbcb334fb2913a7d5b43e1410"
+    },
+    {
+      "path": "data/evaluation/real_corpus/cap13_bm25_comparison_v1.0.json",
+      "sha256": "8c0f6906686ad460366290acc7674c024e717b08f1f1a28f771538db1be31362"
+    },
+    {
+      "path": "data/real_corpus/raw/gitlab/finance/expenses.md",
+      "sha256": "bf9828f28b225158252c611ac9c796383f2240307350499846e474389b78d625"
+    },
+    {
+      "path": "data/real_corpus/raw/gitlab/finance/spending-company-money.md",
+      "sha256": "ef735ffa39840495469e591eb6ec5cbf962f26e34bfdbe1b29715bbea97739e9"
+    },
+    {
+      "path": "data/real_corpus/raw/gitlab/finance/travel/sponsored.md",
+      "sha256": "5b2d381009dc4280e39c623dcdb08e816ca3db0d5948d2aed8acdbb17121403f"
+    },
+    {
+      "path": "data/real_corpus/raw/gitlab/legal/anti-corruption-policy.md",
+      "sha256": "7a1463a5ead907214d6cf890d36f018d08b31a0c7c470624cb189e47b01efe96"
+    },
+    {
+      "path": "data/real_corpus/raw/gitlab/legal/anti-fraud-policy.md",
+      "sha256": "41ea225e257a8af3a23f1acc05807366e11d2f2951cf0f27515f671a17bed76d"
+    },
+    {
+      "path": "data/real_corpus/raw/gitlab/legal/policies/gifts-contributions.md",
+      "sha256": "75c02a1ef4f07b433e0c3dc233d193e5a18bc74f12288eb1733994f1db7cee3f"
+    },
+    {
+      "path": "data/real_corpus/raw/gitlab/people-group/time-off-and-absence/leave-types.md",
+      "sha256": "625206862ee4f65178434e1bb24ae94f5d42c1ef2f29906b921f88d75b304d2e"
+    },
+    {
+      "path": "data/real_corpus/raw/gitlab/people-group/time-off-and-absence/time-away-philosophy.md",
+      "sha256": "601318755e5d9f8ffbb985c6f3edba7a27bef7b0b1f9954d2aa6ca462386ca88"
+    },
+    {
+      "path": "data/real_corpus/raw/gitlab/people-group/time-off-and-absence/time-off-types.md",
+      "sha256": "0f5654b5471931fb585b1e96bac81bb0faab2c8ece6c37969534a13403da1b2e"
+    },
+    {
+      "path": "data/real_corpus/processed/gitlab/GITLAB-0001.md",
+      "sha256": "f98a059b272e970da072d33f143764a09133c60e846c0babf8fab818796535f4"
+    },
+    {
+      "path": "data/real_corpus/processed/gitlab/GITLAB-0002.md",
+      "sha256": "defbe41f62f0b6a805771613957d1cd140782c6b14fe69171f9367c0d01c715a"
+    },
+    {
+      "path": "data/real_corpus/processed/gitlab/GITLAB-0003.md",
+      "sha256": "7d5e6b992e28786fbdf35d40461ae6460be275c56fc49fd1a967e60e63dff9b1"
+    },
+    {
+      "path": "data/real_corpus/processed/gitlab/GITLAB-0004.md",
+      "sha256": "68e0f3e2ce14c6dc1a5eda1e503251c02853414e97ea90ecfc2e88bd88f42c62"
+    },
+    {
+      "path": "data/real_corpus/processed/gitlab/GITLAB-0005.md",
+      "sha256": "c2cacfcb28482b7852e08fc2a32885022d9c4a0c71e70fcf684b91a140c36f7e"
+    },
+    {
+      "path": "data/real_corpus/processed/gitlab/GITLAB-0006.md",
+      "sha256": "23492fe28e6db5cb74971025de5cfe6bf40ec4e5096f4184cd75966f93bc5ed5"
+    },
+    {
+      "path": "data/real_corpus/processed/gitlab/GITLAB-0007.md",
+      "sha256": "d02ead860b3d92d21d007a0c9efb7843828befcedad6af7909aed64f4f9ef246"
+    },
+    {
+      "path": "data/real_corpus/processed/gitlab/GITLAB-0008.md",
+      "sha256": "7cff11454f271c9b2216972733382a05fc08e0e7327f6d25163e351fcfd04067"
+    },
+    {
+      "path": "data/real_corpus/processed/gitlab/GITLAB-0009.md",
+      "sha256": "51f4947eca9c677d45a5b67843218cc232fa8484500b7713c7ed0782792ff33d"
+    }
+  ],
+  "hosted_api_calls": 0
+}

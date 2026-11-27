@@ -64,3 +64,16 @@ data/uploads/
 
 # Dependency validation environment
 .venv-test/
+data/real_corpus/expanded_v2/
+CAP14_source_review.zip
+
+# CAP-14 generated artifacts
+CAP14_vector_ingestion_review.txt
+data/vector_store/chroma_v2/
+CAP14_hybrid_integration_review.txt
+data/vector_store/chroma_v2_local/
+CAP14_full_integration_review.txt
+CAP14_organization_integration.txt
+CAP14_retrieval_source_review.txt
+data/real_corpus/metadata/corpus_quality_review_v2.csv
+data/real_corpus/metadata/corpus_quality_review_v2.json

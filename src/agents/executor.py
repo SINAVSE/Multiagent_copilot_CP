@@ -2,6 +2,11 @@
 from typing import Any
 
 from src.agents.errors import ToolExecutionError
+from src.agents.policy_scope import (
+    PolicyScope,
+    PolicyScopeError,
+    validate_organization_evidence,
+)
 
 from src.rag.generation.answer_generator import AnswerGenerator
 from src.tools.expense_calculator import (
@@ -41,10 +46,21 @@ class Executor:
         file_path: str | None = None,
         critic_feedback: str | None = None,
         expense_details: dict | None = None,
+        policy_scope: PolicyScope | None = None,
     ) -> dict:
 
         results = {}
         details = expense_details or {}
+        scope_options = {}
+
+        if policy_scope is not None:
+
+            if not isinstance(policy_scope, PolicyScope):
+                raise PolicyScopeError(
+                    "A validated policy scope is required."
+                )
+
+            scope_options["policy_scope"] = policy_scope
 
         tool_order = [
             "search_hr_policy",
@@ -88,12 +104,21 @@ class Executor:
                 "search_hr_policy",
                 self.answer_generator.retrieve,
                 query,
+                **scope_options,
             )
+
+            if policy_scope is not None:
+                validate_organization_evidence(
+                    policy_scope,
+                    retrieval_result,
+                )
 
             evidence = [
                 {
                     "chunk_id": item.chunk.chunk_id,
                     "title": item.chunk.title,
+                    **({"organization": item.chunk.organization}
+                       if policy_scope is not None else {}),
                     "section": (
                         item.chunk.section_path
                         or item.chunk.section_heading
@@ -389,7 +414,55 @@ class Executor:
                 critic_feedback=critic_feedback,
                 expense_result=expense_result,
                 retrieval_result=retrieval_result,
+                **scope_options,
             )
+
+            if policy_scope is not None:
+
+                verified_chunks = {
+                    item.chunk.chunk_id: item.chunk
+                    for item in retrieval_result.retrieved_chunks
+                }
+
+                for citation in answer.citations:
+
+                    chunk = verified_chunks.get(
+                        citation.chunk_id
+                    )
+
+                    if (
+                        chunk is None
+                        or citation.organization
+                        != policy_scope.organization
+                        or citation.document_id
+                        != chunk.document_id
+                    ):
+                        raise PolicyScopeError(
+                            "Invalid scoped citation."
+                        )
+
+                for evidence_item in answer.retrieved_evidence:
+
+                    chunk = verified_chunks.get(
+                        evidence_item.get("chunk_id")
+                    )
+
+                    if (
+                        chunk is None
+                        or evidence_item.get("text")
+                        != chunk.text
+                    ):
+                        raise PolicyScopeError(
+                            "Unverified scoped evidence."
+                        )
+
+                    evidence_item["organization"] = (
+                        chunk.organization
+                    )
+
+                results["search_hr_policy"]["policy_scope"] = (
+                    policy_scope.to_dict()
+                )
 
             results["search_hr_policy"].update({
                 "answer": answer.answer,

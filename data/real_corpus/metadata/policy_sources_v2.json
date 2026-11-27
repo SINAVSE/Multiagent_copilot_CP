@@ -1,0 +1,56 @@
+{
+  "version": "2.0",
+  "minimum_validated_documents": 500,
+  "candidate_target": 700,
+  "pilot_batch_size": 25,
+  "request_timeout_seconds": 30,
+  "request_delay_seconds": 2,
+  "sources": [
+    {
+      "source_id": "UTAH",
+      "organization": "University of Utah",
+      "index_url": "https://regulations.utah.edu/info/policyList.php",
+      "allowed_domains": [
+        "regulations.utah.edu"
+      ],
+      "country": "US",
+      "source_type": "official_policy_library",
+      "redistribution_status": "requires_review"
+    },
+    {
+      "source_id": "UW",
+      "organization": "University of Washington",
+      "index_url": "https://policy.uw.edu/directory/aps/",
+      "allowed_domains": [
+        "policy.uw.edu"
+      ],
+      "country": "US",
+      "source_type": "official_policy_library",
+      "redistribution_status": "requires_review"
+    },
+    {
+      "source_id": "UC",
+      "organization": "University of California",
+      "index_url": "https://policy.ucop.edu/advanced-search.php?action=welcome&all=1&op=browse",
+      "allowed_domains": [
+        "policy.ucop.edu"
+      ],
+      "country": "US",
+      "source_type": "official_policy_library",
+      "redistribution_status": "requires_review"
+    },
+    {
+      "source_id": "IU",
+      "organization": "Indiana University",
+      "index_url": "https://www.policy.iu.edu/human-resources/index.html",
+      "allowed_domains": [
+        "www.policy.iu.edu",
+        "policy.iu.edu",
+        "hr.iu.edu"
+      ],
+      "country": "US",
+      "source_type": "official_policy_library",
+      "redistribution_status": "requires_review"
+    }
+  ]
+}
