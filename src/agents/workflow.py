@@ -346,6 +346,107 @@ class EmployeeOpsWorkflow:
     # Build and compile workflow
     # --------------------------------------------------
 
+    # CAP-10: Intent-based conditional routing.
+
+    def route_after_planner(
+        self, state: AgentState
+    ) -> str:
+
+        intent = state.get("intent", "")
+
+        routes = {
+            "POLICY_QUERY": "executor",
+            "EXPENSE_ELIGIBILITY": "executor",
+            "RECEIPT_ANALYSIS": "executor",
+            "GREETING": "greeting",
+            "OUT_OF_SCOPE": "out_of_scope",
+            "CLARIFICATION_REQUIRED": "planner_clarification",
+        }
+
+        route = routes.get(intent)
+
+        if route is None:
+            raise ValueError(
+                "Unsupported or missing Planner intent."
+            )
+
+        self.event_logger.log_event({
+            "event": "intent_routed",
+            "thread_id": state.get("thread_id"),
+            "execution_id": state.get("execution_id"),
+            "intent": intent,
+            "target_node": route,
+        })
+
+        return route
+
+    def direct_response(
+        self, message: str, status: str
+    ) -> dict:
+
+        return {
+            "final_answer": message,
+            "status": status,
+            "is_approved": False,
+            "selected_tools": [],
+            "tool_results": {},
+            "retrieved_evidence": [],
+            "critic_feedback": None,
+            "retry_count": 0,
+        }
+
+    def greeting_node(
+        self, state: AgentState
+    ) -> dict:
+
+        return self.direct_response(
+            message=(
+                "Hello! How can I help you with employee "
+                "policies, travel expenses, leave policies "
+                "or expense compliance?"
+            ),
+            status="greeting",
+        )
+
+    def out_of_scope_node(
+        self, state: AgentState
+    ) -> dict:
+
+        return self.direct_response(
+            message=(
+                "This request is outside my scope. "
+                "I can only assist with employee policies, "
+                "HR-related guidance, travel expenses "
+                "and expense compliance."
+            ),
+            status="out_of_scope",
+        )
+
+    def planner_clarification_node(
+        self, state: AgentState
+    ) -> dict:
+
+        missing = state.get(
+            "missing_information", []
+        )
+
+        message = (
+            "Please provide additional information "
+            "so I can assist with your request."
+        )
+
+        if missing:
+            message += (
+                " Required information: "
+                + "; ".join(missing)
+                + "."
+            )
+
+        return self.direct_response(
+            message=message,
+            status="clarification_required",
+        )
+
     def build(self):
 
         if getattr(self, "_app", None) is not None:
@@ -380,6 +481,28 @@ class EmployeeOpsWorkflow:
             ),
         )
 
+        workflow.add_node(
+            "greeting",
+            self._track_node(
+                "greeting", self.greeting_node
+            ),
+        )
+
+        workflow.add_node(
+            "out_of_scope",
+            self._track_node(
+                "out_of_scope", self.out_of_scope_node
+            ),
+        )
+
+        workflow.add_node(
+            "planner_clarification",
+            self._track_node(
+                "planner_clarification",
+                self.planner_clarification_node,
+            ),
+        )
+
         workflow.add_conditional_edges(
             START,
             self.route_initial_request,
@@ -390,7 +513,24 @@ class EmployeeOpsWorkflow:
         )
 
         workflow.add_edge("clarification", END)
-        workflow.add_edge("planner", "executor")
+        workflow.add_conditional_edges(
+            "planner",
+            self.route_after_planner,
+            {
+                "executor": "executor",
+                "greeting": "greeting",
+                "out_of_scope": "out_of_scope",
+                "planner_clarification": (
+                    "planner_clarification"
+                ),
+            },
+        )
+
+        workflow.add_edge("greeting", END)
+        workflow.add_edge("out_of_scope", END)
+        workflow.add_edge(
+            "planner_clarification", END
+        )
         workflow.add_edge("executor", "critic")
 
         workflow.add_conditional_edges(

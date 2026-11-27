@@ -71,7 +71,7 @@ with st.sidebar:
     )
 
     st.markdown("**Policy knowledge base:** 9 GitLab documents")
-    st.markdown("**Workflow:** Planner → Executor → Critic")
+    st.markdown("**Workflow:** Planner - Intent Router - Direct Response or Executor - Critic")
 
     st.divider()
 
@@ -204,7 +204,7 @@ if submitted:
     try:
 
         with st.spinner(
-            "Planner, Executor and Critic are processing your request..."
+            "Employee Operations Copilot is processing your request..."
         ):
 
             workflow = get_workflow()
@@ -263,9 +263,34 @@ if result is not None:
 
     status = result.get("status", "unknown")
     approved = result.get("is_approved", False)
+    intent = result.get("intent", "")
+
+    direct_response = status in {
+        "greeting",
+        "out_of_scope",
+        "clarification_required",
+    }
+
+    if intent:
+        st.caption(
+            f"Request intent: {intent.replace('_', ' ').title()}"
+        )
 
     if status == "approved" and approved:
         st.success("Critic review passed")
+
+    elif status == "greeting":
+        st.info("Greeting handled successfully.")
+
+    elif status == "out_of_scope":
+        st.info(
+            "This request is outside the supported business scope."
+        )
+
+    elif status == "clarification_required":
+        st.info(
+            "Additional information is required before proceeding."
+        )
 
     elif status == "critic_rejected":
         st.error("The answer did not pass the review process.")
@@ -314,7 +339,12 @@ if result is not None:
     st.markdown("### Policy Sources")
 
     if not citations:
-        st.info("No policy citations were returned.")
+        if direct_response:
+            st.caption(
+                "Policy retrieval was not required for this response."
+            )
+        else:
+            st.info("No policy citations were returned.")
 
     if citations:
         if not approved:
@@ -470,7 +500,12 @@ if result is not None:
     with st.expander("View retrieved policy evidence"):
         st.write(f"Retrieved chunks: {len(evidence)}")
         if not evidence:
-            st.info("No policy evidence was retrieved.")
+            if direct_response:
+                st.caption(
+                    "Evidence retrieval was not required."
+                )
+            else:
+                st.info("No policy evidence was retrieved.")
         for item in evidence:
             st.markdown(f"**{item.get('title', 'Policy document')}**")
             st.caption(
@@ -489,7 +524,10 @@ if result is not None:
     ):
 
         st.write(f"**Final workflow status:** {status}")
-        st.write(f"**Critic approved:** {approved}")
+        if direct_response:
+            st.write("**Critic review:** Not required")
+        else:
+            st.write(f"**Critic approved:** {approved}")
 
         st.write(
             f"**Retry count:** {result.get('retry_count', 0)}"
