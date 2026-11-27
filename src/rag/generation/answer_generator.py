@@ -1,6 +1,5 @@
 
 import json
-import re
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -9,8 +8,12 @@ from config.clients import llm
 from src.rag.retrieval.hybrid_retriever import HybridRetriever
 from src.rag.schemas import RetrievalResult
 from src.rag.retrieval.reranker import CrossEncoderReranker
+from src.rag.retrieval.evidence_selector import EvidenceSelector
+from src.rag.retrieval.context_budget import EvidenceContextBudget
+from src.rag.retrieval.policy_context_selector import PolicyContextSelector
 
 from src.agents.budgeted_model import invoke_model
+from src.agents.response_parser import parse_json_response
 
 
 class Citation(BaseModel):
@@ -45,14 +48,29 @@ class AnswerGenerator:
         model: Any = None,
         top_k: int = 5,
         candidate_k: int = 10,
+        max_context_bytes: int = 12000,
     ):
-        if top_k < 1:
+        if type(top_k) is not int or top_k < 1:
             raise ValueError("top_k must be at least 1.")
 
-        if candidate_k < top_k:
+        if (
+            type(candidate_k) is not int
+            or candidate_k < top_k
+        ):
             raise ValueError(
                 "candidate_k must be greater than or equal to top_k."
             )
+
+        if (
+            type(max_context_bytes) is not int
+            or max_context_bytes < 1
+        ):
+
+            raise ValueError(
+                "max_context_bytes must be a positive integer."
+            )
+
+        self.max_context_bytes = max_context_bytes
 
         self.retriever = retriever or HybridRetriever()
         self.reranker = reranker or CrossEncoderReranker()
@@ -85,31 +103,66 @@ CONTENT:
 
     @staticmethod
     def _parse_json(content: str) -> dict:
-        """Parse JSON returned by the model."""
-
-        content = content.strip()
-
-        # Remove optional Markdown code fences.
-        content = re.sub(
-            r"^```(?:json)?\s*|\s*```$",
-            "",
+        return parse_json_response(
             content,
-            flags=re.IGNORECASE,
-        ).strip()
+            agent_name="Answer Generator",
+        )
 
-        try:
-            data = json.loads(content)
-        except json.JSONDecodeError as exc:
+
+    def prepare_evidence(
+        self,
+        query: str,
+        retrieval_result: RetrievalResult,
+    ) -> RetrievalResult:
+
+        """Validate and prepare retrieved or supplied evidence."""
+
+        if not query or not query.strip():
+
             raise ValueError(
-                "The LLM returned invalid JSON. "
-                "Please inspect the model response."
-            ) from exc
+                "Question cannot be empty."
+            )
 
-        if not isinstance(data, dict):
-            raise ValueError("The LLM response must be a JSON object.")
+        if not isinstance(
+            retrieval_result,
+            RetrievalResult,
+        ):
 
-        return data
+            raise ValueError(
+                "Expected a valid RetrievalResult."
+            )
 
+        query = query.strip()
+
+        if retrieval_result.query.strip() != query:
+
+            raise ValueError(
+                "Supplied evidence belongs to a different query."
+            )
+
+        # Apply policy-context validation.
+
+        selected = PolicyContextSelector.select(
+            query=query,
+            result=retrieval_result,
+        )
+
+        # Remove duplicate or invalid evidence.
+
+        selected = EvidenceSelector.select(
+            selected,
+            top_k=self.top_k,
+        )
+
+        # Enforce the serialized evidence budget.
+
+        selected = EvidenceContextBudget.select(
+            result=selected,
+            context_builder=self._build_context,
+            max_context_bytes=self.max_context_bytes,
+        )
+
+        return selected
 
     def retrieve(self, query: str) -> RetrievalResult:
         """Retrieve and rerank policy evidence for a query."""
@@ -128,50 +181,13 @@ CONTENT:
         retrieval_result = self.reranker.rerank(
             query=query,
             retrieval_result=retrieval_result,
-            top_k=self.top_k,
+            top_k=self.candidate_k,
         )
 
-        is_comparison_query = bool(
-            re.search(
-                r"\b(compare|comparison|difference|different from|"
-                r"versus|vs\.?|both|across policies|multiple policies)\b",
-                query,
-                flags=re.IGNORECASE,
-            )
+        return self.prepare_evidence(
+            query=query,
+            retrieval_result=retrieval_result,
         )
-
-        selected_document_id = None
-
-        if (
-            not is_comparison_query
-            and re.search(
-                r"\bsponsored\s+(?:business\s+)?travel\b",
-                query,
-                flags=re.IGNORECASE,
-            )
-        ):
-            selected_document_id = "GITLAB-0003"
-
-        if selected_document_id is not None:
-            matching_chunks = [
-                item
-                for item in retrieval_result.retrieved_chunks
-                if item.chunk.document_id == selected_document_id
-            ]
-
-            if matching_chunks:
-                retrieval_result = retrieval_result.model_copy(
-                    update={
-                        "retrieved_chunks": matching_chunks,
-                        "metadata": {
-                            **retrieval_result.metadata,
-                            "evidence_selection": "policy_context",
-                            "selected_document_id": selected_document_id,
-                        },
-                    }
-                )
-
-        return retrieval_result
 
     def generate(self,query: str,critic_feedback: str | None = None,expense_result: dict | None = None,retrieval_result: RetrievalResult | None = None,) -> RAGAnswer:
         if not query or not query.strip():
@@ -181,7 +197,15 @@ CONTENT:
 
         # Step 1: Use supplied evidence or retrieve it.
         if retrieval_result is None:
+
             retrieval_result = self.retrieve(query)
+
+        else:
+
+            retrieval_result = self.prepare_evidence(
+                query=query,
+                retrieval_result=retrieval_result,
+            )
 
         if not retrieval_result.retrieved_chunks:
             return RAGAnswer(
@@ -217,6 +241,9 @@ IMPORTANT RULES:
 5. Identify missing information where relevant.
 6. Cite supporting evidence using exact CHUNK_ID values.
 7. Never create or modify a citation ID.
+   Every sufficient-evidence answer must include at least
+   one valid supporting CHUNK_ID. If no retrieved source
+   supports the answer, set insufficient_evidence to true.
 8. Do not make binding HR or reimbursement decisions.
 9. Do not claim that an expense is approved merely because it
    appears to comply with a policy.
@@ -301,11 +328,22 @@ SOURCE EVIDENCE:
         if not isinstance(data["answer"], str):
             raise ValueError("Answer must be a string.")
 
+        if not data["answer"].strip():
+            raise ValueError("Answer cannot be empty.")
+
         if not isinstance(data["insufficient_evidence"], bool):
             raise ValueError("insufficient_evidence must be Boolean.")
 
         if not isinstance(data["missing_information"], list):
             raise ValueError("missing_information must be a list.")
+
+        if not all(
+            isinstance(item, str) and item.strip()
+            for item in data["missing_information"]
+        ):
+            raise ValueError(
+                "Missing information entries must be non-empty strings."
+            )
 
         if not isinstance(data["cited_chunk_ids"], list):
             raise ValueError("cited_chunk_ids must be a list.")
@@ -332,6 +370,28 @@ SOURCE EVIDENCE:
             raise ValueError(
                 f"LLM returned citations not present in retrieved "
                 f"evidence: {invalid_ids}"
+            )
+
+        # CAP-13: A sufficient-evidence answer must
+        # reference at least one retrieved source.
+        if (
+            not data["insufficient_evidence"]
+            and not cited_ids
+        ):
+
+            data["answer"] = (
+                "I could not establish a sufficiently "
+                "grounded answer from the available policy "
+                "evidence."
+            )
+
+            data["insufficient_evidence"] = True
+
+            data["missing_information"] = list(
+                dict.fromkeys(
+                    data["missing_information"]
+                    + ["Supporting policy citation"]
+                )
             )
 
         citations = []

@@ -1,0 +1,3272 @@
+{
+  "experiment": "CAP-13 BM25 ablation",
+  "evaluation_dataset": "retrieval_eval_v1.0.json",
+  "dataset_sha256": "1ef642a6b63b37f48ed4d08a32d2c2e466c1557dbcb334fb2913a7d5b43e1410",
+  "corpus_file": "gitlab_structure_aware_v4_500_overlap_100.jsonl",
+  "corpus_sha256": "4e210e4e16cb3e5b3bfaed680aa5a0aefd1acab08b3edb802b081bff4adddd60",
+  "total_queries": 20,
+  "hosted_api_calls": 0,
+  "historical_baseline_verification": {
+    "historical_summary": {
+      "retrieval_method": "bm25",
+      "total_queries": 20,
+      "recall_at_1": 0.55,
+      "recall_at_3": 0.775,
+      "recall_at_5": 0.85,
+      "mrr": 0.7070833333333333
+    },
+    "metric_deltas": {
+      "recall_at_1": 0.0,
+      "recall_at_3": 0.0,
+      "recall_at_5": 0.0,
+      "mrr": 0.0
+    },
+    "metrics_reproduced": true,
+    "identical_query_rankings": 20,
+    "total_queries": 20
+  },
+  "configurations": {
+    "B0_original": {
+      "summary": {
+        "configuration": "B0_original",
+        "total_queries": 20,
+        "corpus_chunks": 224,
+        "top_k": 10,
+        "mrr_at_10": 0.7070833333333333,
+        "document_hit_rate_at_5": 0.95,
+        "mean_latency_ms": 1.239115000134916,
+        "p95_latency_ms": 1.8652499999006977,
+        "zero_recall_at_5_queries": 3,
+        "recall_at_1": 0.55,
+        "recall_at_3": 0.775,
+        "recall_at_5": 0.85,
+        "recall_at_10": 0.95
+      },
+      "query_results": [
+        {
+          "query_id": "R01",
+          "category": "Travel",
+          "query": "Are hotel receipts required for sponsored business travel?",
+          "expected_chunk_ids": [
+            "GITLAB-0003-S0002"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0003"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0003-S0009",
+            "GITLAB-0003-S0003",
+            "GITLAB-0003-S0006",
+            "GITLAB-0003-S0001",
+            "GITLAB-0001-S0022",
+            "GITLAB-0001-S0033",
+            "GITLAB-0003-S0005",
+            "GITLAB-0001-S0074",
+            "GITLAB-0001-S0027",
+            "GITLAB-0003-S0002"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0003"
+          ],
+          "first_relevant_rank": 10,
+          "reciprocal_rank": 0.1,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.2717999998130836,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "recall_at_5": 0.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R02",
+          "category": "Travel",
+          "query": "How is sponsored-travel lodging reimbursement calculated?",
+          "expected_chunk_ids": [
+            "GITLAB-0003-S0002"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0003"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0003-S0001",
+            "GITLAB-0003-S0006",
+            "GITLAB-0003-S0002",
+            "GITLAB-0003-S0009",
+            "GITLAB-0001-S0034",
+            "GITLAB-0001-S0029",
+            "GITLAB-0003-S0003",
+            "GITLAB-0003-S0007",
+            "GITLAB-0001-S0022",
+            "GITLAB-0002-S0004"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0002"
+          ],
+          "first_relevant_rank": 3,
+          "reciprocal_rank": 0.3333333333333333,
+          "document_hit_at_5": 1,
+          "latency_ms": 0.6991999980527908,
+          "recall_at_1": 0.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R03",
+          "category": "Travel",
+          "query": "What happens if lodging exceeds the permitted rate without prior approval?",
+          "expected_chunk_ids": [
+            "GITLAB-0003-S0002"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0003"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0003-S0002",
+            "GITLAB-0001-S0025",
+            "GITLAB-0009-S0043",
+            "GITLAB-0001-S0019",
+            "GITLAB-0001-S0030",
+            "GITLAB-0004-S0011",
+            "GITLAB-0009-S0032",
+            "GITLAB-0007-S0002",
+            "GITLAB-0004-S0007",
+            "GITLAB-0001-S0014"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0009",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0009",
+            "GITLAB-0007",
+            "GITLAB-0004",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.2229999992996454,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R04",
+          "category": "Travel",
+          "query": "Are receipts required for meals reimbursed using the sponsored-travel per-diem method?",
+          "expected_chunk_ids": [
+            "GITLAB-0003-S0003"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0003"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0003-S0003",
+            "GITLAB-0003-S0002",
+            "GITLAB-0001-S0027",
+            "GITLAB-0001-S0028",
+            "GITLAB-0003-S0007",
+            "GITLAB-0003-S0006",
+            "GITLAB-0003-S0001",
+            "GITLAB-0001-S0067",
+            "GITLAB-0003-S0009",
+            "GITLAB-0001-S0059"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0003",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 0.960299999860581,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R05",
+          "category": "Travel",
+          "query": "Are meals on the first and last days of sponsored travel reimbursable?",
+          "expected_chunk_ids": [
+            "GITLAB-0003-S0003"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0003"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0003-S0003",
+            "GITLAB-0001-S0034",
+            "GITLAB-0001-S0041",
+            "GITLAB-0001-S0027",
+            "GITLAB-0003-S0001",
+            "GITLAB-0001-S0059",
+            "GITLAB-0003-S0006",
+            "GITLAB-0003-S0009",
+            "GITLAB-0001-S0028",
+            "GITLAB-0001-S0067"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.3270999988890253,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R06",
+          "category": "Gifts and Entertainment",
+          "query": "What conditions must a business gift or entertainment expense satisfy?",
+          "expected_chunk_ids": [
+            "GITLAB-0006-S0003"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0006"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0005",
+            "GITLAB-0006-S0003",
+            "GITLAB-0006-S0008",
+            "GITLAB-0006-S0002",
+            "GITLAB-0004-S0004",
+            "GITLAB-0004-S0006",
+            "GITLAB-0001-S0006",
+            "GITLAB-0001-S0005",
+            "GITLAB-0001-S0026",
+            "GITLAB-0006-S0005"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0006"
+          ],
+          "first_relevant_rank": 2,
+          "reciprocal_rank": 0.5,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.0151999958907254,
+          "recall_at_1": 0.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R07",
+          "category": "Gifts and Entertainment",
+          "query": "Can an employee give cash or cash-equivalent gifts to a business contact?",
+          "expected_chunk_ids": [
+            "GITLAB-0006-S0004"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0006"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0006-S0004",
+            "GITLAB-0006-S0008",
+            "GITLAB-0006-S0003",
+            "GITLAB-0004-S0003",
+            "GITLAB-0001-S0053",
+            "GITLAB-0004-S0005",
+            "GITLAB-0006-S0002",
+            "GITLAB-0006-S0005",
+            "GITLAB-0001-S0027",
+            "GITLAB-0004-S0004"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0001",
+            "GITLAB-0004"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.101499998185318,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R08",
+          "category": "Gifts and Entertainment",
+          "query": "How does the policy define a government official?",
+          "expected_chunk_ids": [
+            "GITLAB-0006-S0002"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0006"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0004",
+            "GITLAB-0004-S0003",
+            "GITLAB-0006-S0007",
+            "GITLAB-0004-S0016",
+            "GITLAB-0004-S0017",
+            "GITLAB-0006-S0005",
+            "GITLAB-0004-S0010",
+            "GITLAB-0006-S0002",
+            "GITLAB-0001-S0059",
+            "GITLAB-0004-S0005"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0001",
+            "GITLAB-0004"
+          ],
+          "first_relevant_rank": 8,
+          "reciprocal_rank": 0.125,
+          "document_hit_at_5": 1,
+          "latency_ms": 0.9943000040948391,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "recall_at_5": 0.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R09",
+          "category": "Gifts and Entertainment",
+          "query": "What are the gift and entertainment limits for US government officials?",
+          "expected_chunk_ids": [
+            "GITLAB-0006-S0005"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0006"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0006-S0005",
+            "GITLAB-0004-S0005",
+            "GITLAB-0006-S0006",
+            "GITLAB-0004-S0004",
+            "GITLAB-0006-S0002",
+            "GITLAB-0004-S0003",
+            "GITLAB-0006-S0007",
+            "GITLAB-0006-S0003",
+            "GITLAB-0001-S0005",
+            "GITLAB-0006-S0008"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0001",
+            "GITLAB-0006"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.2280000009923242,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R10",
+          "category": "Gifts and Entertainment",
+          "query": "Are gift cards ever permitted under the targeted marketing exception?",
+          "expected_chunk_ids": [
+            "GITLAB-0006-S0004",
+            "GITLAB-0006-S0006"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0006"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0006-S0006",
+            "GITLAB-0006-S0007",
+            "GITLAB-0006-S0003",
+            "GITLAB-0006-S0004",
+            "GITLAB-0001-S0006",
+            "GITLAB-0006-S0002",
+            "GITLAB-0001-S0066",
+            "GITLAB-0001-S0058",
+            "GITLAB-0004-S0005",
+            "GITLAB-0001-S0053"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0001",
+            "GITLAB-0006",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.0975999975926243,
+          "recall_at_1": 0.5,
+          "recall_at_3": 0.5,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R11",
+          "category": "Anti-Corruption",
+          "query": "Does the anti-corruption policy prohibit indirect bribery through third parties?",
+          "expected_chunk_ids": [
+            "GITLAB-0004-S0003",
+            "GITLAB-0004-S0008"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0004"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0007",
+            "GITLAB-0004-S0003",
+            "GITLAB-0004-S0008",
+            "GITLAB-0004-S0009",
+            "GITLAB-0004-S0002",
+            "GITLAB-0005-S0002",
+            "GITLAB-0001-S0002",
+            "GITLAB-0005-S0001",
+            "GITLAB-0004-S0014",
+            "GITLAB-0004-S0015"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0001",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0004"
+          ],
+          "first_relevant_rank": 2,
+          "reciprocal_rank": 0.5,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.5448000049218535,
+          "recall_at_1": 0.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R12",
+          "category": "Anti-Corruption",
+          "query": "What should an employee do if a payment to a government official might be improper?",
+          "expected_chunk_ids": [
+            "GITLAB-0004-S0003",
+            "GITLAB-0004-S0004"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0004"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0003",
+            "GITLAB-0004-S0004",
+            "GITLAB-0004-S0016",
+            "GITLAB-0004-S0017",
+            "GITLAB-0004-S0010",
+            "GITLAB-0004-S0005",
+            "GITLAB-0004-S0009",
+            "GITLAB-0001-S0059",
+            "GITLAB-0006-S0002",
+            "GITLAB-0006-S0005"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0006",
+            "GITLAB-0006"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.8565999998827465,
+          "recall_at_1": 0.5,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R13",
+          "category": "Anti-Corruption",
+          "query": "Do facilitating payments require prior approval?",
+          "expected_chunk_ids": [
+            "GITLAB-0004-S0007"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0004"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0007",
+            "GITLAB-0001-S0043",
+            "GITLAB-0004-S0009",
+            "GITLAB-0001-S0073",
+            "GITLAB-0001-S0041",
+            "GITLAB-0004-S0011",
+            "GITLAB-0003-S0002",
+            "GITLAB-0001-S0040",
+            "GITLAB-0007-S0009",
+            "GITLAB-0001-S0045"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0007",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 0.8063999994192272,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R14",
+          "category": "Anti-Corruption",
+          "query": "What are examples of red flags when dealing with third parties?",
+          "expected_chunk_ids": [
+            "GITLAB-0004-S0009"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0004"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0009",
+            "GITLAB-0004-S0008",
+            "GITLAB-0005-S0002",
+            "GITLAB-0004-S0003",
+            "GITLAB-0001-S0019",
+            "GITLAB-0001-S0082",
+            "GITLAB-0001-S0021",
+            "GITLAB-0006-S0002",
+            "GITLAB-0007-S0002",
+            "GITLAB-0007-S0006"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0006",
+            "GITLAB-0007",
+            "GITLAB-0007"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.2560999966808595,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R15",
+          "category": "Anti-Fraud",
+          "query": "Does the anti-fraud policy specify a minimum monetary threshold for fraud?",
+          "expected_chunk_ids": [
+            "GITLAB-0005-S0004"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0005"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0005-S0004",
+            "GITLAB-0005-S0007",
+            "GITLAB-0005-S0009",
+            "GITLAB-0005-S0008",
+            "GITLAB-0004-S0004",
+            "GITLAB-0005-S0003",
+            "GITLAB-0005-S0002",
+            "GITLAB-0005-S0005",
+            "GITLAB-0005-S0001",
+            "GITLAB-0002-S0001"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0002"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.2856000030296855,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R16",
+          "category": "Anti-Fraud",
+          "query": "Is falsifying or altering accounting records considered fraud?",
+          "expected_chunk_ids": [
+            "GITLAB-0005-S0004"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0005"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0005-S0004",
+            "GITLAB-0004-S0012",
+            "GITLAB-0005-S0007",
+            "GITLAB-0005-S0003",
+            "GITLAB-0004-S0005",
+            "GITLAB-0005-S0009",
+            "GITLAB-0004-S0006",
+            "GITLAB-0005-S0008",
+            "GITLAB-0005-S0002",
+            "GITLAB-0004-S0009"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0004"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 0.9376000016345643,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R17",
+          "category": "Anti-Fraud",
+          "query": "How should an employee report suspected fraud if their manager may be involved?",
+          "expected_chunk_ids": [
+            "GITLAB-0005-S0005"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0005"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0005-S0009",
+            "GITLAB-0005-S0007",
+            "GITLAB-0005-S0005",
+            "GITLAB-0005-S0008",
+            "GITLAB-0005-S0002",
+            "GITLAB-0005-S0003",
+            "GITLAB-0004-S0004",
+            "GITLAB-0009-S0019",
+            "GITLAB-0004-S0003",
+            "GITLAB-0009-S0037"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0009",
+            "GITLAB-0004",
+            "GITLAB-0009"
+          ],
+          "first_relevant_rank": 3,
+          "reciprocal_rank": 0.3333333333333333,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.3161000024410896,
+          "recall_at_1": 0.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R18",
+          "category": "Anti-Fraud",
+          "query": "Does GitLab protect employees who report suspected fraud in good faith from retaliation?",
+          "expected_chunk_ids": [
+            "GITLAB-0005-S0006"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0005"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0005-S0006",
+            "GITLAB-0004-S0013",
+            "GITLAB-0005-S0009",
+            "GITLAB-0005-S0005",
+            "GITLAB-0005-S0008",
+            "GITLAB-0005-S0007",
+            "GITLAB-0005-S0003",
+            "GITLAB-0005-S0001",
+            "GITLAB-0006-S0001",
+            "GITLAB-0007-S0012"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0006",
+            "GITLAB-0007"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.2534999987110496,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R19",
+          "category": "Expense Management",
+          "query": "What happens when an expense claim is submitted more than 90 days after purchase?",
+          "expected_chunk_ids": [
+            "GITLAB-0002-S0002"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0002"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0001-S0005",
+            "GITLAB-0007-S0015",
+            "GITLAB-0001-S0021",
+            "GITLAB-0002-S0002",
+            "GITLAB-0001-S0019",
+            "GITLAB-0001-S0045",
+            "GITLAB-0001-S0047",
+            "GITLAB-0001-S0084",
+            "GITLAB-0007-S0002",
+            "GITLAB-0001-S0006"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0001",
+            "GITLAB-0007",
+            "GITLAB-0001",
+            "GITLAB-0002",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0007",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 4,
+          "reciprocal_rank": 0.25,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.578000003064517,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R20",
+          "category": "Expense Management",
+          "query": "Which policy should an employee consult to determine whether an expense is reimbursable?",
+          "expected_chunk_ids": [
+            "GITLAB-0002-S0003",
+            "GITLAB-0002-S0004"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0002"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0003",
+            "GITLAB-0004-S0004",
+            "GITLAB-0001-S0062",
+            "GITLAB-0004-S0005",
+            "GITLAB-0001-S0044",
+            "GITLAB-0001-S0006",
+            "GITLAB-0001-S0008",
+            "GITLAB-0004-S0006",
+            "GITLAB-0009-S0040",
+            "GITLAB-0001-S0022"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0009",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": null,
+          "reciprocal_rank": 0.0,
+          "document_hit_at_5": 0,
+          "latency_ms": 2.0296000002417713,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "recall_at_5": 0.0,
+          "recall_at_10": 0.0
+        }
+      ]
+    },
+    "B1_normalized": {
+      "summary": {
+        "configuration": "B1_normalized",
+        "total_queries": 20,
+        "corpus_chunks": 224,
+        "top_k": 10,
+        "mrr_at_10": 0.7070833333333333,
+        "document_hit_rate_at_5": 0.95,
+        "mean_latency_ms": 1.3107799997669645,
+        "p95_latency_ms": 1.6795250005088753,
+        "zero_recall_at_5_queries": 3,
+        "recall_at_1": 0.55,
+        "recall_at_3": 0.775,
+        "recall_at_5": 0.85,
+        "recall_at_10": 0.95
+      },
+      "query_results": [
+        {
+          "query_id": "R01",
+          "category": "Travel",
+          "query": "Are hotel receipts required for sponsored business travel?",
+          "expected_chunk_ids": [
+            "GITLAB-0003-S0002"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0003"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0003-S0009",
+            "GITLAB-0003-S0003",
+            "GITLAB-0003-S0006",
+            "GITLAB-0003-S0001",
+            "GITLAB-0001-S0022",
+            "GITLAB-0001-S0033",
+            "GITLAB-0003-S0005",
+            "GITLAB-0001-S0074",
+            "GITLAB-0001-S0027",
+            "GITLAB-0003-S0002"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0003"
+          ],
+          "first_relevant_rank": 10,
+          "reciprocal_rank": 0.1,
+          "document_hit_at_5": 1,
+          "latency_ms": 2.453300003253389,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "recall_at_5": 0.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R02",
+          "category": "Travel",
+          "query": "How is sponsored-travel lodging reimbursement calculated?",
+          "expected_chunk_ids": [
+            "GITLAB-0003-S0002"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0003"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0003-S0001",
+            "GITLAB-0003-S0006",
+            "GITLAB-0003-S0002",
+            "GITLAB-0003-S0009",
+            "GITLAB-0001-S0034",
+            "GITLAB-0001-S0029",
+            "GITLAB-0003-S0003",
+            "GITLAB-0003-S0007",
+            "GITLAB-0001-S0022",
+            "GITLAB-0002-S0004"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0002"
+          ],
+          "first_relevant_rank": 3,
+          "reciprocal_rank": 0.3333333333333333,
+          "document_hit_at_5": 1,
+          "latency_ms": 0.9200999993481673,
+          "recall_at_1": 0.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R03",
+          "category": "Travel",
+          "query": "What happens if lodging exceeds the permitted rate without prior approval?",
+          "expected_chunk_ids": [
+            "GITLAB-0003-S0002"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0003"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0003-S0002",
+            "GITLAB-0001-S0025",
+            "GITLAB-0009-S0043",
+            "GITLAB-0001-S0019",
+            "GITLAB-0001-S0030",
+            "GITLAB-0004-S0011",
+            "GITLAB-0009-S0032",
+            "GITLAB-0007-S0002",
+            "GITLAB-0004-S0007",
+            "GITLAB-0001-S0014"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0009",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0009",
+            "GITLAB-0007",
+            "GITLAB-0004",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.1192000019946136,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R04",
+          "category": "Travel",
+          "query": "Are receipts required for meals reimbursed using the sponsored-travel per-diem method?",
+          "expected_chunk_ids": [
+            "GITLAB-0003-S0003"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0003"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0003-S0003",
+            "GITLAB-0003-S0002",
+            "GITLAB-0001-S0027",
+            "GITLAB-0001-S0028",
+            "GITLAB-0003-S0007",
+            "GITLAB-0003-S0006",
+            "GITLAB-0003-S0001",
+            "GITLAB-0001-S0067",
+            "GITLAB-0003-S0009",
+            "GITLAB-0001-S0059"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0003",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.6348999997717328,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R05",
+          "category": "Travel",
+          "query": "Are meals on the first and last days of sponsored travel reimbursable?",
+          "expected_chunk_ids": [
+            "GITLAB-0003-S0003"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0003"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0003-S0003",
+            "GITLAB-0001-S0034",
+            "GITLAB-0001-S0041",
+            "GITLAB-0001-S0027",
+            "GITLAB-0003-S0001",
+            "GITLAB-0001-S0059",
+            "GITLAB-0003-S0006",
+            "GITLAB-0003-S0009",
+            "GITLAB-0001-S0028",
+            "GITLAB-0001-S0067"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 0.9452999947825447,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R06",
+          "category": "Gifts and Entertainment",
+          "query": "What conditions must a business gift or entertainment expense satisfy?",
+          "expected_chunk_ids": [
+            "GITLAB-0006-S0003"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0006"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0005",
+            "GITLAB-0006-S0003",
+            "GITLAB-0006-S0008",
+            "GITLAB-0006-S0002",
+            "GITLAB-0004-S0004",
+            "GITLAB-0004-S0006",
+            "GITLAB-0001-S0006",
+            "GITLAB-0001-S0005",
+            "GITLAB-0001-S0026",
+            "GITLAB-0006-S0005"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0006"
+          ],
+          "first_relevant_rank": 2,
+          "reciprocal_rank": 0.5,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.264699996681884,
+          "recall_at_1": 0.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R07",
+          "category": "Gifts and Entertainment",
+          "query": "Can an employee give cash or cash-equivalent gifts to a business contact?",
+          "expected_chunk_ids": [
+            "GITLAB-0006-S0004"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0006"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0006-S0004",
+            "GITLAB-0006-S0008",
+            "GITLAB-0006-S0003",
+            "GITLAB-0004-S0003",
+            "GITLAB-0001-S0053",
+            "GITLAB-0004-S0005",
+            "GITLAB-0006-S0002",
+            "GITLAB-0006-S0005",
+            "GITLAB-0001-S0027",
+            "GITLAB-0004-S0004"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0001",
+            "GITLAB-0004"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.539299999421928,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R08",
+          "category": "Gifts and Entertainment",
+          "query": "How does the policy define a government official?",
+          "expected_chunk_ids": [
+            "GITLAB-0006-S0002"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0006"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0004",
+            "GITLAB-0004-S0003",
+            "GITLAB-0006-S0007",
+            "GITLAB-0004-S0016",
+            "GITLAB-0004-S0017",
+            "GITLAB-0006-S0005",
+            "GITLAB-0004-S0010",
+            "GITLAB-0006-S0002",
+            "GITLAB-0001-S0059",
+            "GITLAB-0004-S0005"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0001",
+            "GITLAB-0004"
+          ],
+          "first_relevant_rank": 8,
+          "reciprocal_rank": 0.125,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.0187000007135794,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "recall_at_5": 0.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R09",
+          "category": "Gifts and Entertainment",
+          "query": "What are the gift and entertainment limits for US government officials?",
+          "expected_chunk_ids": [
+            "GITLAB-0006-S0005"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0006"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0006-S0005",
+            "GITLAB-0004-S0005",
+            "GITLAB-0006-S0006",
+            "GITLAB-0004-S0004",
+            "GITLAB-0006-S0002",
+            "GITLAB-0004-S0003",
+            "GITLAB-0006-S0007",
+            "GITLAB-0006-S0003",
+            "GITLAB-0001-S0005",
+            "GITLAB-0006-S0008"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0001",
+            "GITLAB-0006"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.3905999949201941,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R10",
+          "category": "Gifts and Entertainment",
+          "query": "Are gift cards ever permitted under the targeted marketing exception?",
+          "expected_chunk_ids": [
+            "GITLAB-0006-S0004",
+            "GITLAB-0006-S0006"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0006"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0006-S0006",
+            "GITLAB-0006-S0007",
+            "GITLAB-0006-S0003",
+            "GITLAB-0006-S0004",
+            "GITLAB-0001-S0006",
+            "GITLAB-0006-S0002",
+            "GITLAB-0001-S0066",
+            "GITLAB-0001-S0058",
+            "GITLAB-0004-S0005",
+            "GITLAB-0001-S0053"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0001",
+            "GITLAB-0006",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.2134999997215346,
+          "recall_at_1": 0.5,
+          "recall_at_3": 0.5,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R11",
+          "category": "Anti-Corruption",
+          "query": "Does the anti-corruption policy prohibit indirect bribery through third parties?",
+          "expected_chunk_ids": [
+            "GITLAB-0004-S0003",
+            "GITLAB-0004-S0008"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0004"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0007",
+            "GITLAB-0004-S0003",
+            "GITLAB-0004-S0008",
+            "GITLAB-0004-S0009",
+            "GITLAB-0004-S0002",
+            "GITLAB-0005-S0002",
+            "GITLAB-0001-S0002",
+            "GITLAB-0005-S0001",
+            "GITLAB-0004-S0014",
+            "GITLAB-0004-S0015"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0001",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0004"
+          ],
+          "first_relevant_rank": 2,
+          "reciprocal_rank": 0.5,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.2608999968506396,
+          "recall_at_1": 0.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R12",
+          "category": "Anti-Corruption",
+          "query": "What should an employee do if a payment to a government official might be improper?",
+          "expected_chunk_ids": [
+            "GITLAB-0004-S0003",
+            "GITLAB-0004-S0004"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0004"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0003",
+            "GITLAB-0004-S0004",
+            "GITLAB-0004-S0016",
+            "GITLAB-0004-S0017",
+            "GITLAB-0004-S0010",
+            "GITLAB-0004-S0005",
+            "GITLAB-0004-S0009",
+            "GITLAB-0001-S0059",
+            "GITLAB-0006-S0002",
+            "GITLAB-0006-S0005"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0006",
+            "GITLAB-0006"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.6388000003644265,
+          "recall_at_1": 0.5,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R13",
+          "category": "Anti-Corruption",
+          "query": "Do facilitating payments require prior approval?",
+          "expected_chunk_ids": [
+            "GITLAB-0004-S0007"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0004"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0007",
+            "GITLAB-0001-S0043",
+            "GITLAB-0004-S0009",
+            "GITLAB-0001-S0073",
+            "GITLAB-0001-S0041",
+            "GITLAB-0004-S0011",
+            "GITLAB-0003-S0002",
+            "GITLAB-0001-S0040",
+            "GITLAB-0007-S0009",
+            "GITLAB-0001-S0045"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0007",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 0.7693000006838702,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R14",
+          "category": "Anti-Corruption",
+          "query": "What are examples of red flags when dealing with third parties?",
+          "expected_chunk_ids": [
+            "GITLAB-0004-S0009"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0004"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0009",
+            "GITLAB-0004-S0008",
+            "GITLAB-0005-S0002",
+            "GITLAB-0004-S0003",
+            "GITLAB-0001-S0019",
+            "GITLAB-0001-S0082",
+            "GITLAB-0001-S0021",
+            "GITLAB-0006-S0002",
+            "GITLAB-0007-S0002",
+            "GITLAB-0007-S0006"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0006",
+            "GITLAB-0007",
+            "GITLAB-0007"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.3691000058315694,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R15",
+          "category": "Anti-Fraud",
+          "query": "Does the anti-fraud policy specify a minimum monetary threshold for fraud?",
+          "expected_chunk_ids": [
+            "GITLAB-0005-S0004"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0005"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0005-S0004",
+            "GITLAB-0005-S0007",
+            "GITLAB-0005-S0009",
+            "GITLAB-0005-S0008",
+            "GITLAB-0004-S0004",
+            "GITLAB-0005-S0003",
+            "GITLAB-0005-S0002",
+            "GITLAB-0005-S0005",
+            "GITLAB-0005-S0001",
+            "GITLAB-0002-S0001"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0002"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.433499994163867,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R16",
+          "category": "Anti-Fraud",
+          "query": "Is falsifying or altering accounting records considered fraud?",
+          "expected_chunk_ids": [
+            "GITLAB-0005-S0004"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0005"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0005-S0004",
+            "GITLAB-0004-S0012",
+            "GITLAB-0005-S0007",
+            "GITLAB-0005-S0003",
+            "GITLAB-0004-S0005",
+            "GITLAB-0005-S0009",
+            "GITLAB-0004-S0006",
+            "GITLAB-0005-S0008",
+            "GITLAB-0005-S0002",
+            "GITLAB-0004-S0009"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0004"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.0690000053728,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R17",
+          "category": "Anti-Fraud",
+          "query": "How should an employee report suspected fraud if their manager may be involved?",
+          "expected_chunk_ids": [
+            "GITLAB-0005-S0005"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0005"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0005-S0009",
+            "GITLAB-0005-S0007",
+            "GITLAB-0005-S0005",
+            "GITLAB-0005-S0008",
+            "GITLAB-0005-S0002",
+            "GITLAB-0005-S0003",
+            "GITLAB-0004-S0004",
+            "GITLAB-0009-S0019",
+            "GITLAB-0004-S0003",
+            "GITLAB-0009-S0037"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0009",
+            "GITLAB-0004",
+            "GITLAB-0009"
+          ],
+          "first_relevant_rank": 3,
+          "reciprocal_rank": 0.3333333333333333,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.326500001596287,
+          "recall_at_1": 0.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R18",
+          "category": "Anti-Fraud",
+          "query": "Does GitLab protect employees who report suspected fraud in good faith from retaliation?",
+          "expected_chunk_ids": [
+            "GITLAB-0005-S0006"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0005"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0005-S0006",
+            "GITLAB-0004-S0013",
+            "GITLAB-0005-S0009",
+            "GITLAB-0005-S0005",
+            "GITLAB-0005-S0008",
+            "GITLAB-0005-S0007",
+            "GITLAB-0005-S0003",
+            "GITLAB-0005-S0001",
+            "GITLAB-0006-S0001",
+            "GITLAB-0007-S0012"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0006",
+            "GITLAB-0007"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.101499998185318,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R19",
+          "category": "Expense Management",
+          "query": "What happens when an expense claim is submitted more than 90 days after purchase?",
+          "expected_chunk_ids": [
+            "GITLAB-0002-S0002"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0002"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0001-S0005",
+            "GITLAB-0007-S0015",
+            "GITLAB-0001-S0021",
+            "GITLAB-0002-S0002",
+            "GITLAB-0001-S0019",
+            "GITLAB-0001-S0045",
+            "GITLAB-0001-S0047",
+            "GITLAB-0001-S0084",
+            "GITLAB-0007-S0002",
+            "GITLAB-0001-S0006"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0001",
+            "GITLAB-0007",
+            "GITLAB-0001",
+            "GITLAB-0002",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0007",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 4,
+          "reciprocal_rank": 0.25,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.1118000038550235,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R20",
+          "category": "Expense Management",
+          "query": "Which policy should an employee consult to determine whether an expense is reimbursable?",
+          "expected_chunk_ids": [
+            "GITLAB-0002-S0003",
+            "GITLAB-0002-S0004"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0002"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0003",
+            "GITLAB-0004-S0004",
+            "GITLAB-0001-S0062",
+            "GITLAB-0004-S0005",
+            "GITLAB-0001-S0044",
+            "GITLAB-0001-S0006",
+            "GITLAB-0001-S0008",
+            "GITLAB-0004-S0006",
+            "GITLAB-0009-S0040",
+            "GITLAB-0001-S0022"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0009",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": null,
+          "reciprocal_rank": 0.0,
+          "document_hit_at_5": 0,
+          "latency_ms": 1.6355999978259206,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "recall_at_5": 0.0,
+          "recall_at_10": 0.0
+        }
+      ]
+    },
+    "B2_metadata": {
+      "summary": {
+        "configuration": "B2_metadata",
+        "total_queries": 20,
+        "corpus_chunks": 224,
+        "top_k": 10,
+        "mrr_at_10": 0.7354166666666667,
+        "document_hit_rate_at_5": 0.95,
+        "mean_latency_ms": 1.2922649999381974,
+        "p95_latency_ms": 1.8204700005298946,
+        "zero_recall_at_5_queries": 2,
+        "recall_at_1": 0.55,
+        "recall_at_3": 0.8,
+        "recall_at_5": 0.9,
+        "recall_at_10": 0.95
+      },
+      "query_results": [
+        {
+          "query_id": "R01",
+          "category": "Travel",
+          "query": "Are hotel receipts required for sponsored business travel?",
+          "expected_chunk_ids": [
+            "GITLAB-0003-S0002"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0003"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0003-S0003",
+            "GITLAB-0003-S0009",
+            "GITLAB-0003-S0002",
+            "GITLAB-0003-S0005",
+            "GITLAB-0001-S0022",
+            "GITLAB-0003-S0006",
+            "GITLAB-0003-S0001",
+            "GITLAB-0001-S0023",
+            "GITLAB-0001-S0024",
+            "GITLAB-0001-S0005"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 3,
+          "reciprocal_rank": 0.3333333333333333,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.3831999967806041,
+          "recall_at_1": 0.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R02",
+          "category": "Travel",
+          "query": "How is sponsored-travel lodging reimbursement calculated?",
+          "expected_chunk_ids": [
+            "GITLAB-0003-S0002"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0003"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0003-S0002",
+            "GITLAB-0003-S0007",
+            "GITLAB-0003-S0001",
+            "GITLAB-0003-S0006",
+            "GITLAB-0001-S0029",
+            "GITLAB-0003-S0005",
+            "GITLAB-0003-S0003",
+            "GITLAB-0003-S0009",
+            "GITLAB-0003-S0004",
+            "GITLAB-0001-S0023"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 0.9944999983417802,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R03",
+          "category": "Travel",
+          "query": "What happens if lodging exceeds the permitted rate without prior approval?",
+          "expected_chunk_ids": [
+            "GITLAB-0003-S0002"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0003"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0003-S0002",
+            "GITLAB-0001-S0025",
+            "GITLAB-0009-S0043",
+            "GITLAB-0007-S0002",
+            "GITLAB-0001-S0019",
+            "GITLAB-0004-S0011",
+            "GITLAB-0001-S0030",
+            "GITLAB-0004-S0007",
+            "GITLAB-0009-S0032",
+            "GITLAB-0003-S0007"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0009",
+            "GITLAB-0007",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0009",
+            "GITLAB-0003"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.2732000031974167,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R04",
+          "category": "Travel",
+          "query": "Are receipts required for meals reimbursed using the sponsored-travel per-diem method?",
+          "expected_chunk_ids": [
+            "GITLAB-0003-S0003"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0003"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0003-S0003",
+            "GITLAB-0003-S0002",
+            "GITLAB-0003-S0007",
+            "GITLAB-0001-S0028",
+            "GITLAB-0001-S0027",
+            "GITLAB-0001-S0059",
+            "GITLAB-0001-S0007",
+            "GITLAB-0001-S0005",
+            "GITLAB-0001-S0067",
+            "GITLAB-0001-S0062"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.611400002730079,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R05",
+          "category": "Travel",
+          "query": "Are meals on the first and last days of sponsored travel reimbursable?",
+          "expected_chunk_ids": [
+            "GITLAB-0003-S0003"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0003"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0003-S0003",
+            "GITLAB-0001-S0059",
+            "GITLAB-0001-S0041",
+            "GITLAB-0001-S0034",
+            "GITLAB-0001-S0027",
+            "GITLAB-0003-S0007",
+            "GITLAB-0001-S0028",
+            "GITLAB-0001-S0024",
+            "GITLAB-0003-S0008",
+            "GITLAB-0003-S0002"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0003",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0003",
+            "GITLAB-0003"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.8217999968328513,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R06",
+          "category": "Gifts and Entertainment",
+          "query": "What conditions must a business gift or entertainment expense satisfy?",
+          "expected_chunk_ids": [
+            "GITLAB-0006-S0003"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0006"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0005",
+            "GITLAB-0006-S0003",
+            "GITLAB-0006-S0008",
+            "GITLAB-0004-S0006",
+            "GITLAB-0006-S0002",
+            "GITLAB-0004-S0004",
+            "GITLAB-0001-S0006",
+            "GITLAB-0001-S0005",
+            "GITLAB-0007-S0015",
+            "GITLAB-0006-S0006"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0007",
+            "GITLAB-0006"
+          ],
+          "first_relevant_rank": 2,
+          "reciprocal_rank": 0.5,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.2476999982027337,
+          "recall_at_1": 0.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R07",
+          "category": "Gifts and Entertainment",
+          "query": "Can an employee give cash or cash-equivalent gifts to a business contact?",
+          "expected_chunk_ids": [
+            "GITLAB-0006-S0004"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0006"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0006-S0008",
+            "GITLAB-0006-S0004",
+            "GITLAB-0006-S0003",
+            "GITLAB-0004-S0003",
+            "GITLAB-0006-S0002",
+            "GITLAB-0001-S0053",
+            "GITLAB-0006-S0007",
+            "GITLAB-0004-S0005",
+            "GITLAB-0001-S0027",
+            "GITLAB-0006-S0005"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0001",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0006"
+          ],
+          "first_relevant_rank": 2,
+          "reciprocal_rank": 0.5,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.1121999996248633,
+          "recall_at_1": 0.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R08",
+          "category": "Gifts and Entertainment",
+          "query": "How does the policy define a government official?",
+          "expected_chunk_ids": [
+            "GITLAB-0006-S0002"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0006"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0004",
+            "GITLAB-0004-S0003",
+            "GITLAB-0004-S0016",
+            "GITLAB-0006-S0007",
+            "GITLAB-0004-S0017",
+            "GITLAB-0004-S0010",
+            "GITLAB-0006-S0005",
+            "GITLAB-0006-S0002",
+            "GITLAB-0001-S0059",
+            "GITLAB-0004-S0005"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0001",
+            "GITLAB-0004"
+          ],
+          "first_relevant_rank": 8,
+          "reciprocal_rank": 0.125,
+          "document_hit_at_5": 1,
+          "latency_ms": 0.8945000008679926,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "recall_at_5": 0.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R09",
+          "category": "Gifts and Entertainment",
+          "query": "What are the gift and entertainment limits for US government officials?",
+          "expected_chunk_ids": [
+            "GITLAB-0006-S0005"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0006"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0006-S0005",
+            "GITLAB-0006-S0006",
+            "GITLAB-0004-S0005",
+            "GITLAB-0006-S0007",
+            "GITLAB-0006-S0002",
+            "GITLAB-0004-S0004",
+            "GITLAB-0004-S0003",
+            "GITLAB-0006-S0003",
+            "GITLAB-0001-S0005",
+            "GITLAB-0006-S0008"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0001",
+            "GITLAB-0006"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.1420000009820797,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R10",
+          "category": "Gifts and Entertainment",
+          "query": "Are gift cards ever permitted under the targeted marketing exception?",
+          "expected_chunk_ids": [
+            "GITLAB-0006-S0004",
+            "GITLAB-0006-S0006"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0006"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0006-S0006",
+            "GITLAB-0006-S0007",
+            "GITLAB-0006-S0003",
+            "GITLAB-0006-S0004",
+            "GITLAB-0001-S0006",
+            "GITLAB-0001-S0058",
+            "GITLAB-0006-S0002",
+            "GITLAB-0001-S0066",
+            "GITLAB-0004-S0005",
+            "GITLAB-0001-S0053"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0006",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.2965999994776212,
+          "recall_at_1": 0.5,
+          "recall_at_3": 0.5,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R11",
+          "category": "Anti-Corruption",
+          "query": "Does the anti-corruption policy prohibit indirect bribery through third parties?",
+          "expected_chunk_ids": [
+            "GITLAB-0004-S0003",
+            "GITLAB-0004-S0008"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0004"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0007",
+            "GITLAB-0004-S0008",
+            "GITLAB-0004-S0009",
+            "GITLAB-0004-S0003",
+            "GITLAB-0005-S0002",
+            "GITLAB-0004-S0002",
+            "GITLAB-0005-S0001",
+            "GITLAB-0001-S0002",
+            "GITLAB-0004-S0014",
+            "GITLAB-0005-S0004"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0005"
+          ],
+          "first_relevant_rank": 2,
+          "reciprocal_rank": 0.5,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.33050000295043,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.5,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R12",
+          "category": "Anti-Corruption",
+          "query": "What should an employee do if a payment to a government official might be improper?",
+          "expected_chunk_ids": [
+            "GITLAB-0004-S0003",
+            "GITLAB-0004-S0004"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0004"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0003",
+            "GITLAB-0004-S0004",
+            "GITLAB-0004-S0016",
+            "GITLAB-0004-S0017",
+            "GITLAB-0004-S0010",
+            "GITLAB-0004-S0005",
+            "GITLAB-0004-S0009",
+            "GITLAB-0006-S0002",
+            "GITLAB-0006-S0005",
+            "GITLAB-0001-S0006"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0006",
+            "GITLAB-0006",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.8204000007244758,
+          "recall_at_1": 0.5,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R13",
+          "category": "Anti-Corruption",
+          "query": "Do facilitating payments require prior approval?",
+          "expected_chunk_ids": [
+            "GITLAB-0004-S0007"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0004"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0007",
+            "GITLAB-0004-S0009",
+            "GITLAB-0001-S0043",
+            "GITLAB-0001-S0073",
+            "GITLAB-0001-S0041",
+            "GITLAB-0004-S0011",
+            "GITLAB-0003-S0002",
+            "GITLAB-0007-S0009",
+            "GITLAB-0001-S0006",
+            "GITLAB-0001-S0045"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0003",
+            "GITLAB-0007",
+            "GITLAB-0001",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 0.807099997473415,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R14",
+          "category": "Anti-Corruption",
+          "query": "What are examples of red flags when dealing with third parties?",
+          "expected_chunk_ids": [
+            "GITLAB-0004-S0009"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0004"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0009",
+            "GITLAB-0004-S0008",
+            "GITLAB-0005-S0002",
+            "GITLAB-0004-S0003",
+            "GITLAB-0001-S0019",
+            "GITLAB-0001-S0021",
+            "GITLAB-0001-S0082",
+            "GITLAB-0006-S0002",
+            "GITLAB-0007-S0002",
+            "GITLAB-0009-S0019"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0006",
+            "GITLAB-0007",
+            "GITLAB-0009"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.2325999996392056,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R15",
+          "category": "Anti-Fraud",
+          "query": "Does the anti-fraud policy specify a minimum monetary threshold for fraud?",
+          "expected_chunk_ids": [
+            "GITLAB-0005-S0004"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0005"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0005-S0004",
+            "GITLAB-0005-S0009",
+            "GITLAB-0005-S0007",
+            "GITLAB-0005-S0008",
+            "GITLAB-0005-S0010",
+            "GITLAB-0005-S0003",
+            "GITLAB-0005-S0002",
+            "GITLAB-0005-S0001",
+            "GITLAB-0004-S0004",
+            "GITLAB-0005-S0005"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0005"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.3818000006722286,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R16",
+          "category": "Anti-Fraud",
+          "query": "Is falsifying or altering accounting records considered fraud?",
+          "expected_chunk_ids": [
+            "GITLAB-0005-S0004"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0005"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0005-S0004",
+            "GITLAB-0004-S0012",
+            "GITLAB-0005-S0007",
+            "GITLAB-0005-S0003",
+            "GITLAB-0004-S0005",
+            "GITLAB-0005-S0009",
+            "GITLAB-0004-S0006",
+            "GITLAB-0005-S0008",
+            "GITLAB-0005-S0002",
+            "GITLAB-0005-S0006"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 0.9503000037511811,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R17",
+          "category": "Anti-Fraud",
+          "query": "How should an employee report suspected fraud if their manager may be involved?",
+          "expected_chunk_ids": [
+            "GITLAB-0005-S0005"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0005"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0005-S0009",
+            "GITLAB-0005-S0005",
+            "GITLAB-0005-S0007",
+            "GITLAB-0005-S0002",
+            "GITLAB-0005-S0008",
+            "GITLAB-0005-S0003",
+            "GITLAB-0004-S0004",
+            "GITLAB-0009-S0019",
+            "GITLAB-0004-S0003",
+            "GITLAB-0001-S0006"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0009",
+            "GITLAB-0004",
+            "GITLAB-0001"
+          ],
+          "first_relevant_rank": 2,
+          "reciprocal_rank": 0.5,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.5992999979062006,
+          "recall_at_1": 0.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R18",
+          "category": "Anti-Fraud",
+          "query": "Does GitLab protect employees who report suspected fraud in good faith from retaliation?",
+          "expected_chunk_ids": [
+            "GITLAB-0005-S0006"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0005"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0005-S0006",
+            "GITLAB-0004-S0013",
+            "GITLAB-0005-S0009",
+            "GITLAB-0005-S0005",
+            "GITLAB-0005-S0008",
+            "GITLAB-0005-S0007",
+            "GITLAB-0005-S0003",
+            "GITLAB-0005-S0001",
+            "GITLAB-0006-S0001",
+            "GITLAB-0007-S0012"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0005",
+            "GITLAB-0004",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0005",
+            "GITLAB-0006",
+            "GITLAB-0007"
+          ],
+          "first_relevant_rank": 1,
+          "reciprocal_rank": 1.0,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.4392000011866912,
+          "recall_at_1": 1.0,
+          "recall_at_3": 1.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R19",
+          "category": "Expense Management",
+          "query": "What happens when an expense claim is submitted more than 90 days after purchase?",
+          "expected_chunk_ids": [
+            "GITLAB-0002-S0002"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0002"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0001-S0005",
+            "GITLAB-0007-S0015",
+            "GITLAB-0001-S0021",
+            "GITLAB-0002-S0002",
+            "GITLAB-0001-S0045",
+            "GITLAB-0001-S0019",
+            "GITLAB-0001-S0084",
+            "GITLAB-0007-S0002",
+            "GITLAB-0001-S0047",
+            "GITLAB-0009-S0017"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0001",
+            "GITLAB-0007",
+            "GITLAB-0001",
+            "GITLAB-0002",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0007",
+            "GITLAB-0001",
+            "GITLAB-0009"
+          ],
+          "first_relevant_rank": 4,
+          "reciprocal_rank": 0.25,
+          "document_hit_at_5": 1,
+          "latency_ms": 1.1395999972592108,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "recall_at_5": 1.0,
+          "recall_at_10": 1.0
+        },
+        {
+          "query_id": "R20",
+          "category": "Expense Management",
+          "query": "Which policy should an employee consult to determine whether an expense is reimbursable?",
+          "expected_chunk_ids": [
+            "GITLAB-0002-S0003",
+            "GITLAB-0002-S0004"
+          ],
+          "expected_document_ids": [
+            "GITLAB-0002"
+          ],
+          "retrieved_chunk_ids": [
+            "GITLAB-0004-S0003",
+            "GITLAB-0004-S0004",
+            "GITLAB-0001-S0062",
+            "GITLAB-0004-S0005",
+            "GITLAB-0001-S0044",
+            "GITLAB-0001-S0006",
+            "GITLAB-0001-S0008",
+            "GITLAB-0009-S0040",
+            "GITLAB-0001-S0022",
+            "GITLAB-0004-S0016"
+          ],
+          "retrieved_document_ids": [
+            "GITLAB-0004",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0004",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0001",
+            "GITLAB-0009",
+            "GITLAB-0001",
+            "GITLAB-0004"
+          ],
+          "first_relevant_rank": null,
+          "reciprocal_rank": 0.0,
+          "document_hit_at_5": 0,
+          "latency_ms": 1.3674000001628883,
+          "recall_at_1": 0.0,
+          "recall_at_3": 0.0,
+          "recall_at_5": 0.0,
+          "recall_at_10": 0.0
+        }
+      ]
+    }
+  },
+  "comparisons": {
+    "B1_vs_B0": {
+      "baseline": "B0_original",
+      "candidate": "B1_normalized",
+      "metric_deltas": {
+        "recall_at_1": 0.0,
+        "recall_at_3": 0.0,
+        "recall_at_5": 0.0,
+        "recall_at_10": 0.0,
+        "mrr_at_10": 0.0,
+        "document_hit_rate_at_5": 0.0
+      },
+      "improved_queries": 0,
+      "regressed_queries": 0,
+      "unchanged_queries": 20,
+      "query_changes": [
+        {
+          "query_id": "R01",
+          "category": "Travel",
+          "baseline_rank": 10,
+          "candidate_rank": 10,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R02",
+          "category": "Travel",
+          "baseline_rank": 3,
+          "candidate_rank": 3,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R03",
+          "category": "Travel",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R04",
+          "category": "Travel",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R05",
+          "category": "Travel",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R06",
+          "category": "Gifts and Entertainment",
+          "baseline_rank": 2,
+          "candidate_rank": 2,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R07",
+          "category": "Gifts and Entertainment",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R08",
+          "category": "Gifts and Entertainment",
+          "baseline_rank": 8,
+          "candidate_rank": 8,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R09",
+          "category": "Gifts and Entertainment",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R10",
+          "category": "Gifts and Entertainment",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R11",
+          "category": "Anti-Corruption",
+          "baseline_rank": 2,
+          "candidate_rank": 2,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R12",
+          "category": "Anti-Corruption",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R13",
+          "category": "Anti-Corruption",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R14",
+          "category": "Anti-Corruption",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R15",
+          "category": "Anti-Fraud",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R16",
+          "category": "Anti-Fraud",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R17",
+          "category": "Anti-Fraud",
+          "baseline_rank": 3,
+          "candidate_rank": 3,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R18",
+          "category": "Anti-Fraud",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R19",
+          "category": "Expense Management",
+          "baseline_rank": 4,
+          "candidate_rank": 4,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R20",
+          "category": "Expense Management",
+          "baseline_rank": null,
+          "candidate_rank": null,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        }
+      ]
+    },
+    "B2_vs_B0": {
+      "baseline": "B0_original",
+      "candidate": "B2_metadata",
+      "metric_deltas": {
+        "recall_at_1": 0.0,
+        "recall_at_3": 0.025000000000000022,
+        "recall_at_5": 0.050000000000000044,
+        "recall_at_10": 0.0,
+        "mrr_at_10": 0.028333333333333433,
+        "document_hit_rate_at_5": 0.0
+      },
+      "improved_queries": 3,
+      "regressed_queries": 1,
+      "unchanged_queries": 16,
+      "query_changes": [
+        {
+          "query_id": "R01",
+          "category": "Travel",
+          "baseline_rank": 10,
+          "candidate_rank": 3,
+          "reciprocal_rank_delta": 0.2333333333333333,
+          "recall_at_5_delta": 1.0,
+          "status": "improved"
+        },
+        {
+          "query_id": "R02",
+          "category": "Travel",
+          "baseline_rank": 3,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.6666666666666667,
+          "recall_at_5_delta": 0.0,
+          "status": "improved"
+        },
+        {
+          "query_id": "R03",
+          "category": "Travel",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R04",
+          "category": "Travel",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R05",
+          "category": "Travel",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R06",
+          "category": "Gifts and Entertainment",
+          "baseline_rank": 2,
+          "candidate_rank": 2,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R07",
+          "category": "Gifts and Entertainment",
+          "baseline_rank": 1,
+          "candidate_rank": 2,
+          "reciprocal_rank_delta": -0.5,
+          "recall_at_5_delta": 0.0,
+          "status": "regressed"
+        },
+        {
+          "query_id": "R08",
+          "category": "Gifts and Entertainment",
+          "baseline_rank": 8,
+          "candidate_rank": 8,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R09",
+          "category": "Gifts and Entertainment",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R10",
+          "category": "Gifts and Entertainment",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R11",
+          "category": "Anti-Corruption",
+          "baseline_rank": 2,
+          "candidate_rank": 2,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R12",
+          "category": "Anti-Corruption",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R13",
+          "category": "Anti-Corruption",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R14",
+          "category": "Anti-Corruption",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R15",
+          "category": "Anti-Fraud",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R16",
+          "category": "Anti-Fraud",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R17",
+          "category": "Anti-Fraud",
+          "baseline_rank": 3,
+          "candidate_rank": 2,
+          "reciprocal_rank_delta": 0.16666666666666669,
+          "recall_at_5_delta": 0.0,
+          "status": "improved"
+        },
+        {
+          "query_id": "R18",
+          "category": "Anti-Fraud",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R19",
+          "category": "Expense Management",
+          "baseline_rank": 4,
+          "candidate_rank": 4,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R20",
+          "category": "Expense Management",
+          "baseline_rank": null,
+          "candidate_rank": null,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        }
+      ]
+    },
+    "B2_vs_B1": {
+      "baseline": "B1_normalized",
+      "candidate": "B2_metadata",
+      "metric_deltas": {
+        "recall_at_1": 0.0,
+        "recall_at_3": 0.025000000000000022,
+        "recall_at_5": 0.050000000000000044,
+        "recall_at_10": 0.0,
+        "mrr_at_10": 0.028333333333333433,
+        "document_hit_rate_at_5": 0.0
+      },
+      "improved_queries": 3,
+      "regressed_queries": 1,
+      "unchanged_queries": 16,
+      "query_changes": [
+        {
+          "query_id": "R01",
+          "category": "Travel",
+          "baseline_rank": 10,
+          "candidate_rank": 3,
+          "reciprocal_rank_delta": 0.2333333333333333,
+          "recall_at_5_delta": 1.0,
+          "status": "improved"
+        },
+        {
+          "query_id": "R02",
+          "category": "Travel",
+          "baseline_rank": 3,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.6666666666666667,
+          "recall_at_5_delta": 0.0,
+          "status": "improved"
+        },
+        {
+          "query_id": "R03",
+          "category": "Travel",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R04",
+          "category": "Travel",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R05",
+          "category": "Travel",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R06",
+          "category": "Gifts and Entertainment",
+          "baseline_rank": 2,
+          "candidate_rank": 2,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R07",
+          "category": "Gifts and Entertainment",
+          "baseline_rank": 1,
+          "candidate_rank": 2,
+          "reciprocal_rank_delta": -0.5,
+          "recall_at_5_delta": 0.0,
+          "status": "regressed"
+        },
+        {
+          "query_id": "R08",
+          "category": "Gifts and Entertainment",
+          "baseline_rank": 8,
+          "candidate_rank": 8,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R09",
+          "category": "Gifts and Entertainment",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R10",
+          "category": "Gifts and Entertainment",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R11",
+          "category": "Anti-Corruption",
+          "baseline_rank": 2,
+          "candidate_rank": 2,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R12",
+          "category": "Anti-Corruption",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R13",
+          "category": "Anti-Corruption",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R14",
+          "category": "Anti-Corruption",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R15",
+          "category": "Anti-Fraud",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R16",
+          "category": "Anti-Fraud",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R17",
+          "category": "Anti-Fraud",
+          "baseline_rank": 3,
+          "candidate_rank": 2,
+          "reciprocal_rank_delta": 0.16666666666666669,
+          "recall_at_5_delta": 0.0,
+          "status": "improved"
+        },
+        {
+          "query_id": "R18",
+          "category": "Anti-Fraud",
+          "baseline_rank": 1,
+          "candidate_rank": 1,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R19",
+          "category": "Expense Management",
+          "baseline_rank": 4,
+          "candidate_rank": 4,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        },
+        {
+          "query_id": "R20",
+          "category": "Expense Management",
+          "baseline_rank": null,
+          "candidate_rank": null,
+          "reciprocal_rank_delta": 0.0,
+          "recall_at_5_delta": 0.0,
+          "status": "unchanged"
+        }
+      ]
+    }
+  }
+}

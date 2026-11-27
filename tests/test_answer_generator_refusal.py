@@ -1,12 +1,13 @@
 
-from types import SimpleNamespace
+from src.rag.schemas import RetrievalResult
 
 from src.rag.generation.answer_generator import AnswerGenerator
 
 
 class EmptyRetriever:
     def retrieve(self, **kwargs):
-        return SimpleNamespace(
+        return RetrievalResult(
+            query=kwargs["query"],
             retrieved_chunks=[],
             retrieval_method="hybrid",
             metadata={},

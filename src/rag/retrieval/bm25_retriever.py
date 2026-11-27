@@ -1,5 +1,6 @@
 
 import re
+import unicodedata
 import time
 from typing import Any
 
@@ -14,7 +15,18 @@ from src.rag.schemas import (
 
 
 class BM25Retriever:
-    def __init__(self, chunk_file: str | None = None):
+    def __init__(
+        self,
+        chunk_file: str | None = None,
+        include_metadata: bool = True,
+    ):
+
+        if type(include_metadata) is not bool:
+            raise ValueError(
+                "include_metadata must be a boolean."
+            )
+
+        self.include_metadata = include_metadata
         from pathlib import Path
 
         project_root = Path(__file__).resolve().parents[3]
@@ -35,15 +47,77 @@ class BM25Retriever:
             raise ValueError("No chunks available for BM25 indexing.")
 
         self.tokenized_corpus = [
-            self._tokenize(chunk.text)
+            self._tokenize(
+                self.build_searchable_text(
+                    chunk,
+                    include_metadata=self.include_metadata,
+                )
+            )
             for chunk in self.chunks
         ]
 
         self.bm25 = BM25Okapi(self.tokenized_corpus)
 
     @staticmethod
+    def build_searchable_text(
+        chunk,
+        include_metadata: bool = True,
+    ) -> str:
+
+        if not include_metadata:
+            return chunk.text
+
+        fields = [
+            chunk.title,
+            chunk.section_heading,
+            chunk.section_path,
+            chunk.text,
+        ]
+
+        unique_fields = []
+
+        seen = set()
+
+        for value in fields:
+
+            if not value:
+                continue
+
+            normalized = " ".join(
+                value.split()
+            )
+
+            if not normalized:
+                continue
+
+            key = unicodedata.normalize(
+                "NFKC", normalized
+            ).casefold()
+
+            if key in seen:
+                continue
+
+            seen.add(key)
+
+            unique_fields.append(normalized)
+
+        return "\n".join(unique_fields)
+
+    @staticmethod
     def _tokenize(text: str) -> list[str]:
-        return re.findall(r"\b\w+\b", text.lower())
+
+        normalized = unicodedata.normalize(
+            "NFKC", text
+        ).casefold()
+
+        normalized = normalized.replace(
+            "&", " and "
+        )
+
+        return re.findall(
+            r"\b\w+\b",
+            normalized,
+        )
 
     def retrieve(
         self,
@@ -110,5 +184,7 @@ class BM25Retriever:
                 "top_k": top_k,
                 "returned_chunks": len(retrieved_chunks),
                 "scoring_algorithm": "BM25Okapi",
+                "include_metadata": self.include_metadata,
+                "tokenization": "unicode_nfkc_casefold",
             },
         )
