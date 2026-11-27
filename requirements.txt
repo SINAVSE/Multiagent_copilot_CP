@@ -1,0 +1,38 @@
+# LLM API and configuration
+openai>=1.50.0,<3.0.0
+python-dotenv>=1.0.0,<2.0.0
+pydantic>=2.8.0,<3.0.0
+pydantic-settings>=2.4.0,<3.0.0
+# Agent orchestration
+langgraph>=0.2.0,<2.0.0
+langchain-core>=0.3.0,<2.0.0
+langchain-openai>=0.2.0,<2.0.0
+
+# Embeddings, vector search and reranking
+sentence-transformers>=3.0.0,<6.0.0
+faiss-cpu>=1.8.0
+rank-bm25>=0.2.2
+numpy>=1.26.0,<3.0.0
+scikit-learn>=1.5.0
+
+# Document processing
+pymupdf>=1.24.0
+python-docx>=1.1.0
+pypdf>=5.0.0
+pandas>=2.2.0
+
+# OCR and image processing
+pytesseract>=0.3.13
+Pillow>=10.0.0
+
+# Application
+streamlit>=1.38.0
+
+# Reliability and evaluation
+tenacity>=9.0.0
+pytest>=8.0.0
+httpx>=0.27.0
+
+# Observability
+langfuse>=2.0.0
+langgraph-checkpoint-sqlite
