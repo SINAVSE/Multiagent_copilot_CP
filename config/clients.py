@@ -20,6 +20,8 @@ llm = ChatOpenAI(
     base_url=settings.llm_base_url,
     http_client=llm_http_client,
     temperature=0,
+    max_retries=0,
+    timeout=60.0,
 )
 #With randomness
 llm_self_consistency = ChatOpenAI(
@@ -28,6 +30,8 @@ llm_self_consistency = ChatOpenAI(
     base_url=settings.llm_base_url,
     http_client=llm_http_client,
     temperature=0.7,
+    max_retries=0,
+    timeout=60.0,
 )
 # Embedding client
 embeddings = OpenAIEmbeddings(
@@ -37,4 +41,6 @@ embeddings = OpenAIEmbeddings(
     http_client=embedding_http_client,
     tiktoken_enabled=False,
     embedding_ctx_length=512,
+    max_retries=0,
+    timeout=60.0,
 )

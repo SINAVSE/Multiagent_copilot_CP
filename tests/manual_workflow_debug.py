@@ -1,44 +1,60 @@
-from src.agents.workflow import EmployeeOpsWorkflow
+import os
 
 
-workflow = EmployeeOpsWorkflow()
+def main():
 
-result = workflow.run(
-    query="What are the meal per diem rules for sponsored business travel?"
-)
+    if os.getenv("RUN_LIVE_TESTS") != "1":
+        print(
+            "Live execution disabled. "
+            "Set RUN_LIVE_TESTS=1 to enable."
+        )
+        return
 
-print("\n===== DEBUG: TOOL RESULTS =====")
+    from src.agents.workflow import EmployeeOpsWorkflow
 
-for tool_name, tool_result in result.get("tool_results", {}).items():
-    print(f"\nTool: {tool_name}")
-    print("Result keys:", tool_result.keys())
-    print(
-        "Retrieved evidence count:",
-        len(tool_result.get("retrieved_evidence", []))
+
+    workflow = EmployeeOpsWorkflow()
+
+    result = workflow.run(
+        query="What are the meal per diem rules for sponsored business travel?"
     )
-    for item in tool_result.get("retrieved_evidence", []):
-        print("\nChunk ID:", item.get("chunk_id"))
-        print("Title:", item.get("title"))
-        print("Section:", item.get("section"))
-        print("Text:", item.get("text"))
-    print("Citations:", tool_result.get("citations"))
 
-print("\n===== WORKFLOW RESULT =====")
+    print("\n===== DEBUG: TOOL RESULTS =====")
 
-print("\nStatus:")
-print(result.get("status"))
+    for tool_name, tool_result in result.get("tool_results", {}).items():
+        print(f"\nTool: {tool_name}")
+        print("Result keys:", tool_result.keys())
+        print(
+            "Retrieved evidence count:",
+            len(tool_result.get("retrieved_evidence", []))
+        )
+        for item in tool_result.get("retrieved_evidence", []):
+            print("\nChunk ID:", item.get("chunk_id"))
+            print("Title:", item.get("title"))
+            print("Section:", item.get("section"))
+            print("Text:", item.get("text"))
+        print("Citations:", tool_result.get("citations"))
 
-print("\nSelected tools:")
-print(result.get("selected_tools"))
+    print("\n===== WORKFLOW RESULT =====")
 
-print("\nGenerated answer:")
-print(result.get("final_answer"))
+    print("\nStatus:")
+    print(result.get("status"))
 
-print("\nCritic approved:")
-print(result.get("is_approved"))
+    print("\nSelected tools:")
+    print(result.get("selected_tools"))
 
-print("\nCritic feedback:")
-print(result.get("critic_feedback"))
+    print("\nGenerated answer:")
+    print(result.get("final_answer"))
 
-print("\nExecution log:")
-print(result.get("execution_log"))
+    print("\nCritic approved:")
+    print(result.get("is_approved"))
+
+    print("\nCritic feedback:")
+    print(result.get("critic_feedback"))
+
+    print("\nExecution log:")
+    print(result.get("execution_log"))
+
+
+if __name__ == "__main__":
+    main()

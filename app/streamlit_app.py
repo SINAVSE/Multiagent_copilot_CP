@@ -292,6 +292,22 @@ if result is not None:
             "Additional information is required before proceeding."
         )
 
+    elif status == "technical_failure":
+
+        st.error(
+            "The request could not be completed safely."
+        )
+
+        st.info(
+            "No verified policy or expense decision "
+            "has been established."
+        )
+
+        if result.get("error_code"):
+            st.caption(
+                f"Failure category: {result['error_code']}"
+            )
+
     elif status == "critic_rejected":
         st.error("The answer did not pass the review process.")
 
@@ -526,12 +542,36 @@ if result is not None:
         st.write(f"**Final workflow status:** {status}")
         if direct_response:
             st.write("**Critic review:** Not required")
+
+        elif status == "technical_failure":
+            st.write(
+                "**Critic review:** No verified approval"
+            )
+
         else:
             st.write(f"**Critic approved:** {approved}")
 
         st.write(
             f"**Retry count:** {result.get('retry_count', 0)}"
         )
+
+        st.write(
+            "**Technical retries:** "
+            f"{result.get('technical_retry_count', 0)}"
+        )
+
+        if result.get("failed_node"):
+            st.caption(
+                f"Failed stage: {result['failed_node']}"
+            )
+
+        for error in result.get("technical_errors", []):
+
+            st.caption(
+                f"Technical event: "
+                f"{error.get('agent', 'unknown')} - "
+                f"{error.get('error_code', 'unknown')}"
+            )
 
         for entry in result.get("execution_log", []):
 

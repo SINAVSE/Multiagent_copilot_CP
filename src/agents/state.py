@@ -30,6 +30,13 @@ class AgentState(TypedDict, total=False):
     is_approved: bool
     retry_count: int
 
+    # CAP-11: Technical recovery state
+    technical_retry_count: int
+    technical_retry_limit: int
+    technical_errors: list[dict[str, Any]]
+    error_code: str | None
+    failed_node: str | None
+
     # Final response
     final_answer: str
     status: str

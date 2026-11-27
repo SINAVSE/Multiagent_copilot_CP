@@ -4,6 +4,16 @@ from src.rag.retrieval.reranker import CrossEncoderReranker
 
 
 def main():
+
+    import os
+
+    if os.getenv("RUN_LIVE_TESTS") != "1":
+        print(
+            "Live execution disabled. "
+            "Set RUN_LIVE_TESTS=1 to enable."
+        )
+        return
+
     query = (
         "What are the meal and incidental expense (M&IE) "
         "per diem rules for sponsored business travel?"

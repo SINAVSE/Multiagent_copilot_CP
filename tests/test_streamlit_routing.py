@@ -162,3 +162,118 @@ def test_direct_response_is_not_critic_failure():
         and "Not required" in message
         for message in markdown_messages
     )
+
+
+@pytest.mark.parametrize(
+    "failed_node,error_code",
+    [
+        ("planner", "malformed_json"),
+        ("executor", "tool_execution_failed"),
+        ("critic", "authentication_failed"),
+    ],
+)
+def test_technical_failure_status_rendering(
+    failed_node,
+    error_code,
+):
+
+    result = make_result(
+        "POLICY_QUERY",
+        "technical_failure",
+        "No verified policy or expense decision has been established.",
+    )
+
+    result.update({
+        "failed_node": failed_node,
+        "error_code": error_code,
+        "technical_retry_count": 1,
+        "technical_errors": [
+            {
+                "agent": failed_node,
+                "error_code": error_code,
+                "will_retry": False,
+            }
+        ],
+    })
+
+    app = render_result(result)
+
+    assert len(app.exception) == 0
+
+    errors = [
+        element.value for element in app.error
+    ]
+
+    assert (
+        "The request could not be completed safely."
+        in errors
+    )
+
+    captions = [
+        element.value for element in app.caption
+    ]
+
+    assert (
+        f"Failure category: {error_code}" in captions
+    )
+
+    assert (
+        f"Failed stage: {failed_node}" in captions
+    )
+
+    markdown = [
+        element.value for element in app.markdown
+    ]
+
+    assert any(
+        "No verified approval" in value
+        for value in markdown
+    )
+
+    assert any(
+        "Technical retries:" in value
+        for value in markdown
+    )
+
+
+def test_recovered_response_displays_retry_count():
+
+    result = make_result(
+        "POLICY_QUERY",
+        "approved",
+        "Mock supported policy response.",
+    )
+
+    result.update({
+        "is_approved": True,
+        "technical_retry_count": 1,
+        "technical_errors": [
+            {
+                "agent": "planner",
+                "error_code": "malformed_json",
+                "will_retry": True,
+            }
+        ],
+    })
+
+    app = render_result(result)
+
+    assert len(app.exception) == 0
+    assert len(app.error) == 0
+
+    success = [
+        element.value for element in app.success
+    ]
+
+    assert "Critic review passed" in success
+
+    markdown = [
+        element.value for element in app.markdown
+    ]
+
+    assert any(
+        "Technical retries:" in value
+        and "1" in value
+        for value in markdown
+    )
+

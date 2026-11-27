@@ -2,6 +2,16 @@ from src.rag.generation.answer_generator import AnswerGenerator
 
 
 def main():
+
+    import os
+
+    if os.getenv("RUN_LIVE_TESTS") != "1":
+        print(
+            "Live execution disabled. "
+            "Set RUN_LIVE_TESTS=1 to enable."
+        )
+        return
+
     generator = AnswerGenerator(top_k=5)
 
     query = (

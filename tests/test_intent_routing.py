@@ -236,6 +236,47 @@ def test_business_intents_use_executor_and_critic(
         tools=tools,
     )
 
+    # CAP-11: Mock all selected tool results.
+    # The Workflow now validates required tool responses.
+
+    available_results = {
+        "search_hr_policy": {
+            "answer": "Mock employee policy response.",
+            "insufficient_evidence": False,
+            "citations": [
+                {"chunk_id": "TEST-001"}
+            ],
+            "retrieved_evidence": [
+                {
+                    "chunk_id": "TEST-001",
+                    "text": "Mock policy evidence",
+                }
+            ],
+        },
+        "calculate_expense_eligibility": {
+            "claimed_amount": 100,
+            "currency": "USD",
+            "compliance_status": "unable_to_determine",
+            "policy_limit": None,
+            "eligible_amount": None,
+            "excess_amount": None,
+            "approval_required": None,
+            "missing_information": [
+                "Applicable expense category"
+            ],
+        },
+        "extract_bill_details": {
+            "status": "extracted",
+            "claimed_amount": 100,
+            "currency": "USD",
+        },
+    }
+
+    workflow.executor.execute.return_value = {
+        tool: available_results[tool]
+        for tool in tools
+    }
+
     result = workflow.run(
         query=query,
         has_file=has_file,

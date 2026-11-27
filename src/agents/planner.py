@@ -3,6 +3,16 @@ from typing import Any
 import re
 from config.clients import llm
 from pydantic import ValidationError
+
+from src.agents.errors import (
+    AgentResponseError,
+    ErrorCode,
+    classify_error,
+)
+
+from src.agents.response_parser import (
+    parse_json_response,
+)
 from src.agents.planner_schema import (
     PlannerIntent,
     PlannerTool,
@@ -108,7 +118,14 @@ class Planner:
     def __init__(self, model: Any = None):
         self.model = model or llm
 
-    def plan(self, query: str, has_file: bool = False,expense_details: dict | None = None,) -> dict:
+    def plan(
+        self,
+        query: str,
+        has_file: bool = False,
+        expense_details: dict | None = None,
+        *,
+        _corrective_instruction: str = "",
+    ) -> dict:
         if not query or not query.strip():
             raise ValueError("Query cannot be empty.")
 
@@ -205,29 +222,31 @@ UPLOADED FILE AVAILABLE:
 {has_file}
 """
 
+        if _corrective_instruction:
+            prompt += (
+                "\n\nRESPONSE FORMAT CORRECTION:\n"
+                + _corrective_instruction
+            )
+
         response = self.model.invoke(prompt)
-        content = response.content
 
-        if not isinstance(content, str):
-            raise ValueError("Unexpected LLM response format.")
-
-        try:
-            result = json.loads(content.strip())
-        except json.JSONDecodeError as exc:
-            raise ValueError(
-                "Planner returned invalid JSON."
-            ) from exc
+        result = parse_json_response(
+            response,
+            agent_name="Planner",
+        )
 
         try:
             validated = PlannerOutput.model_validate(result)
         except ValidationError as exc:
-            raise ValueError(
+            raise AgentResponseError(
+                ErrorCode.SCHEMA_VALIDATION,
                 "Planner response failed schema validation."
             ) from exc
 
         if validated.intent == PlannerIntent.RECEIPT_ANALYSIS:
             if not has_file:
-                raise ValueError(
+                raise AgentResponseError(
+                    ErrorCode.SCHEMA_VALIDATION,
                     "Receipt analysis requires an uploaded file."
                 )
 
@@ -235,7 +254,8 @@ UPLOADED FILE AVAILABLE:
                 validated.selected_tools[0]
                 != PlannerTool.EXTRACT_RECEIPT
             ):
-                raise ValueError(
+                raise AgentResponseError(
+                    ErrorCode.SCHEMA_VALIDATION,
                     "Receipt extraction must be the first tool."
                 )
 
@@ -256,3 +276,73 @@ UPLOADED FILE AVAILABLE:
         result["expense_details"] = final_expense_details
 
         return result
+
+
+    def plan_with_recovery(
+        self,
+        query: str,
+        has_file: bool = False,
+        expense_details: dict | None = None,
+        on_error=None,
+        retry_allowed=None,
+    ) -> dict:
+        """Recover from eligible Planner failures once."""
+
+        corrective_instruction = ""
+
+        for attempt in range(1, 3):
+
+            try:
+
+                return self.plan(
+                    query=query,
+                    has_file=has_file,
+                    expense_details=expense_details,
+                    _corrective_instruction=corrective_instruction,
+                )
+
+            except Exception as exc:
+
+                classification = classify_error(exc)
+
+                will_retry = (
+                    classification.retryable
+                    and attempt == 1
+                )
+
+                if will_retry and retry_allowed is not None:
+                    will_retry = bool(retry_allowed())
+
+                if on_error is not None:
+
+                    on_error({
+                        "agent": "planner",
+                        "attempt": attempt,
+                        "error_code": classification.code.value,
+                        "retryable": classification.retryable,
+                        "will_retry": will_retry,
+                        "error_type": type(exc).__name__,
+                    })
+
+                if not will_retry:
+                    raise
+
+                if isinstance(exc, AgentResponseError):
+
+                    corrective_instruction = (
+                        "The previous response failed validation. "
+                        "Return exactly one valid JSON object. "
+                        "Use only the supported intent and tool names. "
+                        "Include all required fields with correct types. "
+                        "Do not include duplicate keys or explanatory text. "
+                        "Follow the uploaded-file and tool-order rules."
+                    )
+
+                else:
+
+                    corrective_instruction = ""
+
+        raise RuntimeError(
+            "Unexpected Planner recovery state."
+        )
+

@@ -1,5 +1,14 @@
 
 import json
+
+from src.agents.errors import (
+    AgentResponseError,
+    ErrorCode,
+    classify_error,
+)
+
+from src.agents.response_parser import parse_json_response
+
 import math
 from typing import Any
 
@@ -363,9 +372,13 @@ class Critic:
 
 
     def review_with_llm(
-        self, query: str, tool_results: dict, final_answer: str = "",
+        self,
+        query: str,
+        tool_results: dict,
+        final_answer: str = "",
+        *,
+        _corrective_instruction: str = "",
     ) -> dict:
-
         evidence_data = []
 
         for tool_name, result in tool_results.items():
@@ -445,59 +458,40 @@ If verification fails, set approved to false and explain
 the problems in issues and feedback.
 """
 
+        if _corrective_instruction:
+            prompt += (
+                "\n\nRESPONSE FORMAT CORRECTION:\n"
+                + _corrective_instruction
+            )
+
         response = self.model.invoke(prompt)
 
-        content = getattr(response, "content", None)
-
-        if isinstance(content, list):
-            text_parts = []
-
-            for item in content:
-                if isinstance(item, str):
-                    text_parts.append(item)
-                elif isinstance(item, dict):
-                    text = item.get("text")
-                    if isinstance(text, str):
-                        text_parts.append(text)
-
-            content = "".join(text_parts)
-
-        if not isinstance(content, str) or not content.strip():
-            raise ValueError(
-                "Critic returned empty or invalid response content."
-            )
-
-        content = content.strip()
-
-        if content.startswith("```"):
-            lines = content.splitlines()
-
-            if len(lines) < 3 or not lines[-1].strip().startswith("```"):
-                raise ValueError(
-                    "Critic returned malformed JSON code fencing."
-                )
-
-            content = "\n".join(lines[1:-1]).strip()
-
         try:
-            review = json.loads(content)
-        except json.JSONDecodeError as exc:
-            raise ValueError(
-                "Critic returned invalid JSON."
-            ) from exc
-
-        if not isinstance(review, dict):
-            raise ValueError(
-                "Critic returned an invalid JSON object."
+            review = parse_json_response(
+                response,
+                agent_name="Critic",
+                allow_content_blocks=True,
             )
+
+        except AgentResponseError as exc:
+
+            if exc.code == ErrorCode.INVALID_RESPONSE:
+                raise AgentResponseError(
+                    ErrorCode.INVALID_RESPONSE,
+                    "Critic returned empty or invalid response content.",
+                ) from exc
+
+            raise
 
         if not isinstance(review.get("approved"), bool):
-            raise ValueError(
+            raise AgentResponseError(
+                ErrorCode.SCHEMA_VALIDATION,
                 "Critic returned an invalid approval value."
             )
 
         if not isinstance(review.get("issues"), list):
-            raise ValueError(
+            raise AgentResponseError(
+                ErrorCode.SCHEMA_VALIDATION,
                 "Critic returned invalid issues."
             )
 
@@ -505,17 +499,20 @@ the problems in issues and feedback.
             isinstance(issue, str)
             for issue in review["issues"]
         ):
-            raise ValueError(
+            raise AgentResponseError(
+                ErrorCode.SCHEMA_VALIDATION,
                 "Critic issues must contain only strings."
             )
 
         if not isinstance(review.get("feedback"), str):
-            raise ValueError(
+            raise AgentResponseError(
+                ErrorCode.SCHEMA_VALIDATION,
                 "Critic returned invalid feedback."
             )
 
         if not review["feedback"].strip():
-            raise ValueError(
+            raise AgentResponseError(
+                ErrorCode.SCHEMA_VALIDATION,
                 "Critic feedback cannot be empty."
             )
 
@@ -554,3 +551,85 @@ the problems in issues and feedback.
                 "issues": ["Critic review failed."],
                 "feedback": "Unable to verify the Executor's answer.",
             }
+
+
+    def review_with_recovery(
+        self,
+        query: str,
+        tool_results: dict,
+        final_answer: str = "",
+        on_error=None,
+        retry_allowed=None,
+    ) -> dict:
+        """Review evidence with bounded technical recovery."""
+
+        # Deterministic rejection is not a technical failure.
+        validation = self.validate_executor_output(
+            query,
+            tool_results,
+        )
+
+        if not validation["passed"]:
+            return {
+                "approved": False,
+                "issues": validation["issues"],
+                "feedback": "Deterministic validation failed.",
+            }
+
+        corrective_instruction = ""
+
+        for attempt in range(1, 3):
+
+            try:
+
+                return self.review_with_llm(
+                    query=query,
+                    tool_results=tool_results,
+                    final_answer=final_answer,
+                    _corrective_instruction=corrective_instruction,
+                )
+
+            except Exception as exc:
+
+                classification = classify_error(exc)
+
+                will_retry = (
+                    classification.retryable
+                    and attempt == 1
+                )
+
+                if will_retry and retry_allowed is not None:
+                    will_retry = bool(retry_allowed())
+
+                if on_error is not None:
+                    on_error({
+                        "agent": "critic",
+                        "attempt": attempt,
+                        "error_code": classification.code.value,
+                        "retryable": classification.retryable,
+                        "will_retry": will_retry,
+                        "error_type": type(exc).__name__,
+                    })
+
+                if not will_retry:
+                    raise
+
+                if isinstance(exc, AgentResponseError):
+
+                    corrective_instruction = (
+                        "The previous review failed validation. "
+                        "Return exactly one valid JSON object. "
+                        "The approved field must be a boolean. "
+                        "The issues field must be a list of strings. "
+                        "The feedback field must be a non-empty string. "
+                        "Do not invent evidence or approve unsupported claims. "
+                        "Do not include duplicate keys or explanatory text."
+                    )
+
+                else:
+                    corrective_instruction = ""
+
+        raise RuntimeError(
+            "Unexpected Critic recovery state."
+        )
+

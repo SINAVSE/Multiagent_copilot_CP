@@ -8,6 +8,11 @@ from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.sqlite import SqliteSaver
 
 from src.agents.state import AgentState
+
+from src.agents.errors import (
+    classify_error,
+    ToolExecutionError,
+)
 from src.agents.planner import Planner
 from src.agents.executor import Executor
 from src.agents.critic import Critic
@@ -16,6 +21,7 @@ from src.observability.event_logger import EventLogger
 
 
 MAX_RETRIES = 2
+MAX_TECHNICAL_RETRIES = 2
 
 
 class EmployeeOpsWorkflow:
@@ -53,6 +59,45 @@ class EmployeeOpsWorkflow:
     # --------------------------------------------------
     # Observability wrapper
     # --------------------------------------------------
+
+    def technical_failure_response(
+        self,
+        state: AgentState,
+        node_name: str,
+        exc: Exception,
+    ) -> dict:
+
+        classification = classify_error(exc)
+
+        self.event_logger.log_event({
+            "event": "technical_failure",
+            "node": node_name,
+            "thread_id": state.get("thread_id"),
+            "execution_id": state.get("execution_id"),
+            "error_code": classification.code.value,
+            "error_type": type(exc).__name__,
+            "tool_name": (
+                exc.tool_name
+                if isinstance(exc, ToolExecutionError)
+                else None
+            ),
+        })
+
+        return {
+            "status": "technical_failure",
+            "final_answer": (
+                classification.safe_message
+                + " No verified policy or expense decision "
+                "has been established."
+            ),
+            "error_code": classification.code.value,
+            "failed_node": node_name,
+            "is_approved": False,
+            "critic_feedback": None,
+            "tool_results": {},
+            "retrieved_evidence": [],
+        }
+
 
     def _track_node(self, node_name, node_function):
 
@@ -106,6 +151,32 @@ class EmployeeOpsWorkflow:
                     "error_type": type(exc).__name__,
                 })
 
+                if node_name in {
+                    "planner", "executor", "critic"
+                }:
+                    result = self.technical_failure_response(
+                        state,
+                        node_name,
+                        exc,
+                    )
+
+                    errors = list(
+                        state.get("technical_errors", [])
+                    )
+
+                    classification = classify_error(exc)
+
+                    errors.append({
+                        "agent": node_name,
+                        "error_code": classification.code.value,
+                        "error_type": type(exc).__name__,
+                        "will_retry": False,
+                    })
+
+                    result["technical_errors"] = errors
+
+                    return result
+
                 raise
 
         return tracked_node
@@ -114,15 +185,128 @@ class EmployeeOpsWorkflow:
     # Planner
     # --------------------------------------------------
 
+    def invoke_with_recovery(
+        self,
+        state: AgentState,
+        agent,
+        recovery_method: str,
+        legacy_method: str,
+        **kwargs,
+    ) -> tuple:
+
+        retry_count = state.get(
+            "technical_retry_count", 0
+        )
+
+        retry_limit = state.get(
+            "technical_retry_limit",
+            MAX_TECHNICAL_RETRIES,
+        )
+
+        errors = list(
+            state.get("technical_errors", [])
+        )
+
+        initial_error_count = len(errors)
+
+        def consume_retry():
+            nonlocal retry_count
+
+            if retry_count >= retry_limit:
+                return False
+
+            retry_count += 1
+            return True
+
+        def on_error(event):
+
+            errors.append(dict(event))
+
+            self.event_logger.log_event({
+                "event": "agent_recovery",
+                "thread_id": state.get("thread_id"),
+                "execution_id": state.get("execution_id"),
+                "technical_retry_count": retry_count,
+                **event,
+            })
+
+        try:
+            # Real agents expose recovery methods.
+            # Older fake and mocked agents retain their legacy API.
+            recovery = getattr(
+                type(agent),
+                recovery_method,
+                None,
+            )
+
+            if callable(recovery):
+
+                result = getattr(
+                    agent, recovery_method
+                )(
+                    **kwargs,
+                    on_error=on_error,
+                    retry_allowed=consume_retry,
+                )
+
+            else:
+
+                result = getattr(
+                    agent, legacy_method
+                )(**kwargs)
+
+            return result, {
+                "technical_retry_count": retry_count,
+                "technical_errors": errors,
+            }, None
+
+        except Exception as exc:
+
+            if (
+                len(errors) == initial_error_count
+                or errors[-1].get("will_retry") is not False
+            ):
+
+                classification = classify_error(exc)
+
+                on_error({
+                    "agent": legacy_method,
+                    "error_code": classification.code.value,
+                    "error_type": type(exc).__name__,
+                    "will_retry": False,
+                })
+
+            return None, {
+                "technical_retry_count": retry_count,
+                "technical_errors": errors,
+            }, exc
+
+
     def planner_node(self, state: AgentState) -> dict:
 
-        plan_result = self.planner.plan(
-        query=state["query"],
-        has_file=state.get("has_file", False),
-        expense_details=state.get("expense_details", {}),
-    )
+        plan_result, recovery_state, error = (
+            self.invoke_with_recovery(
+                state,
+                self.planner,
+                "plan_with_recovery",
+                "plan",
+                query=state["query"],
+                has_file=state.get("has_file", False),
+                expense_details=state.get("expense_details", {}),
+            )
+        )
+
+        if error is not None:
+
+            return {
+                **self.technical_failure_response(
+                    state, "planner", error
+                ),
+                **recovery_state,
+            }
 
         return {
+            **recovery_state,
             "intent": plan_result["intent"],
             "plan": plan_result["plan"],
             "selected_tools": plan_result["selected_tools"],
@@ -150,6 +334,23 @@ class EmployeeOpsWorkflow:
             critic_feedback=state.get("critic_feedback"),
             expense_details=state.get("expense_details"),
         )
+
+        # CAP-11: Validate required tool-result contracts.
+        if not isinstance(tool_results, dict):
+            raise ToolExecutionError("executor_result")
+
+        for tool_name in state.get("selected_tools", []):
+
+            if tool_name not in tool_results:
+                raise ToolExecutionError(tool_name)
+
+            tool_result = tool_results[tool_name]
+
+            if not isinstance(tool_result, dict):
+                raise ToolExecutionError(tool_name)
+
+            if not tool_result:
+                raise ToolExecutionError(tool_name)
 
         retrieved_evidence = []
 
@@ -233,11 +434,26 @@ class EmployeeOpsWorkflow:
 
     def critic_node(self, state: AgentState) -> dict:
 
-        critic_result = self.critic.review(
-            query=state["query"],
-            tool_results=state.get("tool_results", {}),
-            final_answer=state.get("final_answer", ""),
+        critic_result, recovery_state, error = (
+            self.invoke_with_recovery(
+                state,
+                self.critic,
+                "review_with_recovery",
+                "review",
+                query=state["query"],
+                tool_results=state.get("tool_results", {}),
+                final_answer=state.get("final_answer", ""),
+            )
         )
+
+        if error is not None:
+
+            return {
+                **self.technical_failure_response(
+                    state, "critic", error
+                ),
+                **recovery_state,
+            }
 
         approved = critic_result["approved"]
 
@@ -257,6 +473,7 @@ class EmployeeOpsWorkflow:
         })
 
         return {
+            **recovery_state,
             "is_approved": approved,
             "critic_feedback": critic_result.get("feedback", ""),
             "retry_count": retry_count,
@@ -269,6 +486,9 @@ class EmployeeOpsWorkflow:
     # --------------------------------------------------
 
     def route_after_critic(self, state: AgentState) -> str:
+
+        if state.get("status") == "technical_failure":
+            return "technical_failure"
 
         if state.get("is_approved", False):
             return "approved"
@@ -351,6 +571,9 @@ class EmployeeOpsWorkflow:
     def route_after_planner(
         self, state: AgentState
     ) -> str:
+
+        if state.get("status") == "technical_failure":
+            return "technical_failure"
 
         intent = state.get("intent", "")
 
@@ -447,6 +670,16 @@ class EmployeeOpsWorkflow:
             status="clarification_required",
         )
 
+    def route_after_executor(
+        self, state: AgentState
+    ) -> str:
+
+        if state.get("status") == "technical_failure":
+            return "technical_failure"
+
+        return "critic"
+
+
     def build(self):
 
         if getattr(self, "_app", None) is not None:
@@ -517,6 +750,7 @@ class EmployeeOpsWorkflow:
             "planner",
             self.route_after_planner,
             {
+                "technical_failure": END,
                 "executor": "executor",
                 "greeting": "greeting",
                 "out_of_scope": "out_of_scope",
@@ -531,12 +765,20 @@ class EmployeeOpsWorkflow:
         workflow.add_edge(
             "planner_clarification", END
         )
-        workflow.add_edge("executor", "critic")
+        workflow.add_conditional_edges(
+            "executor",
+            self.route_after_executor,
+            {
+                "critic": "critic",
+                "technical_failure": END,
+            },
+        )
 
         workflow.add_conditional_edges(
             "critic",
             self.route_after_critic,
             {
+                "technical_failure": END,
                 "approved": END,
                 "retry": "executor",
                 "failure": "failure",
@@ -687,6 +929,11 @@ class EmployeeOpsWorkflow:
             "critic_feedback": None,
             "is_approved": False,
             "retry_count": 0,
+            "technical_retry_count": 0,
+            "technical_retry_limit": MAX_TECHNICAL_RETRIES,
+            "technical_errors": [],
+            "error_code": None,
+            "failed_node": None,
             "final_answer": "",
             "execution_log": [],
             "status": "started",
@@ -726,6 +973,11 @@ class EmployeeOpsWorkflow:
                 "duration_ms": duration_ms,
                 "status": result.get("status", "unknown"),
                 "retry_count": result.get("retry_count", 0),
+                "technical_retry_count": result.get(
+                    "technical_retry_count", 0
+                ),
+                "error_code": result.get("error_code"),
+                "failed_node": result.get("failed_node"),
             })
 
             return result

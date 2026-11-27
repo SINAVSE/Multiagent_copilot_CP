@@ -1,6 +1,8 @@
 
 from typing import Any
 
+from src.agents.errors import ToolExecutionError
+
 from src.rag.generation.answer_generator import AnswerGenerator
 from src.tools.expense_calculator import (
     calculate_expense,
@@ -17,6 +19,17 @@ class Executor:
         self.answer_generator = (
             answer_generator or AnswerGenerator()
         )
+
+    @staticmethod
+    def _execute_tool(tool_name, operation, *args, **kwargs):
+        try:
+            return operation(*args, **kwargs)
+
+        except ToolExecutionError:
+            raise
+
+        except Exception as exc:
+            raise ToolExecutionError(tool_name) from exc
 
     def execute(
         self,
@@ -56,6 +69,11 @@ class Executor:
             if tool in tools_to_run
         ]
 
+        if "extract_bill_details" in ordered_tools:
+            raise ToolExecutionError(
+                "extract_bill_details"
+            )
+
         retrieval_result = None
 
         # --------------------------------------------------
@@ -64,7 +82,11 @@ class Executor:
 
         if "search_hr_policy" in ordered_tools:
 
-            retrieval_result = self.answer_generator.retrieve(query)
+            retrieval_result = self._execute_tool(
+                "search_hr_policy",
+                self.answer_generator.retrieve,
+                query,
+            )
 
             evidence = [
                 {
@@ -153,6 +175,11 @@ class Executor:
 
                     results[tool_name] = result.model_dump()
                     continue
+
+                except Exception as exc:
+                    raise ToolExecutionError(
+                        "extract_expense_policy"
+                    ) from exc
 
                 # --------------------------------------------------
                 # Currency validation
@@ -246,7 +273,9 @@ class Executor:
                         )
 
                     else:
-                        result = calculate_expense(
+                        result = self._execute_tool(
+                            "calculate_expense_eligibility",
+                            calculate_expense,
                             claimed_amount=claimed_amount,
                             policy_limit=policy.policy_limit,
                             currency=policy_currency,
@@ -287,7 +316,9 @@ class Executor:
                         )
 
                     else:
-                        result = calculate_per_person_expense(
+                        result = self._execute_tool(
+                            "calculate_expense_eligibility",
+                            calculate_per_person_expense,
                             total_claimed_amount=claimed_amount,
                             headcount=headcount,
                             per_person_policy_limit=(
@@ -346,7 +377,9 @@ class Executor:
                 "calculate_expense_eligibility"
             )
 
-            answer = self.answer_generator.generate(
+            answer = self._execute_tool(
+                "generate_policy_answer",
+                self.answer_generator.generate,
                 query=query,
                 critic_feedback=critic_feedback,
                 expense_result=expense_result,
